@@ -30,7 +30,8 @@ const Index = () => {
               <h1 className="text-2xl font-bold text-forest-700">🌾 FarmHub</h1>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</a>
+              <a href="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</a>
+              <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
               <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</a>
               <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
               <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>

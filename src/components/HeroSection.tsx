@@ -23,8 +23,12 @@ const HeroSection = () => {
           Weather updates, crop prices, and more at your fingertips
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
-          <Button size="lg" className="bg-forest-600 hover:bg-forest-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
-            Shop Products 🛒
+          <Button 
+            size="lg" 
+            className="bg-forest-600 hover:bg-forest-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+            onClick={() => window.location.href = '/dashboard'}
+          >
+            Go to Dashboard 📊
           </Button>
           <Button size="lg" variant="outline" className="bg-soil-600 hover:bg-soil-700 text-white border-soil-600 hover:border-soil-700 px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
             Book Services 📅
