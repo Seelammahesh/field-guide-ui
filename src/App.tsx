@@ -16,6 +16,7 @@ import Community from "./pages/Community";
 import PlantDiseases from "./pages/PlantDiseases";
 import Advisor from "./pages/Advisor";
 import Contact from "./pages/Contact";
+import Navbar from "./pages/Navbar";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +25,9 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+     
       <BrowserRouter>
+       <Navbar/>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
