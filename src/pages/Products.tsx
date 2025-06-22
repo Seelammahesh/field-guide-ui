@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -190,16 +191,16 @@ const Products = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-forest-700">🌾 FarmHub</h1>
+              <Link to="/" className="text-2xl font-bold text-forest-700">🌾 FarmHub</Link>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</a>
-              <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
-              <a href="/products" className="text-forest-800 font-semibold border-b-2 border-forest-600">Products</a>
-              <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
-              <a href="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
-              <a href="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</a>
-              <a href="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</a>
+              <Link to="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</Link>
+              <Link to="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</Link>
+              <Link to="/products" className="text-forest-800 font-semibold border-b-2 border-forest-600">Products</Link>
+              <Link to="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</Link>
+              <Link to="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</Link>
+              <Link to="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</Link>
+              <Link to="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</Link>
             </div>
           </div>
         </div>
@@ -282,9 +283,9 @@ const Products = () => {
                       Add to Cart
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                      <a href={`/products/${product.id}`}>
+                      <Link to={`/products/${product.id}`}>
                         <Eye className="h-4 w-4" />
-                      </a>
+                      </Link>
                     </Button>
                   </div>
                 </CardContent>
@@ -363,26 +364,31 @@ const Products = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
                 <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <div className="relative overflow-hidden rounded-t-lg">
-                    <img 
-                      src={product.image} 
-                      alt={product.name} 
-                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300" 
-                    />
-                    {product.isEcoFriendly && (
-                      <div className="absolute top-2 right-2 bg-green-100 rounded-full p-1">
-                        <Leaf className="h-4 w-4 text-green-600" />
-                      </div>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleWishlist(product.id)}
-                      className={`absolute top-2 left-2 ${wishlist.includes(product.id) ? 'text-red-500 bg-white' : 'text-gray-400 bg-white/80'} hover:bg-white`}
-                    >
-                      <Heart className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  <Link to={`/products/${product.id}`} className="block">
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300" 
+                      />
+                      {product.isEcoFriendly && (
+                        <div className="absolute top-2 right-2 bg-green-100 rounded-full p-1">
+                          <Leaf className="h-4 w-4 text-green-600" />
+                        </div>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleWishlist(product.id);
+                        }}
+                        className={`absolute top-2 left-2 ${wishlist.includes(product.id) ? 'text-red-500 bg-white' : 'text-gray-400 bg-white/80'} hover:bg-white`}
+                      >
+                        <Heart className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </Link>
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-lg group-hover:text-forest-700 transition-colors">{product.name}</CardTitle>
@@ -410,9 +416,9 @@ const Products = () => {
                         Add to Cart
                       </Button>
                       <Button variant="outline" size="sm" asChild>
-                        <a href={`/products/${product.id}`}>
+                        <Link to={`/products/${product.id}`}>
                           <Eye className="h-4 w-4" />
-                        </a>
+                        </Link>
                       </Button>
                     </div>
                   </CardContent>

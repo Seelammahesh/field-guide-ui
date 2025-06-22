@@ -1,4 +1,6 @@
+
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -26,16 +28,16 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-forest-700">🌾 FarmHub</h1>
+              <Link to="/" className="text-2xl font-bold text-forest-700">🌾 FarmHub</Link>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-forest-800 font-semibold border-b-2 border-forest-600">Home</a>
-              <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
-              <a href="/products" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</a>
-              <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
-              <a href="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
-              <a href="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</a>
-              <a href="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</a>
+              <Link to="/" className="text-forest-800 font-semibold border-b-2 border-forest-600">Home</Link>
+              <Link to="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</Link>
+              <Link to="/products" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</Link>
+              <Link to="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</Link>
+              <Link to="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</Link>
+              <Link to="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</Link>
+              <Link to="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</Link>
             </div>
           </div>
         </div>
@@ -84,21 +86,21 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4 text-wheat-100">Quick Links</h4>
               <ul className="space-y-2">
-                <li><a href="/" className="text-wheat-200 hover:text-wheat-100 transition-colors">Home</a></li>
-                <li><a href="/dashboard" className="text-wheat-200 hover:text-wheat-100 transition-colors">Dashboard</a></li>
-                <li><a href="/products" className="text-wheat-200 hover:text-wheat-100 transition-colors">Products</a></li>
-                <li><a href="/services" className="text-wheat-200 hover:text-wheat-100 transition-colors">Services</a></li>
-                <li><a href="/community" className="text-wheat-200 hover:text-wheat-100 transition-colors">Community</a></li>
-                <li><a href="/advisor" className="text-wheat-200 hover:text-wheat-100 transition-colors">Advisors</a></li>
-                <li><a href="/contact" className="text-wheat-200 hover:text-wheat-100 transition-colors">Contact</a></li>
+                <li><Link to="/" className="text-wheat-200 hover:text-wheat-100 transition-colors">Home</Link></li>
+                <li><Link to="/dashboard" className="text-wheat-200 hover:text-wheat-100 transition-colors">Dashboard</Link></li>
+                <li><Link to="/products" className="text-wheat-200 hover:text-wheat-100 transition-colors">Products</Link></li>
+                <li><Link to="/services" className="text-wheat-200 hover:text-wheat-100 transition-colors">Services</Link></li>
+                <li><Link to="/community" className="text-wheat-200 hover:text-wheat-100 transition-colors">Community</Link></li>
+                <li><Link to="/advisor" className="text-wheat-200 hover:text-wheat-100 transition-colors">Advisors</Link></li>
+                <li><Link to="/contact" className="text-wheat-200 hover:text-wheat-100 transition-colors">Contact</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4 text-wheat-100">Explore More</h4>
               <ul className="space-y-2 text-wheat-200">
-                <li><a href="/services-list" className="hover:text-wheat-100 transition-colors">All Services</a></li>
-                <li><a href="/plant-diseases" className="hover:text-wheat-100 transition-colors">Plant Diseases</a></li>
-                <li><a href="/profile" className="hover:text-wheat-100 transition-colors">Profile</a></li>
+                <li><Link to="/services-list" className="hover:text-wheat-100 transition-colors">All Services</Link></li>
+                <li><Link to="/plant-diseases" className="hover:text-wheat-100 transition-colors">Plant Diseases</Link></li>
+                <li><Link to="/profile" className="hover:text-wheat-100 transition-colors">Profile</Link></li>
                 <li>📞 (555) 123-FARM</li>
                 <li>✉️ hello@farmhub.com</li>
               </ul>

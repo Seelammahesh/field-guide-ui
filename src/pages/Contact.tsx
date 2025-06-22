@@ -1,194 +1,171 @@
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Phone, Mail, Clock, MessageSquare, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, MessageCircle, Users, Headphones } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     subject: '',
     message: ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission here
+    console.log('Contact form submitted:', formData);
+    alert('Thank you for your message! We will get back to you soon.');
+    setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
-  const contactInfo = [
+  const contactMethods = [
     {
       icon: Phone,
-      title: 'Phone',
-      details: '+91 98765 43210',
-      subDetails: 'Mon-Sat 9AM-6PM'
+      title: "Phone Support",
+      description: "Speak with our experts directly",
+      value: "(555) 123-FARM",
+      availability: "Mon-Sat, 9 AM - 6 PM"
     },
     {
       icon: Mail,
-      title: 'Email',
-      details: 'support@farmhub.com',
-      subDetails: 'We reply within 24 hours'
+      title: "Email Support",
+      description: "Send us your queries anytime",
+      value: "hello@farmhub.com",
+      availability: "Response within 24 hours"
+    },
+    {
+      icon: MessageCircle,
+      title: "Live Chat",
+      description: "Chat with our support team",
+      value: "Available on website",
+      availability: "Mon-Fri, 10 AM - 5 PM"
     },
     {
       icon: MapPin,
-      title: 'Address',
-      details: '123 Farm Street, Agricultural District',
-      subDetails: 'Punjab, India 144001'
-    },
-    {
-      icon: Clock,
-      title: 'Business Hours',
-      details: 'Monday - Saturday',
-      subDetails: '9:00 AM - 6:00 PM'
+      title: "Visit Us",
+      description: "Our main office location",
+      value: "123 Agriculture St, Farm City",
+      availability: "By appointment only"
     }
   ];
 
   const faqs = [
     {
-      question: 'How do I book a farming service?',
-      answer: 'You can book services through our Services page by selecting the service you need and clicking "Book Now".'
+      question: "How do I place an order for products?",
+      answer: "You can browse our products page, add items to cart, and checkout. We accept various payment methods and offer secure transactions."
     },
     {
-      question: 'What payment methods do you accept?',
-      answer: 'We accept cash, bank transfers, UPI payments, and all major credit/debit cards.'
+      question: "What areas do you serve for field services?",
+      answer: "We provide services across all major agricultural districts. Contact us to check availability in your specific location."
     },
     {
-      question: 'Do you provide services in rural areas?',
-      answer: 'Yes, we provide services across rural and urban farming areas. Check our service areas on the Services page.'
+      question: "Do you offer organic farming consultation?",
+      answer: "Yes, we have certified organic farming experts who can guide you through the transition process and certification requirements."
     },
     {
-      question: 'How can I track my product orders?',
-      answer: 'You can track your orders through your Profile page under the Order History section.'
+      question: "What is your return policy for products?",
+      answer: "We offer a 7-day return policy for unopened products. For agricultural chemicals, please check specific return conditions."
+    },
+    {
+      question: "How can I track my service appointment?",
+      answer: "After booking a service, you'll receive a confirmation email with tracking details and our expert's contact information."
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50 font-montserrat">
+    <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50">
       {/* Navigation */}
       <nav className="bg-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-forest-700">🌾 FarmHub</h1>
+              <Link to="/" className="text-2xl font-bold text-forest-700">🌾 FarmHub</Link>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</a>
-              <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
-              <a href="/products" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</a>
-              <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
-              <a href="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
-              <a href="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</a>
-              <a href="/contact" className="text-forest-800 font-semibold border-b-2 border-forest-600">Contact</a>
+              <Link to="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</Link>
+              <Link to="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</Link>
+              <Link to="/products" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</Link>
+              <Link to="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</Link>
+              <Link to="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</Link>
+              <Link to="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</Link>
+              <Link to="/contact" className="text-forest-800 font-semibold border-b-2 border-forest-600">Contact</Link>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-forest-600 to-forest-700">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
-            alt="Contact us"
-            className="w-full h-full object-cover opacity-20"
-          />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-forest-800 mb-4">Get in Touch</h1>
+          <p className="text-xl text-forest-600">We're here to help you with all your farming needs</p>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">Get in Touch</h1>
-          <p className="text-xl text-wheat-100 max-w-3xl mx-auto">
-            Have questions about our services or products? We're here to help you grow your farming success.
-          </p>
-        </div>
-      </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <Card className="shadow-lg">
+            <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-2xl text-forest-700">
-                  <MessageSquare className="h-6 w-6" />
-                  Send us a Message
-                </CardTitle>
+                <CardTitle className="text-2xl text-forest-800">Send us a Message</CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-forest-700 mb-2">Full Name *</label>
+                      <label className="text-sm font-medium mb-2 block text-forest-700">Your Name</label>
                       <Input
-                        name="name"
+                        placeholder="Full name"
                         value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="Enter your full name"
-                        className="border-forest-200 focus:ring-forest-500"
+                        onChange={(e) => handleInputChange('name', e.target.value)}
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-forest-700 mb-2">Email Address *</label>
+                      <label className="text-sm font-medium mb-2 block text-forest-700">Email Address</label>
                       <Input
-                        name="email"
                         type="email"
+                        placeholder="your@email.com"
                         value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="Enter your email"
-                        className="border-forest-200 focus:ring-forest-500"
+                        onChange={(e) => handleInputChange('email', e.target.value)}
                         required
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-forest-700 mb-2">Phone Number</label>
-                      <Input
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        placeholder="Enter your phone number"
-                        className="border-forest-200 focus:ring-forest-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-forest-700 mb-2">Subject *</label>
-                      <Input
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                        placeholder="What's this about?"
-                        className="border-forest-200 focus:ring-forest-500"
-                        required
-                      />
-                    </div>
-                  </div>
+                  
                   <div>
-                    <label className="block text-sm font-medium text-forest-700 mb-2">Message *</label>
-                    <Textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Tell us how we can help you..."
-                      rows={6}
-                      className="border-forest-200 focus:ring-forest-500"
+                    <label className="text-sm font-medium mb-2 block text-forest-700">Subject</label>
+                    <Input
+                      placeholder="What is this regarding?"
+                      value={formData.subject}
+                      onChange={(e) => handleInputChange('subject', e.target.value)}
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full bg-forest-600 hover:bg-forest-700">
-                    <Send className="h-4 w-4 mr-2" />
+                  
+                  <div>
+                    <label className="text-sm font-medium mb-2 block text-forest-700">Message</label>
+                    <Textarea
+                      placeholder="Tell us how we can help you..."
+                      value={formData.message}
+                      onChange={(e) => handleInputChange('message', e.target.value)}
+                      rows={6}
+                      required
+                    />
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-forest-600 hover:bg-forest-700 text-lg py-3"
+                  >
                     Send Message
                   </Button>
                 </form>
@@ -198,88 +175,74 @@ const Contact = () => {
 
           {/* Contact Information */}
           <div className="space-y-6">
-            {/* Contact Details */}
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-xl text-forest-700">Contact Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {contactInfo.map((info, index) => {
-                  const IconComponent = info.icon;
-                  return (
-                    <div key={index} className="flex items-start gap-3 p-3 rounded-lg hover:bg-forest-50 transition-colors">
-                      <div className="p-2 bg-forest-100 rounded-lg">
-                        <IconComponent className="h-5 w-5 text-forest-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-forest-800">{info.title}</h4>
-                        <p className="text-forest-700">{info.details}</p>
-                        <p className="text-sm text-forest-500">{info.subDetails}</p>
-                      </div>
+            {contactMethods.map((method, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-forest-100 p-3 rounded-lg">
+                      <method.icon className="h-6 w-6 text-forest-600" />
                     </div>
-                  );
-                })}
-              </CardContent>
-            </Card>
-
-            {/* Quick Links */}
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-xl text-forest-700">Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start border-forest-300 text-forest-700 hover:bg-forest-50">
-                  <Phone className="h-4 w-4 mr-2" />
-                  Call Us Now
-                </Button>
-                <Button variant="outline" className="w-full justify-start border-forest-300 text-forest-700 hover:bg-forest-50">
-                  <Mail className="h-4 w-4 mr-2" />
-                  Send Email
-                </Button>
-                <Button variant="outline" className="w-full justify-start border-forest-300 text-forest-700 hover:bg-forest-50">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Live Chat
-                </Button>
-              </CardContent>
-            </Card>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-forest-800 mb-1">{method.title}</h3>
+                      <p className="text-sm text-forest-600 mb-2">{method.description}</p>
+                      <p className="font-medium text-forest-700">{method.value}</p>
+                      <p className="text-xs text-gray-500 mt-1">{method.availability}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
 
         {/* FAQ Section */}
-        <div className="mt-16">
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-2xl text-forest-700 text-center">Frequently Asked Questions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {faqs.map((faq, index) => (
-                  <div key={index} className="p-4 rounded-lg border border-forest-200 hover:border-forest-300 transition-colors">
-                    <h4 className="font-semibold text-forest-800 mb-2">{faq.question}</h4>
-                    <p className="text-forest-600 text-sm">{faq.answer}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-forest-800 mb-4">Frequently Asked Questions</h2>
+            <p className="text-forest-600">Find quick answers to common questions</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {faqs.map((faq, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-lg text-forest-800">{faq.question}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-forest-600">{faq.answer}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
-        {/* Map Section */}
-        <div className="mt-16">
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-2xl text-forest-700">Find Us</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 bg-forest-100 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="h-12 w-12 text-forest-400 mx-auto mb-2" />
-                  <p className="text-forest-600">Interactive map location</p>
-                  <p className="text-sm text-forest-500">(Map integration available with location services)</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Quick Links */}
+        <div className="bg-forest-50 rounded-lg p-8">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-forest-800 mb-2">Need Immediate Help?</h2>
+            <p className="text-forest-600">Explore these quick options</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Button asChild variant="outline" className="h-20 flex-col">
+              <Link to="/services">
+                <Headphones className="h-6 w-6 mb-2" />
+                Book a Service
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="h-20 flex-col">
+              <Link to="/community">
+                <Users className="h-6 w-6 mb-2" />
+                Join Community
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="h-20 flex-col">
+              <Link to="/advisor">
+                <MessageCircle className="h-6 w-6 mb-2" />
+                Expert Advice
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,11 +1,20 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const WeatherWidget = () => {
   const [zipCode, setZipCode] = useState('');
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const mockWeatherData = {
     current: { temp: 25, condition: 'Sunny', icon: '☀️' },
@@ -16,13 +25,25 @@ const WeatherWidget = () => {
     ]
   };
 
+  if (!isVisible) return null;
+
   return (
     <div className="fixed top-20 right-4 z-40 w-80 hidden lg:block">
       <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-forest-200">
         <CardHeader className="pb-3">
-          <CardTitle className="text-forest-700 flex items-center gap-2">
-            🌤️ Weather Update
-          </CardTitle>
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-forest-700 flex items-center gap-2">
+              🌤️ Weather Update
+            </CardTitle>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setIsVisible(false)}
+              className="text-forest-600 hover:text-forest-800"
+            >
+              ✕
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Current Weather */}

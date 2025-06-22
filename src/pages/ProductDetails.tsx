@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -72,16 +71,16 @@ const ProductDetails = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-forest-700">🌾 FarmHub</h1>
+              <Link to="/" className="text-2xl font-bold text-forest-700">🌾 FarmHub</Link>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</a>
-              <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
-              <a href="/products" className="text-forest-800 font-semibold border-b-2 border-forest-600">Products</a>
-              <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
-              <a href="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
-              <a href="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</a>
-              <a href="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</a>
+              <Link to="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</Link>
+              <Link to="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</Link>
+              <Link to="/products" className="text-forest-800 font-semibold border-b-2 border-forest-600">Products</Link>
+              <Link to="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</Link>
+              <Link to="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</Link>
+              <Link to="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</Link>
+              <Link to="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</Link>
             </div>
           </div>
         </div>
@@ -295,24 +294,26 @@ const ProductDetails = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {product.relatedProducts.map((relatedProduct) => (
               <Card key={relatedProduct.id} className="group hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <img 
-                    src={relatedProduct.image} 
-                    alt={relatedProduct.name}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-lg">{relatedProduct.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-forest-700">₹{relatedProduct.price}</span>
-                    <Button size="sm" className="bg-forest-600 hover:bg-forest-700">
-                      View Details
-                    </Button>
+                <Link to={`/products/${relatedProduct.id}`} className="block">
+                  <div className="relative overflow-hidden rounded-t-lg">
+                    <img 
+                      src={relatedProduct.image} 
+                      alt={relatedProduct.name}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
+                    />
                   </div>
-                </CardContent>
+                  <CardHeader>
+                    <CardTitle className="text-lg">{relatedProduct.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl font-bold text-forest-700">₹{relatedProduct.price}</span>
+                      <Button size="sm" className="bg-forest-600 hover:bg-forest-700">
+                        View Details
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Link>
               </Card>
             ))}
           </div>
