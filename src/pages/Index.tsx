@@ -33,8 +33,8 @@ const Index = () => {
               <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
               <a href="/products" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</a>
               <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
-              <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
-              <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</a>
+              <a href="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
+              <a href="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</a>
             </div>
           </div>
         </div>
@@ -84,17 +84,22 @@ const Index = () => {
               <h4 className="font-semibold mb-4 text-wheat-100">Quick Links</h4>
               <ul className="space-y-2">
                 <li><a href="/" className="text-wheat-200 hover:text-wheat-100 transition-colors">Home</a></li>
+                <li><a href="/dashboard" className="text-wheat-200 hover:text-wheat-100 transition-colors">Dashboard</a></li>
                 <li><a href="/products" className="text-wheat-200 hover:text-wheat-100 transition-colors">Products</a></li>
                 <li><a href="/services" className="text-wheat-200 hover:text-wheat-100 transition-colors">Services</a></li>
-                <li><a href="#" className="text-wheat-200 hover:text-wheat-100 transition-colors">Community</a></li>
+                <li><a href="/community" className="text-wheat-200 hover:text-wheat-100 transition-colors">Community</a></li>
+                <li><a href="/advisor" className="text-wheat-200 hover:text-wheat-100 transition-colors">Advisors</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-wheat-100">Contact Info</h4>
+              <h4 className="font-semibold mb-4 text-wheat-100">Explore More</h4>
               <ul className="space-y-2 text-wheat-200">
+                <li><a href="/services-list" className="hover:text-wheat-100 transition-colors">All Services</a></li>
+                <li><a href="/products/list" className="hover:text-wheat-100 transition-colors">Product List</a></li>
+                <li><a href="/plant-diseases" className="hover:text-wheat-100 transition-colors">Plant Diseases</a></li>
+                <li><a href="/profile" className="hover:text-wheat-100 transition-colors">Profile</a></li>
                 <li>📞 (555) 123-FARM</li>
                 <li>✉️ hello@farmhub.com</li>
-                <li>📍 Rural Valley, State 12345</li>
               </ul>
             </div>
           </div>
