@@ -10,7 +10,7 @@ import NotFound from "./pages/NotFound";
 import Services from "./pages/Services";
 import ServicesList from "./pages/ServicesList";
 import Products from "./pages/Products";
-import ProductList from "./pages/ProductList";
+import ProductDetails from "./pages/ProductDetails";
 import Profile from "./pages/Profile";
 import Community from "./pages/Community";
 import PlantDiseases from "./pages/PlantDiseases";
@@ -31,7 +31,7 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/services-list" element={<ServicesList />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/products/list" element={<ProductList />} />
+          <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/community" element={<Community />} />
           <Route path="/plant-diseases" element={<PlantDiseases />} />

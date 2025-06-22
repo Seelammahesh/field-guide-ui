@@ -97,7 +97,6 @@ const Index = () => {
               <h4 className="font-semibold mb-4 text-wheat-100">Explore More</h4>
               <ul className="space-y-2 text-wheat-200">
                 <li><a href="/services-list" className="hover:text-wheat-100 transition-colors">All Services</a></li>
-                <li><a href="/products/list" className="hover:text-wheat-100 transition-colors">Product List</a></li>
                 <li><a href="/plant-diseases" className="hover:text-wheat-100 transition-colors">Plant Diseases</a></li>
                 <li><a href="/profile" className="hover:text-wheat-100 transition-colors">Profile</a></li>
                 <li>📞 (555) 123-FARM</li>

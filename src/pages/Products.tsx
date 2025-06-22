@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -197,10 +196,10 @@ const Products = () => {
               <a href="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</a>
               <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
               <a href="/products" className="text-forest-800 font-semibold border-b-2 border-forest-600">Products</a>
-              <a href="/products/list" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Product List</a>
               <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
-              <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
-              <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</a>
+              <a href="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
+              <a href="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</a>
+              <a href="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</a>
             </div>
           </div>
         </div>
@@ -282,8 +281,10 @@ const Products = () => {
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Add to Cart
                     </Button>
-                    <Button variant="outline" size="sm">
-                      <Eye className="h-4 w-4" />
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={`/products/${product.id}`}>
+                        <Eye className="h-4 w-4" />
+                      </a>
                     </Button>
                   </div>
                 </CardContent>
@@ -357,11 +358,6 @@ const Products = () => {
           <div className="lg:w-3/4">
             <div className="flex justify-between items-center mb-6">
               <p className="text-forest-600">{filteredProducts.length} products found</p>
-              <Button variant="outline" asChild>
-                <a href="/products/list">
-                  View as List
-                </a>
-              </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -413,8 +409,10 @@ const Products = () => {
                         <ShoppingCart className="h-4 w-4 mr-2" />
                         Add to Cart
                       </Button>
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4" />
+                      <Button variant="outline" size="sm" asChild>
+                        <a href={`/products/${product.id}`}>
+                          <Eye className="h-4 w-4" />
+                        </a>
                       </Button>
                     </div>
                   </CardContent>
