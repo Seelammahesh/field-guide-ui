@@ -17,6 +17,7 @@ import PlantDiseases from "./pages/PlantDiseases";
 import Advisor from "./pages/Advisor";
 import Contact from "./pages/Contact";
 import Navbar from "./pages/Navbar";
+import LoginForm from "./pages/LoginForm";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/plant-diseases" element={<PlantDiseases />} />
           <Route path="/advisor" element={<Advisor />} />
           <Route path="/contact" element={<Contact />} />
+           <Route path="/login" element={<LoginForm />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
