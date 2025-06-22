@@ -31,7 +31,7 @@ const Index = () => {
             <div className="hidden md:flex space-x-8">
               <a href="/" className="text-forest-800 font-semibold border-b-2 border-forest-600">Home</a>
               <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
-              <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</a>
+              <a href="/products" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</a>
               <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
               <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
               <a href="#" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</a>
@@ -83,9 +83,9 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4 text-wheat-100">Quick Links</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-wheat-200 hover:text-wheat-100 transition-colors">Home</a></li>
-                <li><a href="#" className="text-wheat-200 hover:text-wheat-100 transition-colors">Products</a></li>
-                <li><a href="#" className="text-wheat-200 hover:text-wheat-100 transition-colors">Services</a></li>
+                <li><a href="/" className="text-wheat-200 hover:text-wheat-100 transition-colors">Home</a></li>
+                <li><a href="/products" className="text-wheat-200 hover:text-wheat-100 transition-colors">Products</a></li>
+                <li><a href="/services" className="text-wheat-200 hover:text-wheat-100 transition-colors">Services</a></li>
                 <li><a href="#" className="text-wheat-200 hover:text-wheat-100 transition-colors">Community</a></li>
               </ul>
             </div>
