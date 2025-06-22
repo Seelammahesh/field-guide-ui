@@ -1,38 +1,37 @@
-
-import { useState } from 'react';
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { 
-  SidebarProvider, 
-  Sidebar, 
-  SidebarContent, 
-  SidebarHeader, 
-  SidebarMenu, 
-  SidebarMenuItem, 
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
   SidebarMenuButton,
   SidebarTrigger,
-  SidebarInset 
+  SidebarInset,
 } from "@/components/ui/sidebar";
-import { 
-  User, 
-  Package, 
-  Calendar, 
-  Users, 
-  TrendingUp, 
+import {
+  User,
+  Package,
+  Calendar,
+  Users,
+  TrendingUp,
   Settings,
   Bell,
   Plus,
   Eye,
-  BarChart3
-} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+  BarChart3,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const userName = "Sateesh";
-  const navigate=useNavigate()
-  
+  const navigate = useNavigate();
+
   const sidebarItems = [
     { title: "Profile", icon: User, url: "#profile" },
     { title: "Orders", icon: Package, url: "#orders" },
@@ -43,20 +42,48 @@ const Dashboard = () => {
   ];
 
   const recentActivity = [
-    { action: "Ordered Fertilizer NPK 20-20-20", time: "2 hours ago", type: "order" },
+    {
+      action: "Ordered Fertilizer NPK 20-20-20",
+      time: "2 hours ago",
+      type: "order",
+    },
     { action: "Booked Harvesting Service", time: "1 day ago", type: "booking" },
     { action: "Checked Wheat Prices", time: "2 days ago", type: "view" },
-    { action: "Updated Profile Information", time: "3 days ago", type: "profile" },
+    {
+      action: "Updated Profile Information",
+      time: "3 days ago",
+      type: "profile",
+    },
     { action: "Ordered Pesticide Spray", time: "4 days ago", type: "order" },
-    { action: "Joined Community Discussion", time: "5 days ago", type: "community" },
-    { action: "Booked Soil Testing", time: "1 week ago", type: "booking" }
+    {
+      action: "Joined Community Discussion",
+      time: "5 days ago",
+      type: "community",
+    },
+    { action: "Booked Soil Testing", time: "1 week ago", type: "booking" },
   ];
 
   const recentOrders = [
-    { product: "NPK Fertilizer 50kg", status: "Delivered", deliveryDate: "Dec 18, 2024" },
-    { product: "Pesticide Spray 5L", status: "In Transit", deliveryDate: "Dec 22, 2024" },
-    { product: "Organic Manure 100kg", status: "Processing", deliveryDate: "Dec 25, 2024" },
-    { product: "Seeds - Wheat Variety", status: "Confirmed", deliveryDate: "Dec 28, 2024" },
+    {
+      product: "NPK Fertilizer 50kg",
+      status: "Delivered",
+      deliveryDate: "Dec 18, 2024",
+    },
+    {
+      product: "Pesticide Spray 5L",
+      status: "In Transit",
+      deliveryDate: "Dec 22, 2024",
+    },
+    {
+      product: "Organic Manure 100kg",
+      status: "Processing",
+      deliveryDate: "Dec 25, 2024",
+    },
+    {
+      product: "Seeds - Wheat Variety",
+      status: "Confirmed",
+      deliveryDate: "Dec 28, 2024",
+    },
   ];
 
   const ongoingServices = [
@@ -70,7 +97,7 @@ const Dashboard = () => {
     { name: "Organic Fertilizer", price: "$32", image: "🌿" },
     { name: "Pest Control Kit", price: "$28", image: "🐛" },
   ];
-
+const count:number=2
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gradient-to-br from-wheat-50 to-forest-50">
@@ -86,15 +113,20 @@ const Dashboard = () => {
               </div>
             </div>
           </SidebarHeader>
-          
+
           <SidebarContent className="p-4">
             <SidebarMenu>
               {sidebarItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild className="hover:bg-forest-100 rounded-lg transition-colors">
+                  <SidebarMenuButton
+                    asChild
+                    className="hover:bg-forest-100 rounded-lg transition-colors"
+                  >
                     <a href={item.url} className="flex items-center gap-3 p-3">
                       <item.icon className="w-5 h-5 text-forest-600" />
-                      <span className="text-forest-700 font-medium">{item.title}</span>
+                      <span className="text-forest-700 font-medium">
+                        {item.title}
+                      </span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -111,13 +143,28 @@ const Dashboard = () => {
                 <h1 className="text-2xl font-bold text-forest-800">
                   Welcome back, {userName}! 👋
                 </h1>
-                <p className="text-forest-600">Here's what's happening on your farm today</p>
+                <p className="text-forest-600">
+                  Here's what's happening on your farm today
+                </p>
               </div>
 
-              <Button variant="outline" size="sm" className="border-forest-300 text-forest-700 hover:bg-forest-50" onClick={()=>navigate('/notification')}>
-                <Bell className="w-4 h-4 mr-2" />
-                Notifications
-              </Button>
+              <div className="relative inline-block">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-forest-300 text-forest-700 hover:bg-forest-50"
+                  onClick={() => navigate("/notification")}
+                >
+                  <Bell className="w-4 h-4 mr-2" />
+                  Notifications
+                </Button>
+
+                {count > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full shadow-md">
+                    {count > 99 ? "99+" : count}
+                  </span>
+                )}
+              </div>
             </div>
           </header>
 
@@ -128,17 +175,25 @@ const Dashboard = () => {
                 <Plus className="w-5 h-5 mr-3" />
                 <div className="text-left">
                   <div className="font-semibold">Book a Service</div>
-                  <div className="text-sm opacity-90">Schedule farm services</div>
+                  <div className="text-sm opacity-90">
+                    Schedule farm services
+                  </div>
                 </div>
               </Button>
-              <Button variant="outline" className="border-forest-300 text-forest-700 hover:bg-forest-50 p-6 h-auto justify-start">
+              <Button
+                variant="outline"
+                className="border-forest-300 text-forest-700 hover:bg-forest-50 p-6 h-auto justify-start"
+              >
                 <Eye className="w-5 h-5 mr-3" />
                 <div className="text-left">
                   <div className="font-semibold">View Products</div>
                   <div className="text-sm opacity-70">Browse our catalog</div>
                 </div>
               </Button>
-              <Button variant="outline" className="border-forest-300 text-forest-700 hover:bg-forest-50 p-6 h-auto justify-start">
+              <Button
+                variant="outline"
+                className="border-forest-300 text-forest-700 hover:bg-forest-50 p-6 h-auto justify-start"
+              >
                 <BarChart3 className="w-5 h-5 mr-3" />
                 <div className="text-left">
                   <div className="font-semibold">Check Crop Prices</div>
@@ -161,16 +216,28 @@ const Dashboard = () => {
                   <CardContent>
                     <div className="space-y-3">
                       {recentActivity.map((activity, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg hover:bg-forest-50 transition-colors">
-                          <div className={`w-2 h-2 rounded-full ${
-                            activity.type === 'order' ? 'bg-forest-500' :
-                            activity.type === 'booking' ? 'bg-soil-500' :
-                            activity.type === 'community' ? 'bg-wheat-500' :
-                            'bg-forest-300'
-                          }`} />
+                        <div
+                          key={index}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-forest-50 transition-colors"
+                        >
+                          <div
+                            className={`w-2 h-2 rounded-full ${
+                              activity.type === "order"
+                                ? "bg-forest-500"
+                                : activity.type === "booking"
+                                ? "bg-soil-500"
+                                : activity.type === "community"
+                                ? "bg-wheat-500"
+                                : "bg-forest-300"
+                            }`}
+                          />
                           <div className="flex-1">
-                            <p className="text-forest-800 font-medium">{activity.action}</p>
-                            <p className="text-forest-600 text-sm">{activity.time}</p>
+                            <p className="text-forest-800 font-medium">
+                              {activity.action}
+                            </p>
+                            <p className="text-forest-600 text-sm">
+                              {activity.time}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -191,29 +258,49 @@ const Dashboard = () => {
                       <table className="w-full">
                         <thead>
                           <tr className="border-b border-forest-200">
-                            <th className="text-left p-3 font-semibold text-forest-700">Product</th>
-                            <th className="text-left p-3 font-semibold text-forest-700">Status</th>
-                            <th className="text-left p-3 font-semibold text-forest-700">Delivery</th>
+                            <th className="text-left p-3 font-semibold text-forest-700">
+                              Product
+                            </th>
+                            <th className="text-left p-3 font-semibold text-forest-700">
+                              Status
+                            </th>
+                            <th className="text-left p-3 font-semibold text-forest-700">
+                              Delivery
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
                           {recentOrders.map((order, index) => (
-                            <tr key={index} className="border-b border-forest-100 hover:bg-forest-50">
-                              <td className="p-3 text-forest-800">{order.product}</td>
+                            <tr
+                              key={index}
+                              className="border-b border-forest-100 hover:bg-forest-50"
+                            >
+                              <td className="p-3 text-forest-800">
+                                {order.product}
+                              </td>
                               <td className="p-3">
-                                <Badge variant={
-                                  order.status === 'Delivered' ? 'default' :
-                                  order.status === 'In Transit' ? 'secondary' :
-                                  'outline'
-                                } className={
-                                  order.status === 'Delivered' ? 'bg-forest-100 text-forest-700' :
-                                  order.status === 'In Transit' ? 'bg-soil-100 text-soil-700' :
-                                  'border-wheat-300 text-wheat-700'
-                                }>
+                                <Badge
+                                  variant={
+                                    order.status === "Delivered"
+                                      ? "default"
+                                      : order.status === "In Transit"
+                                      ? "secondary"
+                                      : "outline"
+                                  }
+                                  className={
+                                    order.status === "Delivered"
+                                      ? "bg-forest-100 text-forest-700"
+                                      : order.status === "In Transit"
+                                      ? "bg-soil-100 text-soil-700"
+                                      : "border-wheat-300 text-wheat-700"
+                                  }
+                                >
                                   {order.status}
                                 </Badge>
                               </td>
-                              <td className="p-3 text-forest-600">{order.deliveryDate}</td>
+                              <td className="p-3 text-forest-600">
+                                {order.deliveryDate}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -233,19 +320,32 @@ const Dashboard = () => {
                   <CardContent>
                     <div className="space-y-4">
                       {ongoingServices.map((service, index) => (
-                        <div key={index} className="p-4 rounded-lg bg-forest-50 border border-forest-200">
+                        <div
+                          key={index}
+                          className="p-4 rounded-lg bg-forest-50 border border-forest-200"
+                        >
                           <div className="flex justify-between items-center mb-2">
-                            <h4 className="font-semibold text-forest-800">{service.service}</h4>
-                            <Badge variant="outline" className="border-forest-300 text-forest-700">
+                            <h4 className="font-semibold text-forest-800">
+                              {service.service}
+                            </h4>
+                            <Badge
+                              variant="outline"
+                              className="border-forest-300 text-forest-700"
+                            >
                               {service.status}
                             </Badge>
                           </div>
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
                               <span className="text-forest-600">Progress</span>
-                              <span className="text-forest-800 font-medium">{service.progress}%</span>
+                              <span className="text-forest-800 font-medium">
+                                {service.progress}%
+                              </span>
                             </div>
-                            <Progress value={service.progress} className="h-2" />
+                            <Progress
+                              value={service.progress}
+                              className="h-2"
+                            />
                           </div>
                         </div>
                       ))}
@@ -259,17 +359,26 @@ const Dashboard = () => {
                 {/* Weather Widget */}
                 <Card className="border-forest-200 shadow-sm">
                   <CardHeader>
-                    <CardTitle className="text-forest-800 text-lg">Today's Weather</CardTitle>
+                    <CardTitle className="text-forest-800 text-lg">
+                      Today's Weather
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-center space-y-3">
                       <div className="text-4xl animate-rotate-sun">☀️</div>
-                      <div className="text-2xl font-bold text-forest-700">25°C</div>
+                      <div className="text-2xl font-bold text-forest-700">
+                        25°C
+                      </div>
                       <div className="text-forest-600">Sunny & Clear</div>
                       <div className="grid grid-cols-4 gap-2 mt-4">
-                        {['12PM', '3PM', '6PM', '9PM'].map((time, index) => (
-                          <div key={time} className="text-center p-2 rounded bg-forest-50">
-                            <div className="text-xs text-forest-600">{time}</div>
+                        {["12PM", "3PM", "6PM", "9PM"].map((time, index) => (
+                          <div
+                            key={time}
+                            className="text-center p-2 rounded bg-forest-50"
+                          >
+                            <div className="text-xs text-forest-600">
+                              {time}
+                            </div>
                             <div className="text-lg">☀️</div>
                             <div className="text-sm font-medium text-forest-700">
                               {25 - index}°
@@ -284,23 +393,37 @@ const Dashboard = () => {
                 {/* Bookings Calendar */}
                 <Card className="border-forest-200 shadow-sm">
                   <CardHeader>
-                    <CardTitle className="text-forest-800 text-lg">Upcoming Bookings</CardTitle>
+                    <CardTitle className="text-forest-800 text-lg">
+                      Upcoming Bookings
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
                       <div className="p-3 rounded-lg bg-forest-50 border border-forest-200">
-                        <div className="font-semibold text-forest-800">Dec 22</div>
-                        <div className="text-sm text-forest-600">Soil Testing Service</div>
+                        <div className="font-semibold text-forest-800">
+                          Dec 22
+                        </div>
+                        <div className="text-sm text-forest-600">
+                          Soil Testing Service
+                        </div>
                         <div className="text-xs text-forest-500">9:00 AM</div>
                       </div>
                       <div className="p-3 rounded-lg bg-soil-50 border border-soil-200">
-                        <div className="font-semibold text-soil-800">Dec 25</div>
-                        <div className="text-sm text-soil-600">Equipment Maintenance</div>
+                        <div className="font-semibold text-soil-800">
+                          Dec 25
+                        </div>
+                        <div className="text-sm text-soil-600">
+                          Equipment Maintenance
+                        </div>
                         <div className="text-xs text-soil-500">2:00 PM</div>
                       </div>
                       <div className="p-3 rounded-lg bg-wheat-50 border border-wheat-200">
-                        <div className="font-semibold text-wheat-800">Dec 28</div>
-                        <div className="text-sm text-wheat-600">Harvesting Service</div>
+                        <div className="font-semibold text-wheat-800">
+                          Dec 28
+                        </div>
+                        <div className="text-sm text-wheat-600">
+                          Harvesting Service
+                        </div>
                         <div className="text-xs text-wheat-500">8:00 AM</div>
                       </div>
                     </div>
@@ -310,18 +433,31 @@ const Dashboard = () => {
                 {/* Product Recommendations */}
                 <Card className="border-forest-200 shadow-sm">
                   <CardHeader>
-                    <CardTitle className="text-forest-800 text-lg">Recommended for You</CardTitle>
+                    <CardTitle className="text-forest-800 text-lg">
+                      Recommended for You
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
                       {recommendations.map((product, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg hover:bg-forest-50 transition-colors border border-forest-100">
+                        <div
+                          key={index}
+                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-forest-50 transition-colors border border-forest-100"
+                        >
                           <div className="text-2xl">{product.image}</div>
                           <div className="flex-1">
-                            <div className="font-semibold text-forest-800">{product.name}</div>
-                            <div className="text-forest-600 font-medium">{product.price}</div>
+                            <div className="font-semibold text-forest-800">
+                              {product.name}
+                            </div>
+                            <div className="text-forest-600 font-medium">
+                              {product.price}
+                            </div>
                           </div>
-                          <Button size="sm" variant="outline" className="border-forest-300 text-forest-700 hover:bg-forest-100">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-forest-300 text-forest-700 hover:bg-forest-100"
+                          >
                             View
                           </Button>
                         </div>
