@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Eye, EyeOff, LogIn, User } from "lucide-react";
+import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -13,44 +13,64 @@ import {
 } from "@/components/ui/card";
 
 interface FormData {
+  name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 interface FormErrors {
+  name?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string;
 }
 
-const LoginForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
+
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Email validation
+    if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
     }
 
+    if (formData.confirmPassword !== formData.password) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const handleChange =
+    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+
+      if (errors[field]) {
+        setErrors((prev) => ({ ...prev, [field]: undefined }));
+      }
+    };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,58 +78,64 @@ const LoginForm: React.FC = () => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-
-    // Simulate API call
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Login successful:", formData);
-      // Handle successful login here
+      console.log("Registration successful:", formData);
+      // Handle successful registration
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Registration failed:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleInputChange =
-    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prev) => ({
-        ...prev,
-        [field]: e.target.value,
-      }));
-
-      // Clear error when user starts typing
-      if (errors[field]) {
-        setErrors((prev) => ({
-          ...prev,
-          [field]: undefined,
-        }));
-      }
-    };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-wheat-50 to-forest-50 font-montserrat">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-wheat-50 to-forest-50 font-montserrat px-6">
       <div className="w-full max-w-md">
         <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
           <CardHeader className="space-y-4 pb-6">
             <div className="flex justify-center">
               <div className="w-16 h-16 bg-forest-700 rounded-2xl flex items-center justify-center shadow-lg">
-                <User className="w-8 h-8 text-white" />
-                {/* 🌾 */}
+                <UserPlus className="w-8 h-8 text-white" />
               </div>
             </div>
             <div className="text-center">
               <CardTitle className="text-2xl font-bold text-gray-900">
-                Welcome back
+                Create Account
               </CardTitle>
               <CardDescription className="text-gray-600 mt-2">
-                Sign in to your account to continue
+                Join FarmHub today. It’s free!
               </CardDescription>
             </div>
           </CardHeader>
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Name */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="name"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Full Name
+                </Label>
+                <Input
+                  id="name"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={handleChange("name")}
+                  className={`h-12 ${
+                    errors.name
+                      ? "border-red-300 focus:border-red-500 focus:ring-red-200"
+                      : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
+                  }`}
+                />
+                {errors.name && (
+                  <p className="text-sm text-red-600 mt-1">{errors.name}</p>
+                )}
+              </div>
+
+              {/* Email */}
               <div className="space-y-2">
                 <Label
                   htmlFor="email"
@@ -122,8 +148,8 @@ const LoginForm: React.FC = () => {
                   type="email"
                   placeholder="Enter your email"
                   value={formData.email}
-                  onChange={handleInputChange("email")}
-                  className={`h-12 transition-all duration-200 ${
+                  onChange={handleChange("email")}
+                  className={`h-12 ${
                     errors.email
                       ? "border-red-300 focus:border-red-500 focus:ring-red-200"
                       : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
@@ -134,6 +160,7 @@ const LoginForm: React.FC = () => {
                 )}
               </div>
 
+              {/* Password */}
               <div className="space-y-2">
                 <Label
                   htmlFor="password"
@@ -145,10 +172,10 @@ const LoginForm: React.FC = () => {
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
+                    placeholder="Create a password"
                     value={formData.password}
-                    onChange={handleInputChange("password")}
-                    className={`h-12 pr-12 transition-all duration-200 ${
+                    onChange={handleChange("password")}
+                    className={`h-12 pr-12 ${
                       errors.password
                         ? "border-red-300 focus:border-red-500 focus:ring-red-200"
                         : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
@@ -157,7 +184,7 @@ const LoginForm: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -171,22 +198,47 @@ const LoginForm: React.FC = () => {
                 )}
               </div>
 
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center space-x-2 text-gray-600">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 text-forest-600 border-gray-300 rounded focus:ring-forest-500"
-                  />
-                  <span>Remember me</span>
-                </label>
-                <button
-                  type="button"
-                  className="text-forest-600 hover:text-forest-700 font-medium transition-colors"
+              {/* Confirm Password */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-sm font-medium text-gray-700"
                 >
-                  Forgot password?
-                </button>
+                  Confirm Password
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirm ? "text" : "password"}
+                    placeholder="Re-enter your password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange("confirmPassword")}
+                    className={`h-12 pr-12 ${
+                      errors.confirmPassword
+                        ? "border-red-300 focus:border-red-500 focus:ring-red-200"
+                        : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm(!showConfirm)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {showConfirm ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.confirmPassword}
+                  </p>
+                )}
               </div>
 
+              {/* Submit */}
               <Button
                 type="submit"
                 disabled={isLoading}
@@ -195,23 +247,22 @@ const LoginForm: React.FC = () => {
                 {isLoading ? (
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>Signing in...</span>
+                    <span>Signing up...</span>
                   </div>
                 ) : (
                   <div className="flex items-center space-x-2">
-                    <LogIn className="w-4 h-4" />
-                    <span>Sign In</span>
+                    <UserPlus className="w-4 h-4" />
+                    <span>Sign Up</span>
                   </div>
                 )}
               </Button>
             </form>
-
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Don't have an account?{" "}
-                <Link to="/register">
+                Already have an account?{" "}
+                <Link to="/login">
                   <button className="text-forest-600 hover:text-forest-700 font-medium transition-colors">
-                    Sign up
+                    Sign in
                   </button>
                 </Link>
               </p>
@@ -223,4 +274,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
