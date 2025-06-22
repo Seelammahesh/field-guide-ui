@@ -35,6 +35,7 @@ const Index = () => {
               <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
               <a href="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</a>
               <a href="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</a>
+              <a href="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</a>
             </div>
           </div>
         </div>
@@ -89,6 +90,7 @@ const Index = () => {
                 <li><a href="/services" className="text-wheat-200 hover:text-wheat-100 transition-colors">Services</a></li>
                 <li><a href="/community" className="text-wheat-200 hover:text-wheat-100 transition-colors">Community</a></li>
                 <li><a href="/advisor" className="text-wheat-200 hover:text-wheat-100 transition-colors">Advisors</a></li>
+                <li><a href="/contact" className="text-wheat-200 hover:text-wheat-100 transition-colors">Contact</a></li>
               </ul>
             </div>
             <div>

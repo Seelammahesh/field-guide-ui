@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import Community from "./pages/Community";
 import PlantDiseases from "./pages/PlantDiseases";
 import Advisor from "./pages/Advisor";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/community" element={<Community />} />
           <Route path="/plant-diseases" element={<PlantDiseases />} />
           <Route path="/advisor" element={<Advisor />} />
+          <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
