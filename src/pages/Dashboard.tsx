@@ -27,9 +27,11 @@ import {
   Eye,
   BarChart3
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-  const userName = "John Farmer";
+  const userName = "Sateesh";
+  const navigate=useNavigate()
   
   const sidebarItems = [
     { title: "Profile", icon: User, url: "#profile" },
@@ -111,7 +113,8 @@ const Dashboard = () => {
                 </h1>
                 <p className="text-forest-600">Here's what's happening on your farm today</p>
               </div>
-              <Button variant="outline" size="sm" className="border-forest-300 text-forest-700 hover:bg-forest-50">
+
+              <Button variant="outline" size="sm" className="border-forest-300 text-forest-700 hover:bg-forest-50" onClick={()=>navigate('/notification')}>
                 <Bell className="w-4 h-4 mr-2" />
                 Notifications
               </Button>

@@ -19,6 +19,7 @@ import Contact from "./pages/Contact";
 import Navbar from "./pages/Navbar";
 import LoginForm from "./pages/LoginForm";
 import RegisterForm from "./pages/RegisterForm";
+import Notifications from "./pages/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
            <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
+             <Route path="/notification" element={<Notifications />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
