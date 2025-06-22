@@ -95,7 +95,7 @@ const Community = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50 font-montserrat">
       {/* Navigation */}
-      <nav className="bg-white shadow-md sticky top-0 z-50">
+      {/* <nav className="bg-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -110,7 +110,7 @@ const Community = () => {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Header */}
       <section className="relative py-20 bg-gradient-to-r from-forest-600 to-forest-700">
