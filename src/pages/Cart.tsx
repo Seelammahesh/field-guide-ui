@@ -1,36 +1,76 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
+
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice: number;
+  quantity: number;
+  image: string;
+  inStock: number;
+}
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Neem Oil Pesticide",
-      price: 299,
-      originalPrice: 349,
-      quantity: 2,
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&h=150&fit=crop",
-      inStock: 45
-    },
-    {
-      id: 2,
-      name: "NPK Fertilizer 10:26:26",
-      price: 450,
-      originalPrice: 450,
-      quantity: 1,
-      image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=200&h=150&fit=crop",
-      inStock: 32
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<{code: string, discount: number} | null>(null);
+
+  // Sample product data - in real app this would come from API/context
+  const productData = {
+    1: { name: "NPK Fertilizer 10:26:26", price: 450, originalPrice: 450, image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=200&h=150&fit=crop", inStock: 32 },
+    2: { name: "Neem Oil Pesticide", price: 299, originalPrice: 349, image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&h=150&fit=crop", inStock: 45 },
+    3: { name: "Organic Compost", price: 220, originalPrice: 220, image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=200&h=150&fit=crop", inStock: 67 },
+    4: { name: "Heavy Duty Cultivator", price: 45000, originalPrice: 52000, image: "https://images.unsplash.com/photo-1595475038665-86a7ecad1924?w=200&h=150&fit=crop", inStock: 8 },
+    5: { name: "Drip Irrigation Kit", price: 3499, originalPrice: 4199, image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=200&h=150&fit=crop", inStock: 23 }
+  };
+
+  const coupons = {
+    'FARM10': 10,
+    'NEWUSER': 15,
+    'BULK20': 20
+  };
+
+  useEffect(() => {
+    // Load cart items from localStorage
+    const savedCart = localStorage.getItem('cartItems');
+    if (savedCart) {
+      const cartData = JSON.parse(savedCart);
+      const fullCartItems = cartData.map((item: {id: number, quantity: number}) => ({
+        ...item,
+        ...productData[item.id as keyof typeof productData]
+      }));
+      setCartItems(fullCartItems);
     }
-  ]);
+  }, []);
+
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    const cartData = cartItems.map(item => ({ id: item.id, quantity: item.quantity }));
+    localStorage.setItem('cartItems', JSON.stringify(cartData));
+  }, [cartItems]);
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
+    const item = cartItems.find(item => item.id === id);
+    if (item && newQuantity > item.inStock) {
+      toast({
+        title: "Insufficient Stock",
+        description: `Only ${item.inStock} items available in stock.`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setCartItems(items =>
       items.map(item =>
         item.id === id ? { ...item, quantity: newQuantity } : item
@@ -40,12 +80,70 @@ const Cart = () => {
 
   const removeItem = (id: number) => {
     setCartItems(items => items.filter(item => item.id !== id));
+    toast({
+      title: "Item Removed",
+      description: "Item has been removed from your cart.",
+    });
+  };
+
+  const applyCoupon = () => {
+    if (coupons[couponCode as keyof typeof coupons]) {
+      setAppliedCoupon({
+        code: couponCode,
+        discount: coupons[couponCode as keyof typeof coupons]
+      });
+      toast({
+        title: "Coupon Applied",
+        description: `${couponCode} coupon applied successfully! ${coupons[couponCode as keyof typeof coupons]}% discount.`,
+      });
+    } else {
+      toast({
+        title: "Invalid Coupon",
+        description: "Please enter a valid coupon code.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode('');
+    toast({
+      title: "Coupon Removed",
+      description: "Coupon has been removed from your order.",
+    });
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const savings = cartItems.reduce((sum, item) => sum + ((item.originalPrice - item.price) * item.quantity), 0);
+  const originalTotal = cartItems.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
+  const savings = originalTotal - subtotal;
+  const couponDiscount = appliedCoupon ? (subtotal * appliedCoupon.discount) / 100 : 0;
   const shipping = subtotal > 500 ? 0 : 50;
-  const total = subtotal + shipping;
+  const total = subtotal - couponDiscount + shipping;
+
+  const proceedToCheckout = () => {
+    if (cartItems.length === 0) {
+      toast({
+        title: "Cart Empty",
+        description: "Please add items to your cart before checkout.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Save order details for payment page
+    const orderDetails = {
+      items: cartItems,
+      subtotal,
+      savings,
+      couponDiscount,
+      appliedCoupon,
+      shipping,
+      total
+    };
+    localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+    navigate('/payment');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50">
@@ -84,40 +182,51 @@ const Cart = () => {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cartItems.map((item) => (
-                <Card key={item.id}>
+                <Card key={item.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
+                      <Link to={`/products/${item.id}`}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-20 h-20 object-cover rounded-lg hover:scale-105 transition-transform cursor-pointer"
+                        />
+                      </Link>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-forest-800 mb-1">{item.name}</h3>
+                        <Link to={`/products/${item.id}`}>
+                          <h3 className="font-semibold text-forest-800 mb-1 hover:text-forest-600 cursor-pointer">{item.name}</h3>
+                        </Link>
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-lg font-bold text-forest-700">₹{item.price}</span>
                           {item.originalPrice > item.price && (
                             <span className="text-sm text-gray-500 line-through">₹{item.originalPrice}</span>
                           )}
+                          {item.originalPrice > item.price && (
+                            <Badge variant="outline" className="text-green-600 border-green-600">
+                              Save ₹{item.originalPrice - item.price}
+                            </Badge>
+                          )}
                         </div>
                         <p className="text-sm text-green-600">In Stock: {item.inStock}</p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="flex items-center border rounded-md">
+                        <div className="flex items-center border rounded-md bg-white">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
                             disabled={item.quantity <= 1}
+                            className="hover:bg-gray-100"
                           >
                             <Minus className="h-4 w-4" />
                           </Button>
-                          <span className="px-3 py-1 min-w-[40px] text-center">{item.quantity}</span>
+                          <span className="px-3 py-1 min-w-[40px] text-center font-medium">{item.quantity}</span>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             disabled={item.quantity >= item.inStock}
+                            className="hover:bg-gray-100"
                           >
                             <Plus className="h-4 w-4" />
                           </Button>
@@ -153,8 +262,24 @@ const Cart = () => {
                   </div>
                   {savings > 0 && (
                     <div className="flex justify-between text-green-600">
-                      <span>Savings</span>
+                      <span>Product Savings</span>
                       <span>-₹{savings}</span>
+                    </div>
+                  )}
+                  {appliedCoupon && (
+                    <div className="flex justify-between text-green-600">
+                      <span>Coupon ({appliedCoupon.code})</span>
+                      <div className="flex items-center gap-2">
+                        <span>-₹{couponDiscount.toFixed(0)}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={removeCoupon}
+                          className="text-red-500 hover:text-red-700 p-1 h-auto"
+                        >
+                          ×
+                        </Button>
+                      </div>
                     </div>
                   )}
                   <div className="flex justify-between">
@@ -169,15 +294,32 @@ const Cart = () => {
                   <hr className="border-forest-200" />
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
-                    <span className="text-forest-700">₹{total}</span>
+                    <span className="text-forest-700">₹{total.toFixed(0)}</span>
                   </div>
                   
                   <div className="space-y-3 pt-4">
-                    <Input placeholder="Enter coupon code" />
-                    <Button variant="outline" className="w-full">
-                      Apply Coupon
-                    </Button>
-                    <Button className="w-full bg-forest-600 hover:bg-forest-700 text-lg py-3">
+                    <div className="flex gap-2">
+                      <Input 
+                        placeholder="Enter coupon code" 
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                        disabled={!!appliedCoupon}
+                      />
+                      <Button 
+                        variant="outline" 
+                        onClick={applyCoupon}
+                        disabled={!couponCode || !!appliedCoupon}
+                      >
+                        Apply
+                      </Button>
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      Try: FARM10, NEWUSER, BULK20
+                    </div>
+                    <Button 
+                      className="w-full bg-forest-600 hover:bg-forest-700 text-lg py-3"
+                      onClick={proceedToCheckout}
+                    >
                       Proceed to Checkout
                     </Button>
                     <Button variant="outline" className="w-full" asChild>

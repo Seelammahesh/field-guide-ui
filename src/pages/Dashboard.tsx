@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,6 @@ import {
   SidebarTrigger,
   SidebarInset,
 } from "@/components/ui/sidebar";
-import { MdMenu } from "react-icons/md";
 import {
   User,
   Package,
@@ -30,18 +30,26 @@ import {
   Home,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Profile from "./Profile";
+import Orders from "./Orders";
+import Bookings from "./Bookings";
+import Community from "./Community";
+import CropPricesPage from "./CropPricesPage";
+import SettingsPage from "./Settings";
 
 const Dashboard = () => {
   const userName = "Sateesh";
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState("dashboard");
 
   const sidebarItems = [
-    { title: "Profile", icon: User, url: "/profile" },
-    { title: "Orders", icon: Package, url: "/orders" },
-    { title: "Bookings", icon: Calendar, url: "/bookings" },
-    { title: "Community", icon: Users, url: "/community" },
-    { title: "Crop Prices", icon: TrendingUp, url: "/crop-prices" },
-    { title: "Settings", icon: Settings, url: "/settings" },
+    { title: "Dashboard", key: "dashboard", icon: Home },
+    { title: "Profile", key: "profile", icon: User },
+    { title: "Orders", key: "orders", icon: Package },
+    { title: "Bookings", key: "bookings", icon: Calendar },
+    { title: "Community", key: "community", icon: Users },
+    { title: "Crop Prices", key: "crop-prices", icon: TrendingUp },
+    { title: "Settings", key: "settings", icon: Settings },
   ];
 
   const recentActivity = [
@@ -103,86 +111,23 @@ const Dashboard = () => {
 
   const count: number = 2;
 
-  return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-wheat-50 to-forest-50">
-        <Sidebar className="border-r border-forest-200">
-          <SidebarHeader className="p-6 border-b border-forest-200">
-            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div className="w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">🌾</span>
-              </div>
-              <div>
-                <h2 className="font-bold text-forest-800">FarmHub</h2>
-                <p className="text-sm text-forest-600">Dashboard</p>
-              </div>
-            </Link>
-          </SidebarHeader>
-
-          <SidebarContent className="p-4">
-            <SidebarMenu>
-              {sidebarItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    className="hover:bg-forest-100 rounded-lg transition-colors"
-                  >
-                    <Link to={item.url} className="flex items-center gap-3 p-3">
-                      <item.icon className="w-5 h-5 text-forest-600" />
-                      <span className="text-forest-700 font-medium">
-                        {item.title}
-                      </span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarContent>
-        </Sidebar>
-
-        <SidebarInset className="flex-1">
-          <header className="sticky top-0 z-10 bg-white border-b border-forest-200 p-4">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger className="text-forest-600 hover:bg-forest-100" />
-              <div className="flex-1">
-                <h1 className="text-2xl font-bold text-forest-800">
-                  Welcome back, {userName}! 👋
-                </h1>
-                <p className="text-forest-600">
-                  Here's what's happening on your farm today
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" asChild className="border-forest-300 text-forest-700 hover:bg-forest-50">
-                  <Link to="/">
-                    <Home className="w-4 h-4 mr-2" />
-                    Home
-                  </Link>
-                </Button>
-
-                <div className="relative inline-block">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-forest-300 text-forest-700 hover:bg-forest-50"
-                    onClick={() => navigate("/notification")}
-                  >
-                    <Bell className="w-4 h-4 mr-2" />
-                    Notifications
-                  </Button>
-
-                  {count > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full shadow-md">
-                      {count > 99 ? "99+" : count}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </header>
-
-          <main className="p-6 space-y-6">
+  const renderContent = () => {
+    switch (activeSection) {
+      case "profile":
+        return <Profile />;
+      case "orders":
+        return <Orders />;
+      case "bookings":
+        return <Bookings />;
+      case "community":
+        return <Community />;
+      case "crop-prices":
+        return <CropPricesPage />;
+      case "settings":
+        return <SettingsPage />;
+      default:
+        return (
+          <div className="space-y-6">
             {/* Quick Actions */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Button className="bg-forest-600 hover:bg-forest-700 text-white p-6 h-auto justify-start" asChild>
@@ -212,15 +157,13 @@ const Dashboard = () => {
               <Button
                 variant="outline"
                 className="border-forest-300 text-forest-700 hover:bg-forest-50 p-6 h-auto justify-start"
-                asChild
+                onClick={() => setActiveSection("crop-prices")}
               >
-                <Link to="/crop-prices">
-                  <BarChart3 className="w-5 h-5 mr-3" />
-                  <div className="text-left">
-                    <div className="font-semibold">Check Crop Prices</div>
-                    <div className="text-sm opacity-70">Market updates</div>
-                  </div>
-                </Link>
+                <BarChart3 className="w-5 h-5 mr-3" />
+                <div className="text-left">
+                  <div className="font-semibold">Check Crop Prices</div>
+                  <div className="text-sm opacity-70">Market updates</div>
+                </div>
               </Button>
             </div>
 
@@ -275,8 +218,12 @@ const Dashboard = () => {
                         <Package className="w-5 h-5" />
                         Recent Orders
                       </div>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to="/orders">View All</Link>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => setActiveSection("orders")}
+                      >
+                        View All
                       </Button>
                     </CardTitle>
                   </CardHeader>
@@ -344,8 +291,12 @@ const Dashboard = () => {
                         <Calendar className="w-5 h-5" />
                         Service History
                       </div>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to="/bookings">View All</Link>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => setActiveSection("bookings")}
+                      >
+                        View All
                       </Button>
                     </CardTitle>
                   </CardHeader>
@@ -413,6 +364,94 @@ const Dashboard = () => {
                 </Card>
               </div>
             </div>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-wheat-50 to-forest-50">
+        <Sidebar className="border-r border-forest-200">
+          <SidebarHeader className="p-6 border-b border-forest-200">
+            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+              <div className="w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-lg">🌾</span>
+              </div>
+              <div>
+                <h2 className="font-bold text-forest-800">FarmHub</h2>
+                <p className="text-sm text-forest-600">Dashboard</p>
+              </div>
+            </Link>
+          </SidebarHeader>
+
+          <SidebarContent className="p-4">
+            <SidebarMenu>
+              {sidebarItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    onClick={() => setActiveSection(item.key)}
+                    className={`hover:bg-forest-100 rounded-lg transition-colors ${
+                      activeSection === item.key ? 'bg-forest-100 text-forest-800' : ''
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 p-3 w-full">
+                      <item.icon className="w-5 h-5 text-forest-600" />
+                      <span className="text-forest-700 font-medium">
+                        {item.title}
+                      </span>
+                    </div>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarContent>
+        </Sidebar>
+
+        <SidebarInset className="flex-1">
+          <header className="sticky top-0 z-10 bg-white border-b border-forest-200 p-4">
+            <div className="flex items-center gap-4">
+              <SidebarTrigger className="text-forest-600 hover:bg-forest-100" />
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold text-forest-800">
+                  Welcome back, {userName}! 👋
+                </h1>
+                <p className="text-forest-600">
+                  Here's what's happening on your farm today
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" asChild className="border-forest-300 text-forest-700 hover:bg-forest-50">
+                  <Link to="/">
+                    <Home className="w-4 h-4 mr-2" />
+                    Home
+                  </Link>
+                </Button>
+
+                <div className="relative inline-block">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-forest-300 text-forest-700 hover:bg-forest-50"
+                    onClick={() => navigate("/notification")}
+                  >
+                    <Bell className="w-4 h-4 mr-2" />
+                    Notifications
+                  </Button>
+
+                  {count > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full shadow-md">
+                      {count > 99 ? "99+" : count}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <main className="p-6 overflow-y-auto max-h-[calc(100vh-80px)]">
+            {renderContent()}
           </main>
         </SidebarInset>
       </div>

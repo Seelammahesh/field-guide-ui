@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Heart, ShoppingCart, Leaf, Clock, Eye } from 'lucide-react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 import image19 from '../../images/image19.jpeg'
 import image7 from '../../images/image7.jpeg'
 import image3 from '../../images/image3.jpeg'
@@ -16,42 +18,26 @@ import image6 from '../../images/image6.jpeg'
 import image2 from '../../images/image2.jpeg'
 import propiconazole from '../../images/propiconazole.webp'
 
-
 const Products = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [wishlist, setWishlist] = useState<number[]>([]);
-  const [cart, setCart] = useState<number[]>([]);
+  const [cart, setCart] = useState<{id: number, quantity: number}[]>([]);
 
   const products = [
+    // Fertilizers
     {
       id: 1,
-      name: "Neem Oil Pesticide",
-      category: "Pesticides",
-      price: 299,
-      originalPrice: 349,
-      rating: 4.5,
-      reviews: 128,
-      // image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
-       image: image19,
-      isEcoFriendly: true,
-      isBestSeller: true,
-      isNewArrival: false,
-      description: "Organic neem oil for natural pest control",
-      stock: 45
-    },
-    {
-      id: 2,
       name: "NPK Fertilizer 10:26:26",
       category: "Fertilizers",
       price: 450,
       originalPrice: 450,
       rating: 4.8,
       reviews: 203,
-      // image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop",
-       image: image7,
+      image: image7,
       isEcoFriendly: false,
       isBestSeller: false,
       isNewArrival: true,
@@ -59,31 +45,14 @@ const Products = () => {
       stock: 32
     },
     {
-      id: 3,
-      name: "Chlorpyrifos Insecticide",
-      category: "Pesticides",
-      price: 380,
-      originalPrice: 420,
-      rating: 4.2,
-      reviews: 89,
-      // image: "https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=300&fit=crop",
-      image:image3,
-      isEcoFriendly: false,
-      isBestSeller: true,
-      isNewArrival: false,
-      description: "Effective against a wide range of insects",
-      stock: 28
-    },
-    {
-      id: 4,
+      id: 2,
       name: "Organic Compost",
       category: "Fertilizers",
       price: 220,
       originalPrice: 220,
       rating: 4.6,
       reviews: 156,
-      // image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop",
-      image:image2,
+      image: image2,
       isEcoFriendly: true,
       isBestSeller: false,
       isNewArrival: false,
@@ -91,47 +60,60 @@ const Products = () => {
       stock: 67
     },
     {
-      id: 5,
-      name: "Glyphosate Herbicide",
-      category: "Pesticides",
-      price: 520,
-      originalPrice: 580,
-      rating: 4.3,
-      reviews: 94,
-      // image: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop",
-      image:image20,
-      isEcoFriendly: false,
-      isBestSeller: false,
-      isNewArrival: false,
-      description: "Systemic herbicide for weed control",
-      stock: 19
-    },
-    {
-      id: 6,
+      id: 3,
       name: "Urea Fertilizer",
       category: "Fertilizers",
       price: 340,
       originalPrice: 340,
       rating: 4.4,
       reviews: 167,
-      // image: "https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=400&h=300&fit=crop",
-      image:image5,
+      image: image5,
       isEcoFriendly: false,
       isBestSeller: true,
       isNewArrival: false,
       description: "High nitrogen content for rapid growth",
       stock: 53
     },
+    // Pesticides
     {
-      id: 7,
+      id: 4,
+      name: "Neem Oil Pesticide",
+      category: "Pesticides",
+      price: 299,
+      originalPrice: 349,
+      rating: 4.5,
+      reviews: 128,
+      image: image19,
+      isEcoFriendly: true,
+      isBestSeller: true,
+      isNewArrival: false,
+      description: "Organic neem oil for natural pest control",
+      stock: 45
+    },
+    {
+      id: 5,
+      name: "Chlorpyrifos Insecticide",
+      category: "Pesticides",
+      price: 380,
+      originalPrice: 420,
+      rating: 4.2,
+      reviews: 89,
+      image: image3,
+      isEcoFriendly: false,
+      isBestSeller: true,
+      isNewArrival: false,
+      description: "Effective against a wide range of insects",
+      stock: 28
+    },
+    {
+      id: 6,
       name: "Bio Pesticide Spray",
       category: "Pesticides",
       price: 290,
       originalPrice: 320,
       rating: 4.7,
       reviews: 142,
-      // image: "https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=300&fit=crop",
-      image:image6,
+      image: image6,
       isEcoFriendly: true,
       isBestSeller: false,
       isNewArrival: true,
@@ -139,36 +121,152 @@ const Products = () => {
       stock: 38
     },
     {
-      id: 8,
-      name: "Phosphate Fertilizer",
-      category: "Fertilizers",
-      price: 410,
-      originalPrice: 450,
-      rating: 4.1,
-      reviews: 73,
-      image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop",
-      isEcoFriendly: false,
-      isBestSeller: false,
-      isNewArrival: false,
-      description: "Essential phosphorus for root development",
-      stock: 41
-    },
-    {
-      id: 9,
+      id: 7,
       name: "Triazole Fungicide",
       category: "Pesticides",
       price: 480,
       originalPrice: 520,
       rating: 4.5,
       reviews: 115,
-      // image: "https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=300&fit=crop",
-      image:propiconazole,
+      image: propiconazole,
       isEcoFriendly: false,
       isBestSeller: false,
       isNewArrival: true,
       description: "Broad spectrum fungicide protection",
       stock: 26
+    },
+    // Tractors & Equipment
+    {
+      id: 8,
+      name: "Heavy Duty Cultivator",
+      category: "Tractors & Equipment",
+      price: 45000,
+      originalPrice: 52000,
+      rating: 4.6,
+      reviews: 67,
+      image: "https://images.unsplash.com/photo-1595475038665-86a7ecad1924?w=400&h=300&fit=crop",
+      isEcoFriendly: false,
+      isBestSeller: true,
+      isNewArrival: false,
+      description: "Professional grade cultivator for field preparation",
+      stock: 8
+    },
+    {
+      id: 9,
+      name: "Rotavator Attachment",
+      category: "Tractors & Equipment",
+      price: 28500,
+      originalPrice: 28500,
+      rating: 4.4,
+      reviews: 45,
+      image: "https://images.unsplash.com/photo-1574691250077-03a929faece5?w=400&h=300&fit=crop",
+      isEcoFriendly: false,
+      isBestSeller: false,
+      isNewArrival: false,
+      description: "Efficient soil tillage and preparation tool",
+      stock: 12
+    },
+    {
+      id: 10,
+      name: "Agricultural Sprayer",
+      category: "Tractors & Equipment",
+      price: 15999,
+      originalPrice: 18999,
+      rating: 4.3,
+      reviews: 89,
+      image: "https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=300&fit=crop",
+      isEcoFriendly: false,
+      isBestSeller: false,
+      isNewArrival: true,
+      description: "High-capacity sprayer for pesticide application",
+      stock: 15
+    },
+    // Drip System Products
+    {
+      id: 11,
+      name: "Drip Irrigation Kit",
+      category: "Drip System",
+      price: 3499,
+      originalPrice: 4199,
+      rating: 4.7,
+      reviews: 234,
+      image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop",
+      isEcoFriendly: true,
+      isBestSeller: true,
+      isNewArrival: false,
+      description: "Complete drip irrigation system for water efficiency",
+      stock: 23
+    },
+    {
+      id: 12,
+      name: "Mulching Paper Roll",
+      category: "Drip System",
+      price: 899,
+      originalPrice: 899,
+      rating: 4.2,
+      reviews: 78,
+      image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop",
+      isEcoFriendly: true,
+      isBestSeller: false,
+      isNewArrival: false,
+      description: "Premium mulching paper for weed control",
+      stock: 45
+    },
+    {
+      id: 13,
+      name: "Drip Pipes & Connectors",
+      category: "Drip System",
+      price: 1299,
+      originalPrice: 1499,
+      rating: 4.5,
+      reviews: 156,
+      image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop",
+      isEcoFriendly: false,
+      isBestSeller: false,
+      isNewArrival: false,
+      description: "High-quality drip pipes with connectors",
+      stock: 67
+    },
+    // Seeds & Saplings
+    {
+      id: 14,
+      name: "Hybrid Wheat Seeds",
+      category: "Seeds & Saplings",
+      price: 850,
+      originalPrice: 950,
+      rating: 4.8,
+      reviews: 189,
+      image: "https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=400&h=300&fit=crop",
+      isEcoFriendly: false,
+      isBestSeller: true,
+      isNewArrival: false,
+      description: "High-yield hybrid wheat variety",
+      stock: 78
+    },
+    {
+      id: 15,
+      name: "Vegetable Seedlings Pack",
+      category: "Seeds & Saplings",
+      price: 450,
+      originalPrice: 450,
+      rating: 4.6,
+      reviews: 134,
+      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
+      isEcoFriendly: true,
+      isBestSeller: false,
+      isNewArrival: true,
+      description: "Mixed vegetable seedlings for kitchen garden",
+      stock: 56
     }
+  ];
+
+  const categories = [
+    'all',
+    'Fertilizers',
+    'Pesticides',
+    'Tractors & Equipment',
+    'Drip System',
+    'Seeds & Saplings'
   ];
 
   const dealOfTheDay = products.find(p => p.id === 1);
@@ -179,9 +277,10 @@ const Products = () => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesPrice = 
       priceRange === 'all' ||
-      (priceRange === 'under300' && product.price < 300) ||
-      (priceRange === '300-500' && product.price >= 300 && product.price <= 500) ||
-      (priceRange === 'over500' && product.price > 500);
+      (priceRange === 'under500' && product.price < 500) ||
+      (priceRange === '500-5000' && product.price >= 500 && product.price <= 5000) ||
+      (priceRange === '5000-20000' && product.price >= 5000 && product.price <= 20000) ||
+      (priceRange === 'over20000' && product.price > 20000);
     
     return matchesCategory && matchesSearch && matchesPrice;
   });
@@ -195,12 +294,27 @@ const Products = () => {
   };
 
   const addToCart = (productId: number) => {
-    setCart(prev => [...prev, productId]);
-    // Show success message
-    alert('Product added to cart!');
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+      setCart(prev => prev.map(item => 
+        item.id === productId 
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      ));
+    } else {
+      setCart(prev => [...prev, { id: productId, quantity: 1 }]);
+    }
+    
+    const product = products.find(p => p.id === productId);
+    toast({
+      title: "Added to Cart",
+      description: `${product?.name} has been added to your cart.`,
+    });
   };
 
   const goToCart = () => {
+    // Save cart to localStorage and navigate
+    localStorage.setItem('cartItems', JSON.stringify(cart));
     navigate('/cart');
   };
 
@@ -223,11 +337,11 @@ const Products = () => {
             <div className="flex items-center gap-2">
               <Button variant="outline" onClick={goToCart} className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white">
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Cart ({cart.length})
+                Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})
               </Button>
             </div>
           </div>
-          <p className="text-xl text-forest-600">High-quality pesticides and fertilizers for your crops</p>
+          <p className="text-xl text-forest-600">Complete range of agricultural products across all categories</p>
         </div>
 
         {/* Deal of the Day */}
@@ -266,57 +380,6 @@ const Products = () => {
           </div>
         )}
 
-        {/* Featured Products */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-forest-800 mb-6">✨ Featured Products</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredProducts.map((product) => (
-              <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 border-2 border-forest-200">
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <img src={product.image} alt={product.name} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
-                  {product.isBestSeller && <Badge className="absolute top-2 left-2 bg-orange-500">Best Seller</Badge>}
-                  {product.isNewArrival && <Badge className="absolute top-2 left-2 bg-blue-500">New Arrival</Badge>}
-                  {product.isEcoFriendly && <Leaf className="absolute top-2 right-2 h-6 w-6 text-green-600 bg-white rounded-full p-1" />}
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-lg">{product.name}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <div className="flex">{renderStars(product.rating)}</div>
-                    <span className="text-sm text-gray-600">({product.reviews})</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl font-bold text-forest-700">₹{product.price}</span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleWishlist(product.id)}
-                      className={wishlist.includes(product.id) ? 'text-red-500' : 'text-gray-400'}
-                    >
-                      <Heart className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button 
-                      className="flex-1 bg-forest-600 hover:bg-forest-700"
-                      onClick={() => addToCart(product.id)}
-                    >
-                      <ShoppingCart className="h-4 w-4 mr-2" />
-                      Add to Cart
-                    </Button>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link to={`/products/${product.id}`}>
-                        <Eye className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <div className="lg:w-1/4">
@@ -343,9 +406,11 @@ const Products = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Categories</SelectItem>
-                      <SelectItem value="Pesticides">Pesticides</SelectItem>
-                      <SelectItem value="Fertilizers">Fertilizers</SelectItem>
+                      {categories.map(category => (
+                        <SelectItem key={category} value={category}>
+                          {category === 'all' ? 'All Categories' : category}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -359,9 +424,10 @@ const Products = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Prices</SelectItem>
-                      <SelectItem value="under300">Under ₹300</SelectItem>
-                      <SelectItem value="300-500">₹300 - ₹500</SelectItem>
-                      <SelectItem value="over500">Over ₹500</SelectItem>
+                      <SelectItem value="under500">Under ₹500</SelectItem>
+                      <SelectItem value="500-5000">₹500 - ₹5,000</SelectItem>
+                      <SelectItem value="5000-20000">₹5,000 - ₹20,000</SelectItem>
+                      <SelectItem value="over20000">Over ₹20,000</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

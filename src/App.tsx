@@ -26,6 +26,8 @@ import Orders from "./pages/Orders";
 import Bookings from "./pages/Bookings";
 import CropPricesPage from "./pages/CropPricesPage";
 import Settings from "./pages/Settings";
+import Payment from "./pages/Payment";
+import OrderConfirmation from "./pages/OrderConfirmation";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +59,8 @@ const App = () => (
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/crop-prices" element={<CropPricesPage />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/order-confirmation" element={<OrderConfirmation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
