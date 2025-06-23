@@ -14,6 +14,7 @@ import {
   SidebarTrigger,
   SidebarInset,
 } from "@/components/ui/sidebar";
+import { MdMenu } from "react-icons/md";
 import {
   User,
   Package,

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { User, Star, Video, Phone, MessageCircle, Calendar as CalendarIcon, Clock, Award } from 'lucide-react';
+import agricultureAdvisor from '../../images/agriculture-advisor.webp'
 
 const Advisor = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
@@ -127,15 +128,16 @@ const Advisor = () => {
       </nav> */}
 
       {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-forest-600 to-forest-700">
+      <section className="relative py-20 bg-gradient-to-r from-forest-200 to-forest-400 h-[500px]">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+            // src="https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+            src={agricultureAdvisor}
             alt="Agricultural advisors"
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-100"
           />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative max-w-7xl top-40 mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">Meet Our Advisors</h1>
           <p className="text-xl text-wheat-100 max-w-3xl mx-auto">
             Get expert guidance from certified agricultural specialists to maximize your farm's potential.

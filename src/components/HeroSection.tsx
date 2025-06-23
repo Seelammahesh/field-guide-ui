@@ -1,13 +1,16 @@
 
 import { Button } from "@/components/ui/button";
-
+import hero from '../../images/heroImage.jpg'
+import { useNavigate } from "react-router-dom";
 const HeroSection = () => {
+  const navigate=useNavigate()
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1517022812141-23620dba5c23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+          // src="https://images.unsplash.com/photo-1517022812141-23620dba5c23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+          src={hero}
           alt="Golden wheat fields"
           className="w-full h-full object-cover"
         />
@@ -26,7 +29,7 @@ const HeroSection = () => {
           <Button 
             size="lg" 
             className="bg-forest-600 hover:bg-forest-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
-            onClick={() => window.location.href = '/dashboard'}
+            onClick={()=>navigate('/dashboard')}
           >
             Go to Dashboard 📊
           </Button>
