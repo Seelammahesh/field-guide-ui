@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,10 +9,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Products = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [wishlist, setWishlist] = useState<number[]>([]);
+  const [cart, setCart] = useState<number[]>([]);
 
   const products = [
     {
@@ -175,6 +177,16 @@ const Products = () => {
     );
   };
 
+  const addToCart = (productId: number) => {
+    setCart(prev => [...prev, productId]);
+    // Show success message
+    alert('Product added to cart!');
+  };
+
+  const goToCart = () => {
+    navigate('/cart');
+  };
+
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
@@ -186,30 +198,18 @@ const Products = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50">
-      {/* Navigation */}
-      {/* <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link to="/" className="text-2xl font-bold text-forest-700">🌾 FarmHub</Link>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              <Link to="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</Link>
-              <Link to="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</Link>
-              <Link to="/products" className="text-forest-800 font-semibold border-b-2 border-forest-600">Products</Link>
-              <Link to="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</Link>
-              <Link to="/community" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Community</Link>
-              <Link to="/advisor" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Advisors</Link>
-              <Link to="/contact" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Contact</Link>
-            </div>
-          </div>
-        </div>
-      </nav> */}
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-forest-800 mb-4">Shop Farming Essentials</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-4xl font-bold text-forest-800">Shop Farming Essentials</h1>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" onClick={goToCart} className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white">
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                Cart ({cart.length})
+              </Button>
+            </div>
+          </div>
           <p className="text-xl text-forest-600">High-quality pesticides and fertilizers for your crops</p>
         </div>
 
@@ -227,14 +227,17 @@ const Products = () => {
                     <div className="flex items-center gap-4 mb-4">
                       <span className="text-3xl font-bold text-red-600">₹{dealOfTheDay.price}</span>
                       <span className="text-xl text-gray-500 line-through">₹{dealOfTheDay.originalPrice}</span>
-                      <Badge variant="destructive">50% OFF</Badge>
+                      <Badge variant="destructive">Save ₹{dealOfTheDay.originalPrice - dealOfTheDay.price}</Badge>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-1">
                         <Clock className="h-4 w-4 text-red-600" />
-                        <span className="text-red-600 font-semibold">Limited Time: 23:45:12</span>
+                        <span className="text-red-600 font-semibold">Limited Time Offer</span>
                       </div>
-                      <Button className="bg-red-600 hover:bg-red-700">
+                      <Button 
+                        className="bg-red-600 hover:bg-red-700"
+                        onClick={() => addToCart(dealOfTheDay.id)}
+                      >
                         <ShoppingCart className="h-4 w-4 mr-2" />
                         Add to Cart
                       </Button>
@@ -278,7 +281,10 @@ const Products = () => {
                     </Button>
                   </div>
                   <div className="flex gap-2">
-                    <Button className="flex-1 bg-forest-600 hover:bg-forest-700">
+                    <Button 
+                      className="flex-1 bg-forest-600 hover:bg-forest-700"
+                      onClick={() => addToCart(product.id)}
+                    >
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Add to Cart
                     </Button>
@@ -411,7 +417,13 @@ const Products = () => {
                       <span className="text-sm text-green-600">Stock: {product.stock}</span>
                     </div>
                     <div className="flex gap-2">
-                      <Button className="flex-1 bg-forest-600 hover:bg-forest-700">
+                      <Button 
+                        className="flex-1 bg-forest-600 hover:bg-forest-700"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addToCart(product.id);
+                        }}
+                      >
                         <ShoppingCart className="h-4 w-4 mr-2" />
                         Add to Cart
                       </Button>

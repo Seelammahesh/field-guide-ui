@@ -1,268 +1,313 @@
-
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, MessageSquare, ThumbsUp, ThumbsDown, Search, Trophy, User, Calendar } from 'lucide-react';
-import formerCommunity from '../../images/farmers-enjoying-conversation.jpg'
+import { Textarea } from "@/components/ui/textarea";
+import { Users, MessageSquare, ThumbsUp, Share, Plus, Search, TrendingUp, Clock, User } from 'lucide-react';
+
 const Community = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showingAllDiscussions, setShowingAllDiscussions] = useState(false);
+  const [newPost, setNewPost] = useState({ title: '', content: '' });
+  const [showNewPostForm, setShowNewPostForm] = useState(false);
 
-  const forumCategories = [
-    { id: 'crop-diseases', name: 'Crop Diseases', icon: '🦠', posts: 45 },
-    { id: 'weather-impacts', name: 'Weather Impacts', icon: '🌦️', posts: 32 },
-    { id: 'market-trends', name: 'Market Trends', icon: '📈', posts: 28 },
-    { id: 'equipment', name: 'Equipment & Tools', icon: '🚜', posts: 22 },
-    { id: 'organic-farming', name: 'Organic Farming', icon: '🌱', posts: 38 }
-  ];
-
-  const forumPosts = [
+  const allDiscussions = [
     {
       id: 1,
-      title: 'Best practices for wheat rust prevention?',
-      author: 'Farmer_Raj',
-      category: 'crop-diseases',
-      replies: 12,
-      upvotes: 24,
-      lastPost: '2 hours ago',
-      content: 'I\'ve been seeing early signs of wheat rust in my fields. What are the most effective prevention methods?',
+      title: "Best organic fertilizer for wheat crops?",
+      author: "RameshFarmer",
+      time: "2 hours ago",
+      replies: 23,
+      likes: 45,
+      category: "Fertilizers",
+      preview: "I've been using chemical fertilizers for years, but want to switch to organic options for my wheat fields. Any recommendations?",
       isHot: true
     },
     {
       id: 2,
-      title: 'Impact of recent rainfall on cotton crops',
-      author: 'CottonKing',
-      category: 'weather-impacts',
-      replies: 8,
-      upvotes: 15,
-      lastPost: '4 hours ago',
-      content: 'The unexpected heavy rains last week have affected my cotton plantation. Looking for advice on recovery.',
-      isHot: false
-    },
-    {
-      id: 3,
-      title: 'Fertilizer prices trending upward - alternatives?',
-      author: 'GreenThumb_Singh',
-      category: 'market-trends',
+      title: "Dealing with aphid infestation on cotton",
+      author: "CottonKing",
+      time: "4 hours ago",
       replies: 18,
-      upvotes: 31,
-      lastPost: '6 hours ago',
-      content: 'Has anyone noticed the sharp increase in NPK fertilizer prices? What alternatives are you using?',
+      likes: 32,
+      category: "Pest Control",
+      preview: "My cotton plants are getting attacked by aphids. Looking for effective organic solutions that won't harm beneficial insects.",
       isHot: true
     },
     {
+      id: 3,
+      title: "Weather prediction apps - which ones work?",
+      author: "TechFarmer",
+      time: "1 day ago",
+      replies: 41,
+      likes: 67,
+      category: "Technology",
+      preview: "With climate change affecting weather patterns, I need reliable weather prediction apps. What do you fellow farmers use?",
+      isHot: false
+    },
+    {
       id: 4,
-      title: 'Tractor maintenance tips for monsoon season',
-      author: 'MachineGuru',
-      category: 'equipment',
-      replies: 6,
-      upvotes: 22,
-      lastPost: '1 day ago',
-      content: 'Sharing some essential maintenance tips to keep your tractors running smoothly during monsoon.',
+      title: "Crop rotation strategies for small farms",
+      author: "SmallFarmGuru",
+      time: "1 day ago",
+      replies: 29,
+      likes: 54,
+      category: "Farming Techniques",
+      preview: "Running a 10-acre farm and looking for effective crop rotation strategies to maintain soil health and maximize yield.",
       isHot: false
     },
     {
       id: 5,
-      title: 'Organic pesticide recipes that actually work',
-      author: 'OrganicFarmer_Priya',
-      category: 'organic-farming',
-      replies: 25,
-      upvotes: 42,
-      lastPost: '1 day ago',
-      content: 'After years of experimentation, here are my top 5 homemade organic pesticide recipes.',
-      isHot: true
+      title: "Solar-powered irrigation systems - worth the investment?",
+      author: "GreenEnergy",
+      time: "2 days ago",
+      replies: 35,
+      likes: 78,
+      category: "Technology",
+      preview: "Considering installing solar-powered irrigation on my 50-acre farm. Has anyone made this investment? ROI experiences?",
+      isHot: false
+    },
+    {
+      id: 6,
+      title: "Seed variety recommendations for monsoon season",
+      author: "MonsoonExpert",
+      time: "2 days ago",
+      replies: 22,
+      likes: 43,
+      category: "Seeds",
+      preview: "With monsoon approaching, what seed varieties would you recommend for rice and vegetable crops in high rainfall areas?",
+      isHot: false
+    },
+    {
+      id: 7,
+      title: "Government subsidies for farm equipment - how to apply?",
+      author: "SubsidySeeker",
+      time: "3 days ago",
+      replies: 56,
+      likes: 89,
+      category: "Government Schemes",
+      preview: "Looking to buy new tractor and implements. Can someone guide me through the government subsidy application process?",
+      isHot: false
+    },
+    {
+      id: 8,
+      title: "Organic certification process - step by step guide",
+      author: "OrganicPioneer",
+      time: "3 days ago",
+      replies: 47,
+      likes: 91,
+      category: "Organic Farming",
+      preview: "Planning to get organic certification for my farm. Would appreciate a detailed guide from someone who has been through the process.",
+      isHot: false
+    },
+    {
+      id: 9,
+      title: "Vertical farming techniques for space optimization",
+      author: "VerticalGrower",
+      time: "4 days ago",
+      replies: 31,
+      likes: 62,
+      category: "Farming Techniques",
+      preview: "Limited land space but want to maximize production. Exploring vertical farming techniques for leafy vegetables.",
+      isHot: false
+    },
+    {
+      id: 10,
+      title: "Post-harvest storage solutions to reduce waste",
+      author: "StorageMaster",
+      time: "5 days ago",
+      replies: 38,
+      likes: 71,
+      category: "Storage",
+      preview: "Losing too much produce to poor storage. Looking for cost-effective storage solutions for fruits and vegetables.",
+      isHot: false
     }
   ];
 
-  const topContributors = [
-    { name: 'Farmer_Raj', posts: 156, reputation: 2340, avatar: '👨‍🌾' },
-    { name: 'GreenThumb_Singh', posts: 134, reputation: 2180, avatar: '🧑‍🌾' },
-    { name: 'OrganicFarmer_Priya', posts: 128, reputation: 2050, avatar: '👩‍🌾' },
-    { name: 'CottonKing', posts: 98, reputation: 1890, avatar: '👨‍🌾' },
-    { name: 'MachineGuru', posts: 87, reputation: 1756, avatar: '🔧' }
+  const displayedDiscussions = showingAllDiscussions ? allDiscussions : allDiscussions.slice(0, 4);
+  
+  const filteredDiscussions = displayedDiscussions.filter(discussion =>
+    discussion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    discussion.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    discussion.author.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const featuredExperts = [
+    {
+      name: "Dr. Priya Sharma",
+      title: "Soil Health Specialist",
+      expertise: "Organic Farming, Soil Management",
+      posts: 156,
+      followers: 2400,
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b29c?w=60&h=60&fit=crop&crop=face"
+    },
+    {
+      name: "Rajesh Kumar",
+      title: "Crop Disease Expert",
+      expertise: "Plant Pathology, IPM",
+      posts: 203,
+      followers: 1890,
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face"
+    },
+    {
+      name: "Anita Patel",
+      title: "Sustainable Agriculture",
+      expertise: "Water Management, Climate Adaptation",
+      posts: 178,
+      followers: 3200,
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face"
+    }
   ];
 
-  const filteredPosts = forumPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.content.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const trendingTopics = [
+    { tag: "#OrganicFarming", posts: 234 },
+    { tag: "#ClimateChange", posts: 189 },
+    { tag: "#SustainableAgriculture", posts: 156 },
+    { tag: "#CropRotation", posts: 134 },
+    { tag: "#SoilHealth", posts: 128 }
+  ];
+
+  const handleNewPost = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPost.title && newPost.content) {
+      // Add new post logic here
+      console.log('New post:', newPost);
+      alert('Post created successfully!');
+      setNewPost({ title: '', content: '' });
+      setShowNewPostForm(false);
+    }
+  };
+
+  const loadMoreDiscussions = () => {
+    setShowingAllDiscussions(true);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50 font-montserrat">
-      {/* Navigation */}
-      {/* <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-forest-700">🌾 FarmHub</h1>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</a>
-              <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
-              <a href="/products" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</a>
-              <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
-              <a href="/community" className="text-forest-800 font-semibold border-b-2 border-forest-600">Community</a>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-forest-800 mb-4">FarmHub Community</h1>
+          <p className="text-xl text-forest-600">Connect, learn, and grow together with fellow farmers</p>
         </div>
-      </nav> */}
 
-      {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-forest-200 to-forest-400 h-[500px]">
-        <div className="absolute inset-0">
-          <img
-            // src="https://images.unsplash.com/photo-1517022812141-23620dba5c23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
-            src={formerCommunity}
-            alt="Farmer community"
-            className="w-full h-full object-cover opacity-100"
-          />
-        </div>
-        <div className="relative top-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">Farmer Community</h1>
-          <p className="text-xl text-wheat-100 max-w-3xl mx-auto">
-            Connect, share knowledge, and learn with fellow farmers from around the region.
-          </p>
-        </div>
-      </section>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Search */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-forest-700">
-                  <Search className="h-5 w-5" />
-                  Search Topics
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Action Bar */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="Search discussions..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="border-forest-200 focus:ring-forest-500"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
                 />
-              </CardContent>
-            </Card>
-
-            {/* Categories */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-forest-700">Categories</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Button
-                  variant={selectedCategory === 'all' ? 'default' : 'ghost'}
-                  className={`w-full justify-start ${selectedCategory === 'all' ? 'bg-forest-600 hover:bg-forest-700' : ''}`}
-                  onClick={() => setSelectedCategory('all')}
-                >
-                  All Topics
-                </Button>
-                {forumCategories.map((category) => (
-                  <Button
-                    key={category.id}
-                    variant={selectedCategory === category.id ? 'default' : 'ghost'}
-                    className={`w-full justify-between ${selectedCategory === category.id ? 'bg-forest-600 hover:bg-forest-700' : ''}`}
-                    onClick={() => setSelectedCategory(category.id)}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span>{category.icon}</span>
-                      {category.name}
-                    </span>
-                    <Badge variant="secondary" className="text-xs">{category.posts}</Badge>
-                  </Button>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Top Contributors */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-forest-700">
-                  <Trophy className="h-5 w-5" />
-                  Top Contributors
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {topContributors.map((contributor, index) => (
-                  <div key={contributor.name} className="flex items-center gap-3 p-2 rounded-lg hover:bg-forest-50">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{contributor.avatar}</span>
-                      <div className="flex-1">
-                        <div className="font-medium text-forest-800">{contributor.name}</div>
-                        <div className="text-xs text-forest-600">{contributor.posts} posts • {contributor.reputation} rep</div>
-                      </div>
-                    </div>
-                    {index < 3 && (
-                      <Badge className={`text-xs ${
-                        index === 0 ? 'bg-yellow-100 text-yellow-800' :
-                        index === 1 ? 'bg-gray-100 text-gray-800' :
-                        'bg-orange-100 text-orange-800'
-                      }`}>
-                        #{index + 1}
-                      </Badge>
-                    )}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            {/* Create Post Button */}
-            <div className="mb-6">
-              <Button className="bg-forest-600 hover:bg-forest-700">
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Start New Discussion
+              </div>
+              <Button 
+                className="bg-forest-600 hover:bg-forest-700"
+                onClick={() => setShowNewPostForm(!showNewPostForm)}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                New Discussion
               </Button>
             </div>
 
-            {/* Forum Posts */}
+            {/* New Post Form */}
+            {showNewPostForm && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Start a New Discussion</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleNewPost} className="space-y-4">
+                    <div>
+                      <Input
+                        placeholder="Discussion title..."
+                        value={newPost.title}
+                        onChange={(e) => setNewPost({...newPost, title: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Textarea
+                        placeholder="Share your thoughts, questions, or experiences..."
+                        value={newPost.content}
+                        onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+                        rows={4}
+                        required
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button type="submit" className="bg-forest-600 hover:bg-forest-700">
+                        Post Discussion
+                      </Button>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={() => setShowNewPostForm(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Discussions */}
             <div className="space-y-4">
-              {filteredPosts.map((post) => (
-                <Card key={post.id} className="hover:shadow-md transition-shadow">
+              {filteredDiscussions.map((discussion) => (
+                <Card key={discussion.id} className="hover:shadow-lg transition-shadow cursor-pointer">
                   <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="text-lg font-semibold text-forest-800 hover:text-forest-600 cursor-pointer">
-                            {post.title}
-                          </h3>
-                          {post.isHot && (
-                            <Badge className="bg-red-100 text-red-800 text-xs">🔥 Hot</Badge>
-                          )}
-                        </div>
-                        <p className="text-forest-600 mb-3 line-clamp-2">{post.content}</p>
-                        <div className="flex items-center gap-4 text-sm text-forest-500">
-                          <div className="flex items-center gap-1">
-                            <User className="h-4 w-4" />
-                            {post.author}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MessageSquare className="h-4 w-4" />
-                            {post.replies} replies
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4" />
-                            {post.lastPost}
-                          </div>
-                        </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-forest-100 rounded-full flex items-center justify-center">
+                        <User className="h-6 w-6 text-forest-600" />
                       </div>
-                      <div className="flex flex-col items-center gap-2 ml-4">
-                        <Button variant="ghost" size="sm" className="flex flex-col h-auto p-2">
-                          <ThumbsUp className="h-4 w-4" />
-                          <span className="text-xs">{post.upvotes}</span>
-                        </Button>
-                        <Button variant="ghost" size="sm" className="flex flex-col h-auto p-2">
-                          <ThumbsDown className="h-4 w-4" />
-                        </Button>
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <h3 className="text-lg font-semibold text-forest-800 mb-1 flex items-center gap-2">
+                              {discussion.title}
+                              {discussion.isHot && (
+                                <Badge variant="destructive" className="text-xs">
+                                  🔥 Hot
+                                </Badge>
+                              )}
+                            </h3>
+                            <div className="flex items-center gap-3 text-sm text-forest-600">
+                              <span>by {discussion.author}</span>
+                              <span>•</span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {discussion.time}
+                              </span>
+                              <Badge variant="outline" className="ml-2">
+                                {discussion.category}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <p className="text-forest-600 mb-4">{discussion.preview}</p>
+                        
+                        <div className="flex items-center gap-6">
+                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors">
+                            <MessageSquare className="h-4 w-4" />
+                            <span className="text-sm">{discussion.replies} replies</span>
+                          </button>
+                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors">
+                            <ThumbsUp className="h-4 w-4" />
+                            <span className="text-sm">{discussion.likes} likes</span>
+                          </button>
+                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors">
+                            <Share className="h-4 w-4" />
+                            <span className="text-sm">Share</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
@@ -270,12 +315,121 @@ const Community = () => {
               ))}
             </div>
 
-            {/* Load More */}
-            <div className="text-center mt-8">
-              <Button variant="outline" className="border-forest-300 text-forest-700 hover:bg-forest-50">
-                Load More Discussions
-              </Button>
-            </div>
+            {/* Load More Button */}
+            {!showingAllDiscussions && filteredDiscussions.length === 4 && (
+              <div className="text-center">
+                <Button 
+                  variant="outline" 
+                  onClick={loadMoreDiscussions}
+                  className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white"
+                >
+                  Load More Discussions
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1 space-y-6">
+            {/* Community Stats */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  Community Stats
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-forest-600">Total Members</span>
+                    <span className="font-semibold text-forest-800">12,453</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-forest-600">Active Today</span>
+                    <span className="font-semibold text-forest-800">1,234</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-forest-600">Total Discussions</span>
+                    <span className="font-semibold text-forest-800">3,567</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-forest-600">This Week</span>
+                    <span className="font-semibold text-forest-800">89</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Featured Experts */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Featured Experts</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {featuredExperts.map((expert, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <img
+                        src={expert.avatar}
+                        alt={expert.name}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-forest-800 truncate">{expert.name}</h4>
+                        <p className="text-sm text-forest-600 truncate">{expert.title}</p>
+                        <p className="text-xs text-forest-500">{expert.posts} posts • {expert.followers} followers</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Trending Topics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5" />
+                  Trending Topics
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {trendingTopics.map((topic, index) => (
+                    <div key={index} className="flex items-center justify-between">
+                      <span className="text-forest-700 hover:text-forest-800 cursor-pointer font-medium">
+                        {topic.tag}
+                      </span>
+                      <span className="text-sm text-forest-600">{topic.posts}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Links */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Quick Links</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <Link to="/advisor" className="block text-forest-600 hover:text-forest-800 transition-colors">
+                    🧑‍🌾 Find an Expert
+                  </Link>
+                  <Link to="/services" className="block text-forest-600 hover:text-forest-800 transition-colors">
+                    🔧 Book Farm Services
+                  </Link>
+                  <Link to="/products" className="block text-forest-600 hover:text-forest-800 transition-colors">
+                    🛒 Shop Products
+                  </Link>
+                  <Link to="/crop-prices" className="block text-forest-600 hover:text-forest-800 transition-colors">
+                    📈 Check Crop Prices
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

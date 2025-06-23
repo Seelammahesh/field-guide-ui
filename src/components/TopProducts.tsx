@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import Fertilizer from '../../images/PremiumOrganicFertilizerCoverage.jpg'
 import soilConditioner from '../../images/soil-conditioner-1-1.jpg'
 import Organicpesticides from '../../images/tractor-field-applies-fertilizer-soil.avif'
@@ -138,8 +138,10 @@ const TopProducts = () => {
                         )}
                       </div>
                     </div>
-                    <Button className="w-full bg-forest-600 hover:bg-forest-700 text-white">
-                      Add to Cart 🛒
+                    <Button className="w-full bg-forest-600 hover:bg-forest-700 text-white" asChild>
+                      <Link to={`/products/${product.id}`}>
+                        View Details 🛒
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>

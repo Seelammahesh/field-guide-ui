@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -193,12 +192,19 @@ const Services = () => {
                         </div>
                       ))}
                     </div>
-                    <Button 
-                      className="w-full bg-forest-600 hover:bg-forest-700"
-                      onClick={() => setSelectedService(service.title)}
-                    >
-                      Schedule Service
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        className="flex-1 bg-forest-600 hover:bg-forest-700"
+                        onClick={() => setSelectedService(service.title)}
+                      >
+                        Quick Book
+                      </Button>
+                      <Button variant="outline" className="flex-1" asChild>
+                        <Link to={`/services/${service.id}`}>
+                          View Details
+                        </Link>
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               ))}

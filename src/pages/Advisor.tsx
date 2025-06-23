@@ -1,378 +1,333 @@
-
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
-import { User, Star, Video, Phone, MessageCircle, Calendar as CalendarIcon, Clock, Award } from 'lucide-react';
-import agricultureAdvisor from '../../images/agriculture-advisor.webp'
+import { Star, MapPin, Phone, Calendar, Award, Users, Search } from 'lucide-react';
 
 const Advisor = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [selectedAdvisor, setSelectedAdvisor] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSpecialization, setSelectedSpecialization] = useState('all');
 
   const advisors = [
     {
       id: 1,
-      name: 'Dr. Rajesh Patel',
-      specialty: 'Crop Health',
-      experience: '15 years',
+      name: "Dr. Rajesh Kumar",
+      title: "Senior Agricultural Consultant",
+      specialization: "Crop Disease Management",
+      experience: "15+ years",
       rating: 4.9,
-      consultations: 1250,
-      image: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Expert in crop disease management and organic farming practices. PhD in Plant Pathology.',
-      languages: ['Hindi', 'English', 'Gujarati'],
-      availability: 'Available Today',
-      hourlyRate: '₹500/hour',
-      nextSlot: '2:00 PM - 3:00 PM'
+      reviews: 324,
+      consultations: 1200,
+      avatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&h=300&fit=crop&crop=face",
+      location: "Mumbai, Maharashtra",
+      languages: ["Hindi", "English", "Marathi"],
+      expertise: ["Crop Disease Diagnosis", "Soil Testing", "Pest Management"],
+      consultationFee: "₹500/hour",
+      availability: "Mon-Sat",
+      isVerified: true
     },
     {
       id: 2,
-      name: 'Dr. Priya Sharma',
-      specialty: 'Soil Management',
-      experience: '12 years',
+      name: "Dr. Priya Sharma",
+      title: "Soil Health Specialist",
+      specialization: "Organic Farming",
+      experience: "12+ years",
       rating: 4.8,
-      consultations: 980,
-      image: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Specialist in soil health assessment and nutrient management. Expert in precision agriculture.',
-      languages: ['Hindi', 'English'],
-      availability: 'Available Tomorrow',
-      hourlyRate: '₹450/hour',
-      nextSlot: '10:00 AM - 11:00 AM'
+      reviews: 267,
+      consultations: 890,
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b29c?w=300&h=300&fit=crop&crop=face",
+      location: "Delhi, NCR",
+      languages: ["Hindi", "English", "Punjabi"],
+      expertise: ["Organic Certification", "Soil Management", "Sustainable Practices"],
+      consultationFee: "₹450/hour",
+      availability: "Tue-Sun",
+      isVerified: true
     },
     {
       id: 3,
-      name: 'Prof. Amitesh Kumar',
-      specialty: 'Irrigation Systems',
-      experience: '20 years',
-      rating: 4.9,
-      consultations: 1500,
-      image: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Leading expert in modern irrigation techniques and water conservation methods.',
-      languages: ['Hindi', 'English', 'Bengali'],
-      availability: 'Available Today',
-      hourlyRate: '₹600/hour',
-      nextSlot: '4:00 PM - 5:00 PM'
+      name: "Anita Patel",
+      title: "Water Management Expert",
+      specialization: "Irrigation Systems",
+      experience: "10+ years",
+      rating: 4.7,
+      reviews: 198,
+      consultations: 675,
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      location: "Ahmedabad, Gujarat",
+      languages: ["Hindi", "English", "Gujarati"],
+      expertise: ["Drip Irrigation", "Water Conservation", "Smart Farming"],
+      consultationFee: "₹400/hour",
+      availability: "Mon-Fri",
+      isVerified: true
     },
     {
       id: 4,
-      name: 'Dr. Sunita Verma',
-      specialty: 'Organic Farming',
-      experience: '18 years',
-      rating: 4.7,
-      consultations: 1100,
-      image: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Pioneer in organic farming methods and sustainable agriculture practices in India.',
-      languages: ['Hindi', 'English', 'Marathi'],
-      availability: 'Available Today',
-      hourlyRate: '₹550/hour',
-      nextSlot: '6:00 PM - 7:00 PM'
+      name: "Suresh Reddy",
+      title: "Crop Nutrition Specialist",
+      specialization: "Fertilizer Management",
+      experience: "8+ years",
+      rating: 4.6,
+      reviews: 156,
+      consultations: 543,
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      location: "Hyderabad, Telangana",
+      languages: ["Telugu", "Hindi", "English"],
+      expertise: ["Nutrient Management", "Yield Optimization", "Precision Agriculture"],
+      consultationFee: "₹350/hour",
+      availability: "Mon-Sat",
+      isVerified: false
     },
     {
       id: 5,
-      name: 'Dr. Vikram Singh',
-      specialty: 'Pest Management',
-      experience: '14 years',
+      name: "Dr. Meera Nair",
+      title: "Plant Pathologist",
+      specialization: "Disease Prevention",
+      experience: "14+ years",
       rating: 4.8,
-      consultations: 890,
-      image: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Expert in integrated pest management and biological control methods.',
-      languages: ['Hindi', 'English', 'Punjabi'],
-      availability: 'Available Tomorrow',
-      hourlyRate: '₹480/hour',
-      nextSlot: '9:00 AM - 10:00 AM'
+      reviews: 289,
+      consultations: 987,
+      avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=300&h=300&fit=crop&crop=face",
+      location: "Kochi, Kerala",
+      languages: ["Malayalam", "English", "Tamil"],
+      expertise: ["Plant Disease Diagnosis", "Integrated Pest Management", "Crop Protection"],
+      consultationFee: "₹550/hour",
+      availability: "Tue-Sat",
+      isVerified: true
     },
     {
       id: 6,
-      name: 'Dr. Meera Joshi',
-      specialty: 'Market Analysis',
-      experience: '10 years',
-      rating: 4.6,
-      consultations: 650,
-      image: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Agricultural economist specializing in crop price forecasting and market trends.',
-      languages: ['Hindi', 'English'],
-      availability: 'Available Today',
-      hourlyRate: '₹400/hour',
-      nextSlot: '1:00 PM - 2:00 PM'
+      name: "Vikram Singh",
+      title: "Agricultural Technology Expert",
+      specialization: "Farm Mechanization",
+      experience: "11+ years",
+      rating: 4.5,
+      reviews: 134,
+      consultations: 421,
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+      location: "Jaipur, Rajasthan",
+      languages: ["Hindi", "English", "Rajasthani"],
+      expertise: ["Farm Equipment", "Automation", "Technology Integration"],
+      consultationFee: "₹450/hour",
+      availability: "Mon-Fri",
+      isVerified: true
     }
   ];
 
-  const featuredAdvisor = advisors[0]; // Dr. Rajesh Patel as featured
+  const specializations = [...new Set(advisors.map(advisor => advisor.specialization))];
 
-  const consultationTypes = [
-    { id: 'video', name: 'Video Call', icon: Video, duration: '30-60 min', popular: true },
-    { id: 'phone', name: 'Phone Call', icon: Phone, duration: '30-45 min', popular: false },
-    { id: 'chat', name: 'Live Chat', icon: MessageCircle, duration: '15-30 min', popular: false }
-  ];
+  const filteredAdvisors = advisors.filter(advisor => {
+    const matchesSearch = advisor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         advisor.specialization.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         advisor.location.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSpecialization = selectedSpecialization === 'all' || 
+                                 advisor.specialization === selectedSpecialization;
+    return matchesSearch && matchesSpecialization;
+  });
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`h-4 w-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+      />
+    ));
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50 font-montserrat">
-      {/* Navigation */}
-      {/* <nav className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-forest-700">🌾 FarmHub</h1>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Home</a>
-              <a href="/dashboard" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Dashboard</a>
-              <a href="/products" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Products</a>
-              <a href="/services" className="text-forest-600 hover:text-forest-800 font-medium transition-colors">Services</a>
-              <a href="/advisor" className="text-forest-800 font-semibold border-b-2 border-forest-600">Advisors</a>
+    <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-forest-800 mb-4">Farm Advisors & Experts</h1>
+          <p className="text-xl text-forest-600">Get expert guidance from certified agricultural professionals</p>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="flex flex-col md:flex-row gap-4 mb-8">
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                placeholder="Search advisors by name, specialization, or location..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
             </div>
           </div>
-        </div>
-      </nav> */}
-
-      {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-forest-200 to-forest-400 h-[500px]">
-        <div className="absolute inset-0">
-          <img
-            // src="https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
-            src={agricultureAdvisor}
-            alt="Agricultural advisors"
-            className="w-full h-full object-cover opacity-100"
-          />
-        </div>
-        <div className="relative max-w-7xl top-40 mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">Meet Our Advisors</h1>
-          <p className="text-xl text-wheat-100 max-w-3xl mx-auto">
-            Get expert guidance from certified agricultural specialists to maximize your farm's potential.
-          </p>
-        </div>
-      </section>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Advisor Spotlight */}
-        <Card className="mb-12 bg-gradient-to-r from-forest-50 to-wheat-50 border-forest-200">
-          <CardHeader>
-            <CardTitle className="text-2xl text-forest-700 flex items-center gap-2">
-              <Award className="h-6 w-6" />
-              Advisor Spotlight - Expert of the Month
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
-                <img
-                  src={featuredAdvisor.image}
-                  alt={featuredAdvisor.name}
-                  className="w-full h-64 object-cover rounded-lg shadow-lg"
-                />
-              </div>
-              <div className="md:col-span-2 space-y-4">
-                <div className="flex items-center gap-3">
-                  <h3 className="text-3xl font-bold text-forest-800">{featuredAdvisor.name}</h3>
-                  <Badge className="bg-gold-100 text-gold-800">⭐ Featured</Badge>
-                </div>
-                <div className="flex items-center gap-4 text-forest-600">
-                  <span className="font-medium">{featuredAdvisor.specialty}</span>
-                  <span>•</span>
-                  <span>{featuredAdvisor.experience}</span>
-                  <span>•</span>
-                  <div className="flex items-center gap-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span>{featuredAdvisor.rating}</span>
-                  </div>
-                </div>
-                <p className="text-forest-600 text-lg">{featuredAdvisor.bio}</p>
-                <div className="flex items-center gap-4">
-                  <span className="text-forest-700 font-medium">Next Available:</span>
-                  <Badge variant="outline" className="border-green-300 text-green-700">
-                    {featuredAdvisor.nextSlot}
-                  </Badge>
-                </div>
-                <Button size="lg" className="bg-forest-600 hover:bg-forest-700">
-                  <Video className="h-5 w-5 mr-2" />
-                  Book Consultation Now
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Booking Form Sidebar */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-24">
-              <CardHeader>
-                <CardTitle className="text-forest-700">Book Consultation</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-forest-700 mb-2">Consultation Type</label>
-                  <div className="space-y-2">
-                    {consultationTypes.map((type) => {
-                      const IconComponent = type.icon;
-                      return (
-                        <div
-                          key={type.id}
-                          className="flex items-center p-3 border border-forest-200 rounded-lg hover:bg-forest-50 cursor-pointer"
-                        >
-                          <IconComponent className="h-5 w-5 text-forest-600 mr-3" />
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-forest-800">{type.name}</span>
-                              {type.popular && (
-                                <Badge className="bg-forest-100 text-forest-700 text-xs">Popular</Badge>
-                              )}
-                            </div>
-                            <span className="text-sm text-forest-600">{type.duration}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-forest-700 mb-2">Select Date</label>
-                  <Calendar
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={setSelectedDate}
-                    className="rounded-md border border-forest-200"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-forest-700 mb-2">Preferred Time</label>
-                  <select className="w-full p-2 border border-forest-200 rounded-lg focus:ring-2 focus:ring-forest-500">
-                    <option>9:00 AM - 10:00 AM</option>
-                    <option>10:00 AM - 11:00 AM</option>
-                    <option>11:00 AM - 12:00 PM</option>
-                    <option>2:00 PM - 3:00 PM</option>
-                    <option>3:00 PM - 4:00 PM</option>
-                    <option>4:00 PM - 5:00 PM</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-forest-700 mb-2">Topic/Issue</label>
-                  <textarea
-                    className="w-full p-2 border border-forest-200 rounded-lg focus:ring-2 focus:ring-forest-500"
-                    rows={3}
-                    placeholder="Briefly describe your farming issue or question..."
-                  />
-                </div>
-
-                <Button className="w-full bg-forest-600 hover:bg-forest-700">
-                  <CalendarIcon className="h-4 w-4 mr-2" />
-                  Book Consultation
-                </Button>
-              </CardContent>
-            </Card>
+          <div className="w-full md:w-64">
+            <select
+              value={selectedSpecialization}
+              onChange={(e) => setSelectedSpecialization(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-500"
+            >
+              <option value="all">All Specializations</option>
+              {specializations.map((spec) => (
+                <option key={spec} value={spec}>{spec}</option>
+              ))}
+            </select>
           </div>
+        </div>
 
-          {/* Advisors Grid */}
-          <div className="lg:col-span-3">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-forest-700 mb-2">Our Expert Advisors</h2>
-              <p className="text-forest-600">Choose from our certified agricultural specialists</p>
-            </div>
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <Card className="text-center">
+            <CardContent className="p-6">
+              <div className="text-3xl font-bold text-forest-700 mb-2">{advisors.length}</div>
+              <p className="text-forest-600">Expert Advisors</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center">
+            <CardContent className="p-6">
+              <div className="text-3xl font-bold text-forest-700 mb-2">
+                {advisors.filter(a => a.isVerified).length}
+              </div>
+              <p className="text-forest-600">Verified Experts</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center">
+            <CardContent className="p-6">
+              <div className="text-3xl font-bold text-forest-700 mb-2">
+                {advisors.reduce((sum, a) => sum + a.consultations, 0).toLocaleString()}
+              </div>
+              <p className="text-forest-600">Total Consultations</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center">
+            <CardContent className="p-6">
+              <div className="text-3xl font-bold text-forest-700 mb-2">4.7</div>
+              <p className="text-forest-600">Average Rating</p>
+            </CardContent>
+          </Card>
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {advisors.map((advisor) => (
-                <Card 
-                  key={advisor.id} 
-                  className={`hover:shadow-lg transition-all cursor-pointer group ${
-                    selectedAdvisor === advisor.id ? 'ring-2 ring-forest-500 bg-forest-50' : ''
-                  }`}
-                  onClick={() => setSelectedAdvisor(advisor.id)}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex gap-4">
-                      <img
-                        src={advisor.image}
-                        alt={advisor.name}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-forest-200"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-lg font-semibold text-forest-800">{advisor.name}</h3>
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm font-medium">{advisor.rating}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="border-forest-300 text-forest-700">
-                              {advisor.specialty}
-                            </Badge>
-                            <span className="text-forest-600">{advisor.experience}</span>
-                          </div>
-                          
-                          <p className="text-forest-600 line-clamp-2">{advisor.bio}</p>
-                          
-                          <div className="flex items-center justify-between text-xs text-forest-500">
-                            <span>{advisor.consultations} consultations</span>
-                            <span className="font-medium text-forest-700">{advisor.hourlyRate}</span>
-                          </div>
-                          
-                          <div className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            <span className="text-xs">Next slot: {advisor.nextSlot}</span>
-                          </div>
-                          
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {advisor.languages.map((lang) => (
-                              <Badge key={lang} variant="secondary" className="text-xs">
-                                {lang}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
+        {/* Advisors Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredAdvisors.map((advisor) => (
+            <Card key={advisor.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <CardContent className="p-6">
+                <div className="text-center mb-4">
+                  <div className="relative inline-block">
+                    <img
+                      src={advisor.avatar}
+                      alt={advisor.name}
+                      className="w-20 h-20 rounded-full object-cover mx-auto mb-3"
+                    />
+                    {advisor.isVerified && (
+                      <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
+                        <Award className="h-3 w-3 text-white" />
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="text-xl font-semibold text-forest-800 mb-1">{advisor.name}</h3>
+                  <p className="text-forest-600 mb-2">{advisor.title}</p>
+                  <Badge className="mb-3">{advisor.specialization}</Badge>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="flex">{renderStars(advisor.rating)}</div>
+                    <span className="font-semibold">{advisor.rating}</span>
+                    <span className="text-forest-600 text-sm">({advisor.reviews} reviews)</span>
+                  </div>
+
+                  <div className="text-sm text-forest-600 space-y-1">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4" />
+                      <span>{advisor.location}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Award className="h-4 w-4" />
+                      <span>{advisor.experience} experience</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      <span>{advisor.consultations}+ consultations</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>Available: {advisor.availability}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <h4 className="font-medium text-forest-800 mb-2">Expertise:</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {advisor.expertise.slice(0, 2).map((skill, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">
+                          {skill}
+                        </Badge>
+                      ))}
+                      {advisor.expertise.length > 2 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{advisor.expertise.length - 2} more
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-lg font-bold text-forest-700">{advisor.consultationFee}</span>
+                      <div className="flex gap-1">
+                        {advisor.languages.slice(0, 2).map((lang, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {lang}
+                          </Badge>
+                        ))}
                       </div>
                     </div>
                     
-                    <div className="mt-4 pt-4 border-t border-forest-200">
-                      <div className="flex gap-2">
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          className="flex-1 border-forest-300 text-forest-700 hover:bg-forest-50"
-                        >
+                    <div className="flex gap-2">
+                      <Button className="flex-1 bg-forest-600 hover:bg-forest-700" asChild>
+                        <Link to={`/advisor/${advisor.id}`}>
+                          Book Consultation
+                        </Link>
+                      </Button>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to={`/advisor/${advisor.id}`}>
                           View Profile
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          className="flex-1 bg-forest-600 hover:bg-forest-700"
-                        >
-                          <Video className="h-3 w-3 mr-1" />
-                          Book Now
-                        </Button>
-                      </div>
+                        </Link>
+                      </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {/* Live Chat Widget */}
-            <Card className="mt-8 bg-gradient-to-r from-blue-50 to-forest-50 border-blue-200">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-blue-100 rounded-full">
-                    <MessageCircle className="h-6 w-6 text-blue-600" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-forest-800">Need Immediate Help?</h3>
-                    <p className="text-forest-600">Start a live chat with our support team for quick queries</p>
-                  </div>
-                  <Button className="bg-blue-600 hover:bg-blue-700">
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    Start Chat
-                  </Button>
                 </div>
               </CardContent>
             </Card>
-          </div>
+          ))}
         </div>
+
+        {filteredAdvisors.length === 0 && (
+          <div className="text-center py-12">
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">No advisors found</h3>
+            <p className="text-gray-500">Try adjusting your search or filter criteria</p>
+          </div>
+        )}
+
+        {/* CTA Section */}
+        <Card className="mt-12 bg-gradient-to-r from-forest-50 to-wheat-50 border-forest-200">
+          <CardContent className="p-8 text-center">
+            <h2 className="text-2xl font-bold text-forest-800 mb-4">
+              Need Expert Guidance for Your Farm?
+            </h2>
+            <p className="text-forest-600 mb-6 max-w-2xl mx-auto">
+              Connect with certified agricultural experts and get personalized advice for your farming challenges. 
+              From crop diseases to soil management, our advisors are here to help.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button className="bg-forest-600 hover:bg-forest-700">
+                <Calendar className="h-4 w-4 mr-2" />
+                Schedule Free Consultation
+              </Button>
+              <Button variant="outline" className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white">
+                <Phone className="h-4 w-4 mr-2" />
+                Call Expert Helpline
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   Wrench,
   Sprout,
@@ -18,36 +19,42 @@ import {
 const FeaturedServices = () => {
   const services = [
     {
+      id: 1,
       icon: <Wrench className="w-10 h-10 text-forest-700" />,
       title: "Sprayer Repairs",
       description: "Professional equipment maintenance and repair",
       price: "From $75/hour",
     },
     {
+      id: 2,
       icon: <Sprout className="w-10 h-10 text-forest-700" />,
       title: "Cultivation",
       description: "Expert soil preparation and cultivation services",
       price: "From $120/acre",
     },
     {
+      id: 3,
       icon: <Wheat className="w-10 h-10 text-forest-700" />,
       title: "Harvesting",
       description: "Efficient crop harvesting with modern equipment",
       price: "From $80/acre",
     },
     {
+      id: 4,
       icon: <Tractor className="w-10 h-10 text-forest-700" />,
       title: "Ploughing",
       description: "Professional field preparation and ploughing",
       price: "From $90/acre",
     },
     {
+      id: 5,
       icon: <Bug className="w-10 h-10 text-forest-700" />,
       title: "Pest Control",
       description: "Integrated pest management solutions",
       price: "From $45/acre",
     },
     {
+      id: 6,
       icon: <Droplets className="w-10 h-10 text-forest-700" />,
       title: "Irrigation Setup",
       description: "Modern irrigation system installation",
@@ -86,8 +93,10 @@ const FeaturedServices = () => {
                 <div className="text-md font-semibold text-soil-600">
                   {service.price}
                 </div>
-                <Button className="w-full bg-forest-600 hover:bg-forest-700 text-white">
-                  Book Now
+                <Button className="w-full bg-forest-600 hover:bg-forest-700 text-white" asChild>
+                  <Link to={`/services/${service.id}`}>
+                    Book Now
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
