@@ -87,50 +87,7 @@ const WeatherEffects = () => {
     }
   };
 
-  return (
-    <>
-      {renderEffects()}
-      <style jsx>{`
-        @keyframes fall {
-          0% { transform: translateY(-100vh); }
-          100% { transform: translateY(100vh); }
-        }
-        
-        @keyframes snowfall {
-          0% { 
-            transform: translateY(-100vh) translateX(0px); 
-            opacity: 1;
-          }
-          100% { 
-            transform: translateY(100vh) translateX(50px); 
-            opacity: 0;
-          }
-        }
-        
-        @keyframes heatwave {
-          0%, 100% { 
-            transform: translateY(0px) scale(1); 
-            opacity: 0.6;
-          }
-          50% { 
-            transform: translateY(-20px) scale(1.2); 
-            opacity: 0.3;
-          }
-        }
-        
-        @keyframes sunray {
-          0%, 100% { 
-            opacity: 0.3; 
-            transform: scale(1);
-          }
-          50% { 
-            opacity: 0.8; 
-            transform: scale(1.1);
-          }
-        }
-      `}</style>
-    </>
-  );
+  return renderEffects();
 };
 
 export default WeatherEffects;

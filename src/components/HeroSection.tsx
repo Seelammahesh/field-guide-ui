@@ -7,15 +7,9 @@ const HeroSection = () => {
   const navigate = useNavigate();
   
   const handleBookService = () => {
-    // Scroll to booking form or navigate to services
-    const bookingSection = document.querySelector('#booking-form');
-    if (bookingSection) {
-      bookingSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      // Trigger booking form modal on home page
-      const event = new CustomEvent('openBookingForm');
-      window.dispatchEvent(event);
-    }
+    // Trigger booking form modal on home page
+    const event = new CustomEvent('openBookingForm');
+    window.dispatchEvent(event);
   };
   
   return (

@@ -54,6 +54,17 @@ const Index = () => {
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Listen for booking form open event
+    const handleOpenBookingForm = () => {
+      setShowBookingForm(true);
+    };
+    
+    window.addEventListener('openBookingForm', handleOpenBookingForm);
+    
+    return () => {
+      window.removeEventListener('openBookingForm', handleOpenBookingForm);
+    };
   }, []);
 
   const handleInputChange = (field: string, value: string) => {
