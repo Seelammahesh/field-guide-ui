@@ -1,13 +1,15 @@
 
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { useWeatherTheme } from "@/contexts/WeatherThemeContext";
-import { Sun, Cloud, CloudRain, Snowflake, Thermometer, Wind } from "lucide-react";
+import { Sun, Cloud, CloudRain, Snowflake, Thermometer, Wind, X } from "lucide-react";
 
 const WeatherThemeSelector = () => {
   const { currentTheme, setTheme, autoTheme, toggleAutoTheme } = useWeatherTheme();
+  const [isVisible, setIsVisible] = useState(true);
 
   const themeOptions = [
     { condition: 'sunny' as const, icon: <Sun className="h-5 w-5" />, label: 'Sunny', color: 'bg-yellow-500' },
@@ -18,6 +20,8 @@ const WeatherThemeSelector = () => {
     { condition: 'cold' as const, icon: <Wind className="h-5 w-5" />, label: 'Cold', color: 'bg-cyan-500' }
   ];
 
+  if (!isVisible) return null;
+
   return (
     <Card className={`fixed top-4 right-4 z-50 w-80 bg-gradient-to-br ${currentTheme.colors.background} border-2 shadow-xl`}>
       <CardHeader className="pb-3">
@@ -25,9 +29,19 @@ const WeatherThemeSelector = () => {
           <CardTitle className={`flex items-center gap-2 ${currentTheme.colors.accent}`}>
             🌦️ Weather Theme
           </CardTitle>
-          <Badge variant="outline" className={currentTheme.colors.accent}>
-            {currentTheme.condition}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className={currentTheme.colors.accent}>
+              {currentTheme.condition}
+            </Badge>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsVisible(false)}
+              className="h-6 w-6 p-0 hover:bg-red-100 hover:text-red-600"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">

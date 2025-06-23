@@ -21,6 +21,7 @@ import FarmingTip from '@/components/FarmingTip';
 import WeatherThemeSelector from '@/components/WeatherThemeSelector';
 import ClimateRecommendations from '@/components/ClimateRecommendations';
 import { useWeatherTheme } from '@/contexts/WeatherThemeContext';
+import WeatherEffects from '@/components/WeatherEffects';
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -78,6 +79,9 @@ const Index = () => {
 
   return (
     <div className={`min-h-screen bg-gradient-to-b ${currentTheme.colors.background} font-montserrat`}>
+      {/* Weather Effects */}
+      <WeatherEffects />
+
       {/* Hero Section */}
       <HeroSection />
 
@@ -86,6 +90,9 @@ const Index = () => {
 
       {/* Weather Widget - Positioned absolutely in top-right */}
       <WeatherWidget />
+
+      {/* Climate Recommendations - Moved below hero */}
+      <ClimateRecommendations />
 
       {/* Quick Booking Form Modal */}
       {showBookingForm && (
@@ -229,9 +236,6 @@ const Index = () => {
 
         {/* Top Products */}
         <TopProducts />
-
-        {/* Climate Recommendations */}
-        <ClimateRecommendations />
 
         {/* Crop Prices */}
         <CropPrices />
