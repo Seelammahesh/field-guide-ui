@@ -3,6 +3,11 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import Fertilizer from '../../images/PremiumOrganicFertilizerCoverage.jpg'
+import soilConditioner from '../../images/soil-conditioner-1-1.jpg'
+import Organicpesticides from '../../images/tractor-field-applies-fertilizer-soil.avif'
+import MutliHerbicides from '../../images/john-deere-sprayer.jpg'
+import GrowthHormone from '../../images/Spray_tractor.jpg'
 
 const TopProducts = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,7 +18,7 @@ const TopProducts = () => {
       name: 'Premium Fertilizer NPK 20-20-20',
       price: '$45.99',
       originalPrice: '$52.99',
-      image: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image:Fertilizer,
       description: 'High-quality balanced fertilizer for optimal crop growth',
       badge: 'Best Seller'
     },
@@ -22,7 +27,7 @@ const TopProducts = () => {
       name: 'Organic Pesticide Solution',
       price: '$28.50',
       originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image: Organicpesticides,
       description: 'Eco-friendly pest control for sustainable farming',
       badge: 'Organic'
     },
@@ -31,7 +36,7 @@ const TopProducts = () => {
       name: 'Multi-Purpose Herbicide',
       price: '$67.25',
       originalPrice: '$74.99',
-      image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image: MutliHerbicides,
       description: 'Effective weed control for all crop types',
       badge: 'Popular'
     },
@@ -40,7 +45,7 @@ const TopProducts = () => {
       name: 'Soil Conditioner Plus',
       price: '$35.00',
       originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1517022812141-23620dba5c23?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image: soilConditioner,
       description: 'Improves soil structure and nutrient retention',
       badge: 'New'
     },
@@ -49,7 +54,7 @@ const TopProducts = () => {
       name: 'Growth Hormone Booster',
       price: '$89.99',
       originalPrice: '$99.99',
-      image: 'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      image: GrowthHormone,
       description: 'Accelerates plant growth and yield production',
       badge: 'Premium'
     },

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, MessageSquare, ThumbsUp, ThumbsDown, Search, Trophy, User, Calendar } from 'lucide-react';
-
+import formerCommunity from '../../images/farmers-enjoying-conversation.jpg'
 const Community = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -113,22 +113,22 @@ const Community = () => {
       </nav> */}
 
       {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-forest-600 to-forest-700">
+      <section className="relative py-20 bg-gradient-to-r from-forest-200 to-forest-400 h-[500px]">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1517022812141-23620dba5c23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+            // src="https://images.unsplash.com/photo-1517022812141-23620dba5c23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+            src={formerCommunity}
             alt="Farmer community"
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-100"
           />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative top-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">Farmer Community</h1>
           <p className="text-xl text-wheat-100 max-w-3xl mx-auto">
             Connect, share knowledge, and learn with fellow farmers from around the region.
           </p>
         </div>
       </section>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
