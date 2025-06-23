@@ -6,6 +6,18 @@ import { useNavigate } from "react-router-dom";
 const HeroSection = () => {
   const navigate = useNavigate();
   
+  const handleBookService = () => {
+    // Scroll to booking form or navigate to services
+    const bookingSection = document.querySelector('#booking-form');
+    if (bookingSection) {
+      bookingSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Trigger booking form modal on home page
+      const event = new CustomEvent('openBookingForm');
+      window.dispatchEvent(event);
+    }
+  };
+  
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -38,16 +50,7 @@ const HeroSection = () => {
             size="lg" 
             variant="outline" 
             className="bg-soil-600 hover:bg-soil-700 text-white border-soil-600 hover:border-soil-700 px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
-            onClick={() => {
-              const bookingSection = document.querySelector('#booking-form');
-              if (bookingSection) {
-                bookingSection.scrollIntoView({ behavior: 'smooth' });
-              } else {
-                // Trigger booking form modal
-                const event = new CustomEvent('openBookingForm');
-                window.dispatchEvent(event);
-              }
-            }}
+            onClick={handleBookService}
           >
             Book Services 📅
           </Button>

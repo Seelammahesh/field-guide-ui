@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ import soilConditioner from '../../images/soil-conditioner-1-1.jpg'
 import Organicpesticides from '../../images/tractor-field-applies-fertilizer-soil.avif'
 import MutliHerbicides from '../../images/john-deere-sprayer.jpg'
 import GrowthHormone from '../../images/Spray_tractor.jpg'
+import AddToCartButton from './AddToCartButton';
 
 const TopProducts = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -214,11 +214,24 @@ const TopProducts = () => {
                             )}
                           </div>
                         </div>
-                        <Button className="w-full bg-forest-600 hover:bg-forest-700 text-white" asChild>
-                          <Link to={`/products/${product.id}`}>
-                            View Details 🛒
-                          </Link>
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="flex-1 border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white"
+                            asChild
+                          >
+                            <Link to={`/products/${product.id}`}>
+                              View Details
+                            </Link>
+                          </Button>
+                          <AddToCartButton 
+                            productId={product.id}
+                            productName={product.name}
+                            size="sm"
+                            className="flex-1"
+                          />
+                        </div>
                       </CardContent>
                     </Card>
                   </div>

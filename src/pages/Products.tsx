@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,7 @@ import image5 from '../../images/image5.jpeg'
 import image6 from '../../images/image6.jpeg'
 import image2 from '../../images/image2.jpeg'
 import propiconazole from '../../images/propiconazole.webp'
+import AddToCartButton from '@/components/AddToCartButton';
 
 const Products = () => {
   const navigate = useNavigate();
@@ -450,9 +450,9 @@ const Products = () => {
               <p className="text-forest-600">{filteredProducts.length} products found</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
-                <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <Card key={product.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-forest-200 bg-white">
                   <Link to={`/products/${product.id}`} className="block">
                     <div className="relative overflow-hidden rounded-t-lg">
                       <img 
@@ -501,20 +501,21 @@ const Products = () => {
                     </div>
                     <div className="flex gap-2">
                       <Button 
-                        className="flex-1 bg-forest-600 hover:bg-forest-700"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          addToCart(product.id);
-                        }}
+                        variant="outline" 
+                        size="sm" 
+                        className="flex-1 border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white"
+                        asChild
                       >
-                        <ShoppingCart className="h-4 w-4 mr-2" />
-                        Add to Cart
-                      </Button>
-                      <Button variant="outline" size="sm" asChild>
                         <Link to={`/products/${product.id}`}>
-                          <Eye className="h-4 w-4" />
+                          View Details
                         </Link>
                       </Button>
+                      <AddToCartButton 
+                        productId={product.id}
+                        productName={product.name}
+                        size="sm"
+                        className="flex-1"
+                      />
                     </div>
                   </CardContent>
                 </Card>

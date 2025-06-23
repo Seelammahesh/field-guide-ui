@@ -18,6 +18,9 @@ import TopProducts from '@/components/TopProducts';
 import CropPrices from '@/components/CropPrices';
 import InteractiveMap from '@/components/InteractiveMap';
 import FarmingTip from '@/components/FarmingTip';
+import WeatherThemeSelector from '@/components/WeatherThemeSelector';
+import ClimateRecommendations from '@/components/ClimateRecommendations';
+import { useWeatherTheme } from '@/contexts/WeatherThemeContext';
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -46,6 +49,8 @@ const Index = () => {
     'Farm Equipment Rental'
   ];
 
+  const { currentTheme } = useWeatherTheme();
+
   useEffect(() => {
     setIsVisible(true);
   }, []);
@@ -72,9 +77,12 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50 font-montserrat">
+    <div className={`min-h-screen bg-gradient-to-b ${currentTheme.colors.background} font-montserrat`}>
       {/* Hero Section */}
       <HeroSection />
+
+      {/* Weather Theme Selector */}
+      <WeatherThemeSelector />
 
       {/* Weather Widget - Positioned absolutely in top-right */}
       <WeatherWidget />
@@ -221,6 +229,9 @@ const Index = () => {
 
         {/* Top Products */}
         <TopProducts />
+
+        {/* Climate Recommendations */}
+        <ClimateRecommendations />
 
         {/* Crop Prices */}
         <CropPrices />
