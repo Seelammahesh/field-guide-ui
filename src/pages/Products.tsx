@@ -7,6 +7,15 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Heart, ShoppingCart, Leaf, Clock, Eye } from 'lucide-react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import image19 from '../../images/image19.jpeg'
+import image7 from '../../images/image7.jpeg'
+import image3 from '../../images/image3.jpeg'
+import image20 from '../../images/image20.jpeg'
+import image5 from '../../images/image5.jpeg'
+import image6 from '../../images/image6.jpeg'
+import image2 from '../../images/image2.jpeg'
+import propiconazole from '../../images/propiconazole.webp'
+
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -23,7 +32,8 @@ const Products = () => {
       originalPrice: 349,
       rating: 4.5,
       reviews: 128,
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
+      // image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
+       image: image19,
       isEcoFriendly: true,
       isBestSeller: true,
       isNewArrival: false,
@@ -38,7 +48,8 @@ const Products = () => {
       originalPrice: 450,
       rating: 4.8,
       reviews: 203,
-      image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop",
+      // image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop",
+       image: image7,
       isEcoFriendly: false,
       isBestSeller: false,
       isNewArrival: true,
@@ -53,7 +64,8 @@ const Products = () => {
       originalPrice: 420,
       rating: 4.2,
       reviews: 89,
-      image: "https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=300&fit=crop",
+      // image: "https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=300&fit=crop",
+      image:image3,
       isEcoFriendly: false,
       isBestSeller: true,
       isNewArrival: false,
@@ -68,7 +80,8 @@ const Products = () => {
       originalPrice: 220,
       rating: 4.6,
       reviews: 156,
-      image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop",
+      // image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop",
+      image:image2,
       isEcoFriendly: true,
       isBestSeller: false,
       isNewArrival: false,
@@ -83,7 +96,8 @@ const Products = () => {
       originalPrice: 580,
       rating: 4.3,
       reviews: 94,
-      image: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop",
+      // image: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop",
+      image:image20,
       isEcoFriendly: false,
       isBestSeller: false,
       isNewArrival: false,
@@ -98,7 +112,8 @@ const Products = () => {
       originalPrice: 340,
       rating: 4.4,
       reviews: 167,
-      image: "https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=400&h=300&fit=crop",
+      // image: "https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=400&h=300&fit=crop",
+      image:image5,
       isEcoFriendly: false,
       isBestSeller: true,
       isNewArrival: false,
@@ -113,7 +128,8 @@ const Products = () => {
       originalPrice: 320,
       rating: 4.7,
       reviews: 142,
-      image: "https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=300&fit=crop",
+      // image: "https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=300&fit=crop",
+      image:image6,
       isEcoFriendly: true,
       isBestSeller: false,
       isNewArrival: true,
@@ -143,7 +159,8 @@ const Products = () => {
       originalPrice: 520,
       rating: 4.5,
       reviews: 115,
-      image: "https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=300&fit=crop",
+      // image: "https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=300&fit=crop",
+      image:propiconazole,
       isEcoFriendly: false,
       isBestSeller: false,
       isNewArrival: true,

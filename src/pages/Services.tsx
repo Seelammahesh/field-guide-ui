@@ -12,6 +12,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon, Clock, MapPin, Star, Users, Phone } from 'lucide-react';
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import image1 from '../../images/image1.jpeg'
+import image13 from '../../images/image13.jpeg'
+import image18 from '../../images/image18.jpeg'
+import image16 from '../../images/image16.jpeg'
+import image15 from '../../images/image15.jpeg'
+import image9 from '../../images/image9.jpeg'
+
 
 const Services = () => {
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -33,7 +40,8 @@ const Services = () => {
       duration: "2-3 hours",
       rating: 4.8,
       reviews: 156,
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
+      image:image16,
+      // image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
       features: ["pH Level Testing", "Nutrient Analysis", "Detailed Report", "Recommendations"]
     },
     {
@@ -44,7 +52,8 @@ const Services = () => {
       duration: "1-2 hours",
       rating: 4.9,
       reviews: 203,
-      image: "https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=300&fit=crop",
+      image:image1,
+      // image: "https://images.unsplash.com/photo-1574263867128-a3d5c1b1decc?w=400&h=300&fit=crop",
       features: ["Field Inspection", "Disease Identification", "Treatment Plan", "Follow-up Support"]
     },
     {
@@ -55,7 +64,8 @@ const Services = () => {
       duration: "1-2 days",
       rating: 4.7,
       reviews: 89,
-      image: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop",
+      image:image18,
+      // image: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=300&fit=crop",
       features: ["System Design", "Installation", "Training", "Maintenance Support"]
     },
     {
@@ -66,7 +76,8 @@ const Services = () => {
       duration: "3-4 hours",
       rating: 4.6,
       reviews: 142,
-      image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop",
+        image:image13,
+      // image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop",
       features: ["Transition Planning", "Certification Guidance", "Organic Methods", "Market Access"]
     },
     {
@@ -77,7 +88,8 @@ const Services = () => {
       duration: "2-3 hours",
       rating: 4.5,
       reviews: 178,
-      image: "https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=300&fit=crop",
+       image:image15,
+      // image: "https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=300&fit=crop",
       features: ["Pest Identification", "Treatment Application", "Prevention Plan", "Regular Monitoring"]
     },
     {
@@ -88,7 +100,8 @@ const Services = () => {
       duration: "Flexible",
       rating: 4.4,
       reviews: 94,
-      image: "https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=400&h=300&fit=crop",
+      image:image9,
+      // image: "https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=400&h=300&fit=crop",
       features: ["Various Equipment", "Delivery Available", "Operator Training", "Maintenance Included"]
     }
   ];
