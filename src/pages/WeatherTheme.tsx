@@ -17,7 +17,9 @@ const WeatherTheme = () => {
 
   const handleThemeChange = (themeName: string) => {
     setSelectedTheme(themeName);
-    setTheme(themeName as keyof typeof themes);
+    // Type assertion since we know themeName is a valid key
+    const validThemeName = themeName as keyof typeof themes;
+    setTheme(validThemeName);
   };
 
   const getThemeIcon = (themeName: string) => {
