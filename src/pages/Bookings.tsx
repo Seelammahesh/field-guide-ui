@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -7,10 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, Search, Eye, Phone, MapPin, ArrowLeft } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Bookings = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const isMobile = useIsMobile();
 
   const bookings = [
     {
@@ -107,40 +108,40 @@ const Bookings = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Header */}
-        <div className="flex items-center gap-2 mb-6">
-          <Button variant="ghost" asChild className="text-forest-600 hover:text-forest-800">
+        <div className="flex items-center gap-2 mb-4 sm:mb-6">
+          <Button variant="ghost" asChild className="text-forest-600 hover:text-forest-800 p-2">
             <Link to="/dashboard">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
+              <ArrowLeft className="h-4 w-4 mr-1 sm:mr-2" />
+              <span className="text-sm sm:text-base">Back to Dashboard</span>
             </Link>
           </Button>
         </div>
 
-        <div className="flex items-center gap-3 mb-8">
-          <Calendar className="h-8 w-8 text-forest-600" />
-          <h1 className="text-3xl font-bold text-forest-800">Service Bookings</h1>
+        <div className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+          <Calendar className="h-6 w-6 sm:h-8 sm:w-8 text-forest-600" />
+          <h1 className="text-2xl sm:text-3xl font-bold text-forest-800">Service Bookings</h1>
         </div>
 
         {/* Filters */}
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row gap-4">
+        <Card className="mb-4 sm:mb-6">
+          <CardContent className="p-3 sm:p-4 lg:p-6">
+            <div className="flex flex-col gap-3 sm:gap-4">
               <div className="flex-1">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                   <Input
-                    placeholder="Search bookings by service, provider, or booking ID..."
+                    placeholder={isMobile ? "Search bookings..." : "Search bookings by service, provider, or booking ID..."}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 text-sm sm:text-base"
                   />
                 </div>
               </div>
-              <div className="w-full md:w-48">
+              <div className="w-full sm:w-48">
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger>
+                  <SelectTrigger className="text-sm sm:text-base">
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -158,87 +159,87 @@ const Bookings = () => {
         </Card>
 
         {/* Bookings List */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {filteredBookings.map((booking) => (
             <Card key={booking.id} className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
+              <CardContent className="p-3 sm:p-4 lg:p-6">
+                <div className="flex flex-col lg:flex-row gap-3 sm:gap-4">
                   <img
                     src={booking.image}
                     alt={booking.service}
-                    className="w-20 h-20 object-cover rounded-lg"
+                    className="w-full lg:w-20 h-32 sm:h-40 lg:h-20 object-cover rounded-lg"
                   />
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-semibold text-forest-800 text-lg">{booking.service}</h3>
-                        <p className="text-forest-600">{booking.provider}</p>
-                        <p className="text-sm text-forest-500">Booking ID: {booking.id}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-3">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-semibold text-forest-800 text-base sm:text-lg truncate">{booking.service}</h3>
+                        <p className="text-forest-600 text-sm sm:text-base truncate">{booking.provider}</p>
+                        <p className="text-xs sm:text-sm text-forest-500">Booking ID: {booking.id}</p>
                       </div>
-                      <Badge className={getStatusColor(booking.status)}>
+                      <Badge className={`${getStatusColor(booking.status)} text-xs sm:text-sm shrink-0`}>
                         {booking.status}
                       </Badge>
                     </div>
                     
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-sm mb-3 sm:mb-4">
                       <div>
-                        <span className="text-forest-600">Date & Time:</span>
+                        <span className="text-forest-600 block">Date & Time:</span>
                         <p className="font-medium">{new Date(booking.date).toLocaleDateString()}</p>
                         <p className="font-medium">{booking.time}</p>
                       </div>
                       <div>
-                        <span className="text-forest-600">Duration:</span>
+                        <span className="text-forest-600 block">Duration:</span>
                         <p className="font-medium">{booking.duration}</p>
                       </div>
                       <div>
-                        <span className="text-forest-600">Amount:</span>
+                        <span className="text-forest-600 block">Amount:</span>
                         <p className="font-medium text-forest-700">₹{booking.amount}</p>
                       </div>
-                      <div>
-                        <span className="text-forest-600">Status:</span>
+                      <div className="sm:col-span-2 lg:col-span-1">
+                        <span className="text-forest-600 block">Status:</span>
                         <p className="font-medium">{booking.status}</p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-6 text-sm mb-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 text-sm mb-4">
                       <div className="flex items-start gap-2">
-                        <MapPin className="h-4 w-4 text-forest-600 mt-0.5" />
-                        <div>
-                          <span className="text-forest-600">Location:</span>
-                          <p className="font-medium">{booking.location}</p>
+                        <MapPin className="h-4 w-4 text-forest-600 mt-0.5 shrink-0" />
+                        <div className="min-w-0">
+                          <span className="text-forest-600 block">Location:</span>
+                          <p className="font-medium break-words">{booking.location}</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <Phone className="h-4 w-4 text-forest-600 mt-0.5" />
-                        <div>
-                          <span className="text-forest-600">Contact:</span>
-                          <p className="font-medium">{booking.contact}</p>
+                        <Phone className="h-4 w-4 text-forest-600 mt-0.5 shrink-0" />
+                        <div className="min-w-0">
+                          <span className="text-forest-600 block">Contact:</span>
+                          <p className="font-medium break-all">{booking.contact}</p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex gap-2 mt-4">
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4 mr-2" />
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      <Button variant="outline" size="sm" className="text-xs sm:text-sm">
+                        <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                         View Details
                       </Button>
                       {booking.status === 'Scheduled' && (
                         <>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" className="text-xs sm:text-sm">
                             Reschedule
                           </Button>
-                          <Button variant="outline" size="sm" className="text-red-600 border-red-600 hover:bg-red-50">
+                          <Button variant="outline" size="sm" className="text-red-600 border-red-600 hover:bg-red-50 text-xs sm:text-sm">
                             Cancel
                           </Button>
                         </>
                       )}
                       {booking.status === 'Completed' && (
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="text-xs sm:text-sm">
                           Rate Service
                         </Button>
                       )}
-                      <Button variant="outline" size="sm">
-                        <Phone className="h-4 w-4 mr-2" />
+                      <Button variant="outline" size="sm" className="text-xs sm:text-sm">
+                        <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                         Contact Provider
                       </Button>
                     </div>
@@ -250,16 +251,16 @@ const Bookings = () => {
         </div>
 
         {filteredBookings.length === 0 && (
-          <Card className="text-center py-12">
-            <CardContent>
-              <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">No bookings found</h3>
-              <p className="text-gray-500 mb-6">
+          <Card className="text-center py-8 sm:py-12">
+            <CardContent className="px-3 sm:px-6">
+              <Calendar className="h-12 w-12 sm:h-16 sm:w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-600 mb-2">No bookings found</h3>
+              <p className="text-gray-500 mb-4 sm:mb-6 text-sm sm:text-base">
                 {searchQuery || statusFilter !== 'all' 
                   ? 'Try adjusting your search or filter criteria' 
                   : 'Book your first service to see it here'}
               </p>
-              <Button asChild className="bg-forest-600 hover:bg-forest-700">
+              <Button asChild className="bg-forest-600 hover:bg-forest-700 text-sm sm:text-base">
                 <Link to="/services">Browse Services</Link>
               </Button>
             </CardContent>
