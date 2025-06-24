@@ -6,12 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Users, MessageSquare, ThumbsUp, Share, Plus, Search, TrendingUp, Clock, User } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Community = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showingAllDiscussions, setShowingAllDiscussions] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', content: '' });
   const [showNewPostForm, setShowNewPostForm] = useState(false);
+  const isMobile = useIsMobile();
 
   const allDiscussions = [
     {
@@ -172,7 +174,6 @@ const Community = () => {
   const handleNewPost = (e: React.FormEvent) => {
     e.preventDefault();
     if (newPost.title && newPost.content) {
-      // Add new post logic here
       console.log('New post:', newPost);
       alert('Post created successfully!');
       setNewPost({ title: '', content: '' });
@@ -186,29 +187,29 @@ const Community = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-wheat-50 to-forest-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-forest-800 mb-4">FarmHub Community</h1>
-          <p className="text-xl text-forest-600">Connect, learn, and grow together with fellow farmers</p>
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-forest-800 mb-3 sm:mb-4">FarmHub Community</h1>
+          <p className="text-base sm:text-lg lg:text-xl text-forest-600">Connect, learn, and grow together with fellow farmers</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className={`grid grid-cols-1 ${isMobile ? '' : 'lg:grid-cols-4'} gap-6 sm:gap-8`}>
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className={`${isMobile ? '' : 'lg:col-span-3'} space-y-4 sm:space-y-6`}>
             {/* Action Bar */}
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-              <div className="relative flex-1 max-w-md">
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <div className="relative w-full">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="Search discussions..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 text-sm sm:text-base"
                 />
               </div>
               <Button 
-                className="bg-forest-600 hover:bg-forest-700"
+                className="bg-forest-600 hover:bg-forest-700 w-full sm:w-auto"
                 onClick={() => setShowNewPostForm(!showNewPostForm)}
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -219,36 +220,35 @@ const Community = () => {
             {/* New Post Form */}
             {showNewPostForm && (
               <Card>
-                <CardHeader>
-                  <CardTitle>Start a New Discussion</CardTitle>
+                <CardHeader className="pb-3 sm:pb-4">
+                  <CardTitle className="text-base sm:text-lg">Start a New Discussion</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleNewPost} className="space-y-4">
-                    <div>
-                      <Input
-                        placeholder="Discussion title..."
-                        value={newPost.title}
-                        onChange={(e) => setNewPost({...newPost, title: e.target.value})}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Textarea
-                        placeholder="Share your thoughts, questions, or experiences..."
-                        value={newPost.content}
-                        onChange={(e) => setNewPost({...newPost, content: e.target.value})}
-                        rows={4}
-                        required
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <Button type="submit" className="bg-forest-600 hover:bg-forest-700">
+                  <form onSubmit={handleNewPost} className="space-y-3 sm:space-y-4">
+                    <Input
+                      placeholder="Discussion title..."
+                      value={newPost.title}
+                      onChange={(e) => setNewPost({...newPost, title: e.target.value})}
+                      required
+                      className="text-sm sm:text-base"
+                    />
+                    <Textarea
+                      placeholder="Share your thoughts, questions, or experiences..."
+                      value={newPost.content}
+                      onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+                      rows={isMobile ? 3 : 4}
+                      required
+                      className="text-sm sm:text-base"
+                    />
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button type="submit" className="bg-forest-600 hover:bg-forest-700 text-sm sm:text-base">
                         Post Discussion
                       </Button>
                       <Button 
                         type="button" 
                         variant="outline" 
                         onClick={() => setShowNewPostForm(false)}
+                        className="text-sm sm:text-base"
                       >
                         Cancel
                       </Button>
@@ -259,53 +259,53 @@ const Community = () => {
             )}
 
             {/* Discussions */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {filteredDiscussions.map((discussion) => (
                 <Card key={discussion.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-forest-100 rounded-full flex items-center justify-center">
-                        <User className="h-6 w-6 text-forest-600" />
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-forest-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="h-5 w-5 sm:h-6 sm:w-6 text-forest-600" />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h3 className="text-lg font-semibold text-forest-800 mb-1 flex items-center gap-2">
-                              {discussion.title}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-2 gap-2">
+                          <div className="min-w-0">
+                            <h3 className="text-base sm:text-lg font-semibold text-forest-800 mb-1 flex items-start gap-2 leading-tight">
+                              <span className="break-words">{discussion.title}</span>
                               {discussion.isHot && (
-                                <Badge variant="destructive" className="text-xs">
+                                <Badge variant="destructive" className="text-xs flex-shrink-0">
                                   🔥 Hot
                                 </Badge>
                               )}
                             </h3>
-                            <div className="flex items-center gap-3 text-sm text-forest-600">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-xs sm:text-sm text-forest-600">
                               <span>by {discussion.author}</span>
-                              <span>•</span>
+                              <span className="hidden sm:inline">•</span>
                               <span className="flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
                                 {discussion.time}
                               </span>
-                              <Badge variant="outline" className="ml-2">
-                                {discussion.category}
-                              </Badge>
                             </div>
                           </div>
+                          <Badge variant="outline" className="text-xs self-start sm:self-auto flex-shrink-0">
+                            {discussion.category}
+                          </Badge>
                         </div>
                         
-                        <p className="text-forest-600 mb-4">{discussion.preview}</p>
+                        <p className="text-forest-600 mb-3 sm:mb-4 text-sm sm:text-base leading-relaxed">{discussion.preview}</p>
                         
-                        <div className="flex items-center gap-6">
-                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors">
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
+                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors text-sm">
                             <MessageSquare className="h-4 w-4" />
-                            <span className="text-sm">{discussion.replies} replies</span>
+                            <span>{discussion.replies} replies</span>
                           </button>
-                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors">
+                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors text-sm">
                             <ThumbsUp className="h-4 w-4" />
-                            <span className="text-sm">{discussion.likes} likes</span>
+                            <span>{discussion.likes} likes</span>
                           </button>
-                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors">
+                          <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors text-sm">
                             <Share className="h-4 w-4" />
-                            <span className="text-sm">Share</span>
+                            <span>Share</span>
                           </button>
                         </div>
                       </div>
@@ -321,7 +321,7 @@ const Community = () => {
                 <Button 
                   variant="outline" 
                   onClick={loadMoreDiscussions}
-                  className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white"
+                  className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white text-sm sm:text-base"
                 >
                   Load More Discussions
                 </Button>
@@ -330,107 +330,145 @@ const Community = () => {
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Community Stats */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  Community Stats
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-forest-600">Total Members</span>
-                    <span className="font-semibold text-forest-800">12,453</span>
+          {!isMobile && (
+            <div className="lg:col-span-1 space-y-4 sm:space-y-6">
+              {/* Community Stats */}
+              <Card>
+                <CardHeader className="pb-3 sm:pb-4">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <Users className="h-4 w-4 sm:h-5 sm:w-5" />
+                    Community Stats
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 sm:space-y-3">
+                    <div className="flex justify-between text-sm sm:text-base">
+                      <span className="text-forest-600">Total Members</span>
+                      <span className="font-semibold text-forest-800">12,453</span>
+                    </div>
+                    <div className="flex justify-between text-sm sm:text-base">
+                      <span className="text-forest-600">Active Today</span>
+                      <span className="font-semibold text-forest-800">1,234</span>
+                    </div>
+                    <div className="flex justify-between text-sm sm:text-base">
+                      <span className="text-forest-600">Total Discussions</span>
+                      <span className="font-semibold text-forest-800">3,567</span>
+                    </div>
+                    <div className="flex justify-between text-sm sm:text-base">
+                      <span className="text-forest-600">This Week</span>
+                      <span className="font-semibold text-forest-800">89</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-forest-600">Active Today</span>
-                    <span className="font-semibold text-forest-800">1,234</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-forest-600">Total Discussions</span>
-                    <span className="font-semibold text-forest-800">3,567</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-forest-600">This Week</span>
-                    <span className="font-semibold text-forest-800">89</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Featured Experts */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Featured Experts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {featuredExperts.map((expert, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <img
-                        src={expert.avatar}
-                        alt={expert.name}
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-forest-800 truncate">{expert.name}</h4>
-                        <p className="text-sm text-forest-600 truncate">{expert.title}</p>
-                        <p className="text-xs text-forest-500">{expert.posts} posts • {expert.followers} followers</p>
+              {/* Featured Experts */}
+              <Card>
+                <CardHeader className="pb-3 sm:pb-4">
+                  <CardTitle className="text-base sm:text-lg">Featured Experts</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3 sm:space-y-4">
+                    {featuredExperts.map((expert, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <img
+                          src={expert.avatar}
+                          alt={expert.name}
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-forest-800 truncate text-sm sm:text-base">{expert.name}</h4>
+                          <p className="text-xs sm:text-sm text-forest-600 truncate">{expert.title}</p>
+                          <p className="text-xs text-forest-500">{expert.posts} posts • {expert.followers} followers</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
 
-            {/* Trending Topics */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Trending Topics
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {trendingTopics.map((topic, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <span className="text-forest-700 hover:text-forest-800 cursor-pointer font-medium">
-                        {topic.tag}
-                      </span>
-                      <span className="text-sm text-forest-600">{topic.posts}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+              {/* Trending Topics */}
+              <Card>
+                <CardHeader className="pb-3 sm:pb-4">
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
+                    Trending Topics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {trendingTopics.map((topic, index) => (
+                      <div key={index} className="flex items-center justify-between text-sm sm:text-base">
+                        <span className="text-forest-700 hover:text-forest-800 cursor-pointer font-medium truncate">
+                          {topic.tag}
+                        </span>
+                        <span className="text-xs sm:text-sm text-forest-600 flex-shrink-0 ml-2">{topic.posts}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
 
-            {/* Quick Links */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Links</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <Link to="/advisor" className="block text-forest-600 hover:text-forest-800 transition-colors">
-                    🧑‍🌾 Find an Expert
-                  </Link>
-                  <Link to="/services" className="block text-forest-600 hover:text-forest-800 transition-colors">
-                    🔧 Book Farm Services
-                  </Link>
-                  <Link to="/products" className="block text-forest-600 hover:text-forest-800 transition-colors">
-                    🛒 Shop Products
-                  </Link>
-                  <Link to="/crop-prices" className="block text-forest-600 hover:text-forest-800 transition-colors">
-                    📈 Check Crop Prices
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+              {/* Quick Links */}
+              <Card>
+                <CardHeader className="pb-3 sm:pb-4">
+                  <CardTitle className="text-base sm:text-lg">Quick Links</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <Link to="/advisor" className="block text-forest-600 hover:text-forest-800 transition-colors text-sm sm:text-base">
+                      🧑‍🌾 Find Expert
+                    </Link>
+                    <Link to="/services" className="block text-forest-600 hover:text-forest-800 transition-colors text-sm sm:text-base">
+                      🔧 Services
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Mobile Sidebar Content */}
+          {isMobile && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-base">
+                    <Users className="h-4 w-4" />
+                    Stats
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="text-center">
+                      <div className="font-semibold text-forest-800">12,453</div>
+                      <div className="text-forest-600">Members</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-semibold text-forest-800">1,234</div>
+                      <div className="text-forest-600">Active</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">Quick Links</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 text-sm">
+                    <Link to="/advisor" className="block text-forest-600 hover:text-forest-800 transition-colors">
+                      🧑‍🌾 Find Expert
+                    </Link>
+                    <Link to="/services" className="block text-forest-600 hover:text-forest-800 transition-colors">
+                      🔧 Services
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
     </div>

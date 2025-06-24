@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from '@/hooks/use-mobile';
 import Fertilizer from '../../images/PremiumOrganicFertilizerCoverage.jpg'
 import soilConditioner from '../../images/soil-conditioner-1-1.jpg'
 import Organicpesticides from '../../images/tractor-field-applies-fertilizer-soil.avif'
@@ -13,6 +14,7 @@ import AddToCartButton from './AddToCartButton';
 
 const TopProducts = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   const products = [
     // Fertilizers
@@ -131,39 +133,42 @@ const TopProducts = () => {
     }
   ];
 
+  const itemsPerSlide = isMobile ? 1 : 3;
+  const totalSlides = Math.ceil(products.length / itemsPerSlide);
+
   // Auto-scroll functionality
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % Math.max(1, Math.ceil(products.length / 3)));
-    }, 3000); // Auto-scroll every 3 seconds
+      setCurrentIndex((prev) => (prev + 1) % totalSlides);
+    }, 3000);
 
     return () => clearInterval(interval);
-  }, [products.length]);
+  }, [totalSlides]);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % Math.max(1, Math.ceil(products.length / 3)));
+    setCurrentIndex((prev) => (prev + 1) % totalSlides);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + Math.max(1, Math.ceil(products.length / 3))) % Math.max(1, Math.ceil(products.length / 3)));
+    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-wheat-50">
+    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-wheat-50">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-16">
-          <div>
-            <h2 className="text-4xl font-bold text-forest-800 mb-4">Top Products</h2>
-            <p className="text-xl text-forest-600">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 sm:mb-12 lg:mb-16 gap-4">
+          <div className="w-full sm:w-auto">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-forest-800 mb-2 sm:mb-4">Top Products</h2>
+            <p className="text-base sm:text-lg lg:text-xl text-forest-600">
               Best-selling farming essentials across all categories
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 self-end sm:self-auto">
             <Button 
               variant="outline" 
               size="sm" 
               onClick={prevSlide}
-              className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white"
+              className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white p-2"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -171,7 +176,7 @@ const TopProducts = () => {
               variant="outline" 
               size="sm" 
               onClick={nextSlide}
-              className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white"
+              className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white p-2"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -180,45 +185,45 @@ const TopProducts = () => {
 
         <div className="relative overflow-hidden">
           <div 
-            className="flex transition-transform duration-500 ease-in-out gap-6"
+            className="flex transition-transform duration-500 ease-in-out gap-4 sm:gap-6"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            {Array.from({ length: Math.ceil(products.length / 3) }, (_, slideIndex) => (
-              <div key={slideIndex} className="min-w-full flex gap-6">
-                {products.slice(slideIndex * 3, slideIndex * 3 + 3).map((product) => (
-                  <div key={product.id} className="flex-1 min-w-0">
-                    <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-forest-200 bg-white h-full">
+            {Array.from({ length: totalSlides }, (_, slideIndex) => (
+              <div key={slideIndex} className={`min-w-full flex gap-4 sm:gap-6 ${isMobile ? 'justify-center' : ''}`}>
+                {products.slice(slideIndex * itemsPerSlide, slideIndex * itemsPerSlide + itemsPerSlide).map((product) => (
+                  <div key={product.id} className={`${isMobile ? 'w-full max-w-sm' : 'flex-1'} min-w-0`}>
+                    <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 border-forest-200 bg-white h-full">
                       <div className="relative">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-48 object-cover rounded-t-lg"
+                          className="w-full h-40 sm:h-48 object-cover rounded-t-lg"
                         />
-                        <Badge className="absolute top-3 right-3 bg-wheat-500 text-soil-800">
+                        <Badge className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-wheat-500 text-soil-800 text-xs">
                           {product.badge}
                         </Badge>
-                        <Badge variant="outline" className="absolute top-3 left-3 bg-white/90">
+                        <Badge variant="outline" className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-white/90 text-xs">
                           {product.category}
                         </Badge>
                       </div>
-                      <CardHeader>
-                        <CardTitle className="text-forest-700 text-lg">{product.name}</CardTitle>
-                        <CardDescription className="text-forest-600">{product.description}</CardDescription>
+                      <CardHeader className="p-4 sm:p-6">
+                        <CardTitle className="text-forest-700 text-base sm:text-lg leading-tight">{product.name}</CardTitle>
+                        <CardDescription className="text-forest-600 text-sm leading-relaxed">{product.description}</CardDescription>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="p-4 sm:p-6 pt-0">
                         <div className="flex justify-between items-center mb-4">
                           <div className="flex items-center gap-2">
-                            <span className="text-2xl font-bold text-forest-700">{product.price}</span>
+                            <span className="text-xl sm:text-2xl font-bold text-forest-700">{product.price}</span>
                             {product.originalPrice && (
-                              <span className="text-sm text-gray-500 line-through">{product.originalPrice}</span>
+                              <span className="text-xs sm:text-sm text-gray-500 line-through">{product.originalPrice}</span>
                             )}
                           </div>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            className="flex-1 border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white"
+                            className="flex-1 border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white text-sm"
                             asChild
                           >
                             <Link to={`/products/${product.id}`}>
@@ -229,7 +234,7 @@ const TopProducts = () => {
                             productId={product.id}
                             productName={product.name}
                             size="sm"
-                            className="flex-1"
+                            className="flex-1 text-sm"
                           />
                         </div>
                       </CardContent>
@@ -242,12 +247,12 @@ const TopProducts = () => {
         </div>
 
         {/* Carousel Indicators */}
-        <div className="flex justify-center mt-8 space-x-2">
-          {Array.from({ length: Math.ceil(products.length / 3) }, (_, index) => (
+        <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
+          {Array.from({ length: totalSlides }, (_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
                 currentIndex === index ? 'bg-forest-600' : 'bg-forest-300'
               }`}
             />

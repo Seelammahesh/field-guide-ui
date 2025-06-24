@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,6 +29,7 @@ import {
   Home,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useIsMobile } from '@/hooks/use-mobile';
 import Profile from "./Profile";
 import Orders from "./Orders";
 import Bookings from "./Bookings";
@@ -41,6 +41,7 @@ const Dashboard = () => {
   const userName = "Sateesh";
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("dashboard");
+  const isMobile = useIsMobile();
 
   const sidebarItems = [
     { title: "Dashboard", key: "dashboard", icon: Home },
@@ -127,15 +128,15 @@ const Dashboard = () => {
         return <SettingsPage />;
       default:
         return (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button className="bg-forest-600 hover:bg-forest-700 text-white p-6 h-auto justify-start" asChild>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+              <Button className="bg-forest-600 hover:bg-forest-700 text-white p-4 sm:p-6 h-auto justify-start text-left" asChild>
                 <Link to="/services">
-                  <Plus className="w-5 h-5 mr-3" />
-                  <div className="text-left">
-                    <div className="font-semibold">Book a Service</div>
-                    <div className="text-sm opacity-90">
+                  <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-semibold text-sm sm:text-base truncate">Book a Service</div>
+                    <div className="text-xs sm:text-sm opacity-90 truncate">
                       Schedule farm services
                     </div>
                   </div>
@@ -143,50 +144,50 @@ const Dashboard = () => {
               </Button>
               <Button
                 variant="outline"
-                className="border-forest-300 text-forest-700 hover:bg-forest-50 p-6 h-auto justify-start"
+                className="border-forest-300 text-forest-700 hover:bg-forest-50 p-4 sm:p-6 h-auto justify-start text-left"
                 asChild
               >
                 <Link to="/products">
-                  <Eye className="w-5 h-5 mr-3" />
-                  <div className="text-left">
-                    <div className="font-semibold">View Products</div>
-                    <div className="text-sm opacity-70">Browse our catalog</div>
+                  <Eye className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-semibold text-sm sm:text-base truncate">View Products</div>
+                    <div className="text-xs sm:text-sm opacity-70 truncate">Browse our catalog</div>
                   </div>
                 </Link>
               </Button>
               <Button
                 variant="outline"
-                className="border-forest-300 text-forest-700 hover:bg-forest-50 p-6 h-auto justify-start"
+                className="border-forest-300 text-forest-700 hover:bg-forest-50 p-4 sm:p-6 h-auto justify-start text-left sm:col-span-2 lg:col-span-1"
                 onClick={() => setActiveSection("crop-prices")}
               >
-                <BarChart3 className="w-5 h-5 mr-3" />
-                <div className="text-left">
-                  <div className="font-semibold">Check Crop Prices</div>
-                  <div className="text-sm opacity-70">Market updates</div>
+                <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
+                <div className="min-w-0">
+                  <div className="font-semibold text-sm sm:text-base truncate">Check Crop Prices</div>
+                  <div className="text-xs sm:text-sm opacity-70 truncate">Market updates</div>
                 </div>
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
               {/* Main Content Area */}
-              <div className="lg:col-span-2 space-y-6">
+              <div className="xl:col-span-2 space-y-4 sm:space-y-6">
                 {/* Recent Activity */}
                 <Card className="border-forest-200 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="text-forest-800 flex items-center gap-2">
-                      <Bell className="w-5 h-5" />
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-forest-800 flex items-center gap-2 text-base sm:text-lg">
+                      <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
                       Recent Activity
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
-                      {recentActivity.map((activity, index) => (
+                    <div className="space-y-2 sm:space-y-3">
+                      {recentActivity.slice(0, isMobile ? 5 : 7).map((activity, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-3 p-3 rounded-lg hover:bg-forest-50 transition-colors"
+                          className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-forest-50 transition-colors"
                         >
                           <div
-                            className={`w-2 h-2 rounded-full ${
+                            className={`w-2 h-2 rounded-full flex-shrink-0 ${
                               activity.type === "order"
                                 ? "bg-forest-500"
                                 : activity.type === "booking"
@@ -196,11 +197,11 @@ const Dashboard = () => {
                                 : "bg-forest-300"
                             }`}
                           />
-                          <div className="flex-1">
-                            <p className="text-forest-800 font-medium">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-forest-800 font-medium text-sm sm:text-base truncate">
                               {activity.action}
                             </p>
-                            <p className="text-forest-600 text-sm">
+                            <p className="text-forest-600 text-xs sm:text-sm">
                               {activity.time}
                             </p>
                           </div>
@@ -212,16 +213,17 @@ const Dashboard = () => {
 
                 {/* Recent Orders */}
                 <Card className="border-forest-200 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="text-forest-800 flex items-center justify-between">
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-forest-800 flex items-center justify-between text-base sm:text-lg">
                       <div className="flex items-center gap-2">
-                        <Package className="w-5 h-5" />
+                        <Package className="w-4 h-4 sm:w-5 sm:h-5" />
                         Recent Orders
                       </div>
                       <Button 
                         variant="outline" 
                         size="sm" 
                         onClick={() => setActiveSection("orders")}
+                        className="text-xs sm:text-sm"
                       >
                         View All
                       </Button>
@@ -229,87 +231,121 @@ const Dashboard = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-forest-200">
-                            <th className="text-left p-3 font-semibold text-forest-700">
-                              Product
-                            </th>
-                            <th className="text-left p-3 font-semibold text-forest-700">
-                              Status
-                            </th>
-                            <th className="text-left p-3 font-semibold text-forest-700">
-                              Delivery
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {recentOrders.map((order, index) => (
-                            <tr
-                              key={index}
-                              className="border-b border-forest-100 hover:bg-forest-50"
-                            >
-                              <td className="p-3 text-forest-800">
-                                {order.product}
-                              </td>
-                              <td className="p-3">
-                                <Badge
-                                  variant={
-                                    order.status === "Delivered"
-                                      ? "default"
-                                      : order.status === "In Transit"
-                                      ? "secondary"
-                                      : "outline"
-                                  }
-                                  className={
-                                    order.status === "Delivered"
-                                      ? "bg-forest-100 text-forest-700"
-                                      : order.status === "In Transit"
-                                      ? "bg-soil-100 text-soil-700"
-                                      : "border-wheat-300 text-wheat-700"
-                                  }
+                      <div className="min-w-full">
+                        {isMobile ? (
+                          <div className="space-y-3">
+                            {recentOrders.map((order, index) => (
+                              <div key={index} className="p-3 border border-forest-200 rounded-lg">
+                                <div className="flex justify-between items-start mb-2">
+                                  <h4 className="font-medium text-forest-800 text-sm">{order.product}</h4>
+                                  <Badge
+                                    variant={
+                                      order.status === "Delivered"
+                                        ? "default"
+                                        : order.status === "In Transit"
+                                        ? "secondary"
+                                        : "outline"
+                                    }
+                                    className={`text-xs ${
+                                      order.status === "Delivered"
+                                        ? "bg-forest-100 text-forest-700"
+                                        : order.status === "In Transit"
+                                        ? "bg-soil-100 text-soil-700"
+                                        : "border-wheat-300 text-wheat-700"
+                                    }`}
+                                  >
+                                    {order.status}
+                                  </Badge>
+                                </div>
+                                <p className="text-forest-600 text-sm">{order.deliveryDate}</p>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b border-forest-200">
+                                <th className="text-left p-3 font-semibold text-forest-700 text-sm">
+                                  Product
+                                </th>
+                                <th className="text-left p-3 font-semibold text-forest-700 text-sm">
+                                  Status
+                                </th>
+                                <th className="text-left p-3 font-semibold text-forest-700 text-sm">
+                                  Delivery
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {recentOrders.map((order, index) => (
+                                <tr
+                                  key={index}
+                                  className="border-b border-forest-100 hover:bg-forest-50"
                                 >
-                                  {order.status}
-                                </Badge>
-                              </td>
-                              <td className="p-3 text-forest-600">
-                                {order.deliveryDate}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                                  <td className="p-3 text-forest-800 text-sm">
+                                    {order.product}
+                                  </td>
+                                  <td className="p-3">
+                                    <Badge
+                                      variant={
+                                        order.status === "Delivered"
+                                          ? "default"
+                                          : order.status === "In Transit"
+                                          ? "secondary"
+                                          : "outline"
+                                      }
+                                      className={`text-xs ${
+                                        order.status === "Delivered"
+                                          ? "bg-forest-100 text-forest-700"
+                                          : order.status === "In Transit"
+                                          ? "bg-soil-100 text-soil-700"
+                                          : "border-wheat-300 text-wheat-700"
+                                      }`}
+                                    >
+                                      {order.status}
+                                    </Badge>
+                                  </td>
+                                  <td className="p-3 text-forest-600 text-sm">
+                                    {order.deliveryDate}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        )}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Ongoing Services */}
                 <Card className="border-forest-200 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="text-forest-800 flex items-center justify-between">
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-forest-800 flex items-center justify-between text-base sm:text-lg">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-5 h-5" />
+                        <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
                         Service History
                       </div>
                       <Button 
                         variant="outline" 
                         size="sm" 
                         onClick={() => setActiveSection("bookings")}
+                        className="text-xs sm:text-sm"
                       >
                         View All
                       </Button>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       {ongoingServices.map((service, index) => (
-                        <div key={index} className="p-4 border border-forest-200 rounded-lg">
+                        <div key={index} className="p-3 sm:p-4 border border-forest-200 rounded-lg">
                           <div className="flex justify-between items-center mb-2">
-                            <h4 className="font-medium text-forest-800">{service.service}</h4>
-                            <span className="text-sm text-forest-600">{service.status}</span>
+                            <h4 className="font-medium text-forest-800 text-sm sm:text-base">{service.service}</h4>
+                            <span className="text-xs sm:text-sm text-forest-600">{service.status}</span>
                           </div>
                           <Progress value={service.progress} className="h-2" />
-                          <p className="text-sm text-forest-600 mt-1">{service.progress}% Complete</p>
+                          <p className="text-xs sm:text-sm text-forest-600 mt-1">{service.progress}% Complete</p>
                         </div>
                       ))}
                     </div>
@@ -318,25 +354,25 @@ const Dashboard = () => {
               </div>
 
               {/* Sidebar Content */}
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {/* Quick Stats */}
                 <Card className="border-forest-200 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="text-forest-800">Quick Stats</CardTitle>
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-forest-800 text-base sm:text-lg">Quick Stats</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div className="flex justify-between">
-                        <span className="text-forest-600">Active Orders</span>
-                        <span className="font-semibold text-forest-800">3</span>
+                        <span className="text-forest-600 text-sm sm:text-base">Active Orders</span>
+                        <span className="font-semibold text-forest-800 text-sm sm:text-base">3</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-forest-600">Pending Services</span>
-                        <span className="font-semibold text-forest-800">2</span>
+                        <span className="text-forest-600 text-sm sm:text-base">Pending Services</span>
+                        <span className="font-semibold text-forest-800 text-sm sm:text-base">2</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-forest-600">Farm Size</span>
-                        <span className="font-semibold text-forest-800">25 acres</span>
+                        <span className="text-forest-600 text-sm sm:text-base">Farm Size</span>
+                        <span className="font-semibold text-forest-800 text-sm sm:text-base">25 acres</span>
                       </div>
                     </div>
                   </CardContent>
@@ -344,19 +380,19 @@ const Dashboard = () => {
 
                 {/* Recommendations */}
                 <Card className="border-forest-200 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="text-forest-800">Recommended for You</CardTitle>
+                  <CardHeader className="pb-3 sm:pb-4">
+                    <CardTitle className="text-forest-800 text-base sm:text-lg">Recommended for You</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
+                    <div className="space-y-2 sm:space-y-3">
                       {recommendations.map((item, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 border border-forest-200 rounded-lg hover:bg-forest-50 transition-colors">
-                          <span className="text-2xl">{item.image}</span>
-                          <div className="flex-1">
-                            <h4 className="font-medium text-forest-800">{item.name}</h4>
-                            <p className="text-forest-600">{item.price}</p>
+                        <div key={index} className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border border-forest-200 rounded-lg hover:bg-forest-50 transition-colors">
+                          <span className="text-xl sm:text-2xl">{item.image}</span>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-medium text-forest-800 text-sm sm:text-base truncate">{item.name}</h4>
+                            <p className="text-forest-600 text-xs sm:text-sm">{item.price}</p>
                           </div>
-                          <Button size="sm" variant="outline">Add</Button>
+                          <Button size="sm" variant="outline" className="text-xs sm:text-sm px-2 sm:px-3">Add</Button>
                         </div>
                       ))}
                     </div>
@@ -372,32 +408,32 @@ const Dashboard = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gradient-to-br from-wheat-50 to-forest-50">
-        <Sidebar className="border-r border-forest-200">
-          <SidebarHeader className="p-6 border-b border-forest-200">
-            <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div className="w-10 h-10 bg-forest-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">🌾</span>
+        <Sidebar className={`border-r border-forest-200 ${isMobile ? 'w-64' : ''}`}>
+          <SidebarHeader className="p-4 sm:p-6 border-b border-forest-200">
+            <Link to="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-forest-600 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-sm sm:text-lg">🌾</span>
               </div>
               <div>
-                <h2 className="font-bold text-forest-800">FarmHub</h2>
-                <p className="text-sm text-forest-600">Dashboard</p>
+                <h2 className="font-bold text-forest-800 text-sm sm:text-base">FarmHub</h2>
+                <p className="text-xs sm:text-sm text-forest-600">Dashboard</p>
               </div>
             </Link>
           </SidebarHeader>
 
-          <SidebarContent className="p-4">
+          <SidebarContent className="p-2 sm:p-4">
             <SidebarMenu>
               {sidebarItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     onClick={() => setActiveSection(item.key)}
-                    className={`hover:bg-forest-100 rounded-lg transition-colors ${
+                    className={`hover:bg-forest-100 rounded-lg transition-colors w-full ${
                       activeSection === item.key ? 'bg-forest-100 text-forest-800' : ''
                     }`}
                   >
-                    <div className="flex items-center gap-3 p-3 w-full">
-                      <item.icon className="w-5 h-5 text-forest-600" />
-                      <span className="text-forest-700 font-medium">
+                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 w-full">
+                      <item.icon className="w-4 h-4 sm:w-5 sm:h-5 text-forest-600 flex-shrink-0" />
+                      <span className="text-forest-700 font-medium text-sm sm:text-base truncate">
                         {item.title}
                       </span>
                     </div>
@@ -408,24 +444,24 @@ const Dashboard = () => {
           </SidebarContent>
         </Sidebar>
 
-        <SidebarInset className="flex-1">
-          <header className="sticky top-0 z-10 bg-white border-b border-forest-200 p-4">
-            <div className="flex items-center gap-4">
+        <SidebarInset className="flex-1 min-w-0">
+          <header className="sticky top-0 z-10 bg-white border-b border-forest-200 p-3 sm:p-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <SidebarTrigger className="text-forest-600 hover:bg-forest-100" />
-              <div className="flex-1">
-                <h1 className="text-2xl font-bold text-forest-800">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-forest-800 truncate">
                   Welcome back, {userName}! 👋
                 </h1>
-                <p className="text-forest-600">
+                <p className="text-forest-600 text-sm sm:text-base truncate">
                   Here's what's happening on your farm today
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" asChild className="border-forest-300 text-forest-700 hover:bg-forest-50">
+              <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+                <Button variant="outline" size="sm" asChild className="border-forest-300 text-forest-700 hover:bg-forest-50 hidden sm:flex">
                   <Link to="/">
-                    <Home className="w-4 h-4 mr-2" />
-                    Home
+                    <Home className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                    <span className="text-xs sm:text-sm">Home</span>
                   </Link>
                 </Button>
 
@@ -433,11 +469,11 @@ const Dashboard = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-forest-300 text-forest-700 hover:bg-forest-50"
+                    className="border-forest-300 text-forest-700 hover:bg-forest-50 p-2 sm:p-3"
                     onClick={() => navigate("/notification")}
                   >
-                    <Bell className="w-4 h-4 mr-2" />
-                    Notifications
+                    <Bell className="w-3 h-3 sm:w-4 sm:h-4" />
+                    {!isMobile && <span className="ml-1 sm:ml-2 text-xs sm:text-sm">Notifications</span>}
                   </Button>
 
                   {count > 0 && (
@@ -450,7 +486,7 @@ const Dashboard = () => {
             </div>
           </header>
 
-          <main className="p-6 overflow-y-auto max-h-[calc(100vh-80px)]">
+          <main className="p-3 sm:p-6 overflow-y-auto max-h-[calc(100vh-80px)]">
             {renderContent()}
           </main>
         </SidebarInset>
