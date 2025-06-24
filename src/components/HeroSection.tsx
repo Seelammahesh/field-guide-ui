@@ -25,17 +25,17 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
+      <div className="relative z-10 text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 animate-fade-in leading-tight">
           Empowering Farmers with Tools for Success
         </h1>
-        <p className="text-xl md:text-2xl text-wheat-100 mb-8 animate-fade-in">
+        <p className="text-lg sm:text-xl md:text-2xl text-wheat-100 mb-6 sm:mb-8 animate-fade-in max-w-4xl mx-auto leading-relaxed">
           Weather updates, crop prices, and more at your fingertips
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in max-w-lg sm:max-w-none mx-auto">
           <Button 
             size="lg" 
-            className="bg-forest-600 hover:bg-forest-700 text-white px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+            className="bg-forest-600 hover:bg-forest-700 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
             onClick={() => navigate('/dashboard')}
           >
             Go to Dashboard 📊
@@ -43,7 +43,7 @@ const HeroSection = () => {
           <Button 
             size="lg" 
             variant="outline" 
-            className="bg-soil-600 hover:bg-soil-700 text-white border-soil-600 hover:border-soil-700 px-8 py-4 text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+            className="bg-soil-600 hover:bg-soil-700 text-white border-soil-600 hover:border-soil-700 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
             onClick={handleBookService}
           >
             Book Services 📅
@@ -52,9 +52,9 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-gentle">
-        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-gentle">
+        <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white rounded-full flex justify-center">
+          <div className="w-1 h-2 sm:h-3 bg-white rounded-full mt-2"></div>
         </div>
       </div>
     </section>

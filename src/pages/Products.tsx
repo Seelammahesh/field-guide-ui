@@ -350,7 +350,7 @@ const Products = () => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`h-4 w-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+        className={`h-3 w-3 sm:h-4 sm:w-4 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
       />
     ));
   };
@@ -361,74 +361,74 @@ const Products = () => {
         <img 
           src={product.image} 
           alt={product.name} 
-          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" 
+          className="w-full h-40 sm:h-48 object-cover group-hover:scale-110 transition-transform duration-500" 
         />
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1">
+        <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1">
           {product.isBestSeller && (
-            <Badge className="bg-red-500 text-white text-xs px-2 py-1">🔥 Best Seller</Badge>
+            <Badge className="bg-red-500 text-white text-xs px-1.5 py-0.5 sm:px-2 sm:py-1">🔥 Best Seller</Badge>
           )}
           {product.isNewArrival && (
-            <Badge className="bg-blue-500 text-white text-xs px-2 py-1">✨ New</Badge>
+            <Badge className="bg-blue-500 text-white text-xs px-1.5 py-0.5 sm:px-2 sm:py-1">✨ New</Badge>
           )}
           {product.isEcoFriendly && (
-            <Badge className="bg-green-500 text-white text-xs px-2 py-1 flex items-center gap-1">
-              <Leaf className="h-3 w-3" />
+            <Badge className="bg-green-500 text-white text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 flex items-center gap-1">
+              <Leaf className="h-2 w-2 sm:h-3 sm:w-3" />
               Eco
             </Badge>
           )}
         </div>
         
         {/* Wishlist & Quick View */}
-        <div className="absolute top-3 right-3 flex flex-col gap-2">
+        <div className="absolute top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-2">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => toggleWishlist(product.id)}
-            className={`p-2 rounded-full ${wishlist.includes(product.id) ? 'bg-red-100 text-red-500' : 'bg-white/80 text-gray-600'} hover:bg-white transition-all`}
+            className={`p-1.5 sm:p-2 rounded-full ${wishlist.includes(product.id) ? 'bg-red-100 text-red-500' : 'bg-white/80 text-gray-600'} hover:bg-white transition-all`}
           >
-            <Heart className="h-4 w-4" />
+            <Heart className="h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
         </div>
 
         {/* Discount Badge */}
         {product.originalPrice > product.price && (
-          <div className="absolute bottom-3 right-3">
-            <Badge className="bg-orange-500 text-white font-bold">
+          <div className="absolute bottom-2 sm:bottom-3 right-2 sm:right-3">
+            <Badge className="bg-orange-500 text-white font-bold text-xs">
               {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
             </Badge>
           </div>
         )}
       </div>
 
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 px-3 sm:px-6">
         <div className="flex justify-between items-start mb-1">
           <Badge variant="outline" className="text-xs text-forest-600 border-forest-600">
             {product.category}
           </Badge>
           <span className="text-xs text-gray-500">{product.brand}</span>
         </div>
-        <CardTitle className="text-lg font-bold text-forest-800 group-hover:text-forest-600 transition-colors line-clamp-2">
+        <CardTitle className="text-sm sm:text-lg font-bold text-forest-800 group-hover:text-forest-600 transition-colors line-clamp-2">
           {product.name}
         </CardTitle>
-        <CardDescription className="text-sm text-gray-600 line-clamp-2">
+        <CardDescription className="text-xs sm:text-sm text-gray-600 line-clamp-2">
           {product.description}
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="pt-0">
+      <CardContent className="pt-0 px-3 sm:px-6">
         {/* Rating */}
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-1 sm:gap-2 mb-2 sm:mb-3">
           <div className="flex">{renderStars(product.rating)}</div>
-          <span className="text-sm text-gray-600">({product.reviews})</span>
+          <span className="text-xs sm:text-sm text-gray-600">({product.reviews})</span>
         </div>
 
         {/* Price */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-forest-700">₹{product.price.toLocaleString()}</span>
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <span className="text-lg sm:text-2xl font-bold text-forest-700">₹{product.price.toLocaleString()}</span>
             {product.originalPrice > product.price && (
-              <span className="text-sm text-gray-500 line-through">₹{product.originalPrice.toLocaleString()}</span>
+              <span className="text-xs sm:text-sm text-gray-500 line-through">₹{product.originalPrice.toLocaleString()}</span>
             )}
           </div>
           <div className="text-right">
@@ -444,7 +444,7 @@ const Products = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            className="flex-1 border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white transition-all"
+            className="flex-1 border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white transition-all text-xs sm:text-sm"
             asChild
           >
             <Link to={`/products/${product.id}`}>
@@ -455,7 +455,7 @@ const Products = () => {
             productId={product.id}
             productName={product.name}
             size="sm"
-            className="flex-1 bg-forest-600 hover:bg-forest-700"
+            className="flex-1 bg-forest-600 hover:bg-forest-700 text-xs sm:text-sm"
           />
         </div>
       </CardContent>
@@ -464,45 +464,45 @@ const Products = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-wheat-50 via-forest-50 to-soil-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-forest-800 mb-4">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-forest-800 mb-3 sm:mb-4">
             Premium Farming Products
           </h1>
-          <p className="text-xl text-forest-600 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-forest-600 max-w-2xl mx-auto leading-relaxed">
             Discover our comprehensive range of high-quality agricultural products for modern farming
           </p>
         </div>
 
         {/* Deal of the Day */}
         {dealOfTheDay && (
-          <div className="mb-12">
+          <div className="mb-8 sm:mb-12">
             <Card className="bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 border-2 border-red-200 shadow-xl">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <Clock className="h-6 w-6 text-red-600" />
-                  <h2 className="text-2xl font-bold text-red-600">🔥 Deal of the Day</h2>
-                  <Badge className="bg-red-600 text-white animate-pulse">Limited Time</Badge>
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                  <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
+                  <h2 className="text-xl sm:text-2xl font-bold text-red-600">🔥 Deal of the Day</h2>
+                  <Badge className="bg-red-600 text-white animate-pulse text-xs sm:text-sm">Limited Time</Badge>
                 </div>
-                <div className="flex flex-col lg:flex-row items-center gap-6">
-                  <img src={dealOfTheDay.image} alt={dealOfTheDay.name} className="w-full lg:w-64 h-48 object-cover rounded-lg shadow-lg" />
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-forest-800 mb-2">{dealOfTheDay.name}</h3>
-                    <p className="text-forest-600 mb-4">{dealOfTheDay.description}</p>
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="text-3xl font-bold text-red-600">₹{dealOfTheDay.price.toLocaleString()}</span>
-                      <span className="text-xl text-gray-500 line-through">₹{dealOfTheDay.originalPrice.toLocaleString()}</span>
-                      <Badge variant="destructive" className="text-lg px-3 py-1">
+                <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6">
+                  <img src={dealOfTheDay.image} alt={dealOfTheDay.name} className="w-full lg:w-48 xl:w-64 h-40 sm:h-48 object-cover rounded-lg shadow-lg" />
+                  <div className="flex-1 text-center lg:text-left">
+                    <h3 className="text-xl sm:text-2xl font-bold text-forest-800 mb-2">{dealOfTheDay.name}</h3>
+                    <p className="text-forest-600 mb-3 sm:mb-4 text-sm sm:text-base">{dealOfTheDay.description}</p>
+                    <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 mb-3 sm:mb-4 justify-center lg:justify-start">
+                      <span className="text-2xl sm:text-3xl font-bold text-red-600">₹{dealOfTheDay.price.toLocaleString()}</span>
+                      <span className="text-lg sm:text-xl text-gray-500 line-through">₹{dealOfTheDay.originalPrice.toLocaleString()}</span>
+                      <Badge variant="destructive" className="text-sm sm:text-lg px-2 sm:px-3 py-1">
                         Save ₹{(dealOfTheDay.originalPrice - dealOfTheDay.price).toLocaleString()}
                       </Badge>
                     </div>
                     <Button 
                       size="lg"
-                      className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
+                      className="bg-red-600 hover:bg-red-700 text-white shadow-lg w-full sm:w-auto text-sm sm:text-base"
                       onClick={() => navigate(`/products/${dealOfTheDay.id}`)}
                     >
-                      <ShoppingCart className="h-5 w-5 mr-2" />
+                      <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                       Get This Deal Now
                     </Button>
                   </div>
@@ -512,17 +512,17 @@ const Products = () => {
           </div>
         )}
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
           {/* Sidebar Filters */}
           <div className="lg:w-1/4">
             <Card className="sticky top-24 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-forest-800">
-                  <Filter className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 text-forest-800 text-lg sm:text-xl">
+                  <Filter className="h-4 w-4 sm:h-5 sm:w-5" />
                   Filters
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-4 sm:space-y-6">
                 {/* Search */}
                 <div>
                   <label className="text-sm font-medium mb-2 block text-forest-700">Search Products</label>
@@ -530,7 +530,7 @@ const Products = () => {
                     placeholder="Search products..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="border-forest-200 focus:border-forest-600"
+                    className="border-forest-200 focus:border-forest-600 text-sm"
                   />
                 </div>
 
@@ -543,7 +543,7 @@ const Products = () => {
                     {categories.map(category => (
                       <div
                         key={category.value}
-                        className={`p-3 rounded-lg cursor-pointer transition-all ${
+                        className={`p-2 sm:p-3 rounded-lg cursor-pointer transition-all text-sm ${
                           selectedCategory === category.value 
                             ? 'bg-forest-100 border-2 border-forest-600' 
                             : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
@@ -551,7 +551,7 @@ const Products = () => {
                         onClick={() => setSelectedCategory(category.value)}
                       >
                         <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium">{category.label}</span>
+                          <span className="font-medium">{category.label}</span>
                           <Badge variant="outline" className="text-xs">
                             {category.count}
                           </Badge>
@@ -589,7 +589,7 @@ const Products = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox id="eco-friendly" />
                       <label htmlFor="eco-friendly" className="text-sm font-medium flex items-center gap-2">
-                        <Leaf className="h-4 w-4 text-green-600" />
+                        <Leaf className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
                         Eco-Friendly
                       </label>
                     </div>
@@ -614,28 +614,29 @@ const Products = () => {
           {/* Product Grid */}
           <div className="lg:w-3/4">
             {/* Toolbar */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 mb-6 shadow-lg border-0">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div className="flex items-center gap-4">
-                  <p className="text-forest-600 font-medium">
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 shadow-lg border-0">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                  <p className="text-forest-600 font-medium text-sm sm:text-base">
                     {sortedProducts.length} products found
                   </p>
                   <Button
                     variant="outline"
+                    size="sm"
                     onClick={goToCart}
-                    className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white"
+                    className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white text-xs sm:text-sm"
                   >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
                   {/* Sort */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="border-forest-200">
-                        Sort by <ChevronDown className="h-4 w-4 ml-2" />
+                      <Button variant="outline" size="sm" className="border-forest-200 text-xs sm:text-sm">
+                        Sort by <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
@@ -653,25 +654,25 @@ const Products = () => {
                       variant={viewMode === 'grid' ? 'default' : 'ghost'}
                       size="sm"
                       onClick={() => setViewMode('grid')}
-                      className="rounded-none border-0"
+                      className="rounded-none border-0 px-2 sm:px-3"
                     >
-                      <Grid className="h-4 w-4" />
+                      <Grid className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                     <Button
                       variant={viewMode === 'list' ? 'default' : 'ghost'}
                       size="sm"
                       onClick={() => setViewMode('list')}
-                      className="rounded-none border-0"
+                      className="rounded-none border-0 px-2 sm:px-3"
                     >
-                      <List className="h-4 w-4" />
+                      <List className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Products - Changed from 3 columns to 2 columns on xl screens */}
-            <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
+            {/* Products Grid - 2 columns for all screen sizes */}
+            <div className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
               {sortedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -679,10 +680,10 @@ const Products = () => {
 
             {/* No Results */}
             {sortedProducts.length === 0 && (
-              <div className="text-center py-16">
-                <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-2xl font-bold text-forest-800 mb-2">No products found</h3>
-                <p className="text-forest-600 mb-4">Try adjusting your filters or search terms</p>
+              <div className="text-center py-12 sm:py-16">
+                <div className="text-4xl sm:text-6xl mb-4">🔍</div>
+                <h3 className="text-xl sm:text-2xl font-bold text-forest-800 mb-2">No products found</h3>
+                <p className="text-forest-600 mb-4 text-sm sm:text-base">Try adjusting your filters or search terms</p>
                 <Button onClick={() => {
                   setSelectedCategory('all');
                   setPriceRange('all');

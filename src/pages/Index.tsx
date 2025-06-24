@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Instagram, Youtube, ArrowDown, ArrowUp, Calendar } from 'lucide-react';
+import { Instagram, Youtube, Calendar } from 'lucide-react';
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -104,10 +105,10 @@ const Index = () => {
       {/* Quick Booking Form Modal */}
       {showBookingForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
+          <Card className="w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
                 Book a Service
               </CardTitle>
             </CardHeader>
@@ -217,7 +218,7 @@ const Index = () => {
                 <div className="flex gap-2">
                   <Button 
                     type="submit" 
-                    className="flex-1 bg-forest-600 hover:bg-forest-700"
+                    className="flex-1 bg-forest-600 hover:bg-forest-700 text-sm sm:text-base"
                     disabled={!selectedService || !selectedDate || !selectedTime || !formData.name || !formData.email || !formData.phone}
                   >
                     Book Service
@@ -226,6 +227,7 @@ const Index = () => {
                     type="button" 
                     variant="outline" 
                     onClick={() => setShowBookingForm(false)}
+                    className="text-sm sm:text-base"
                   >
                     Cancel
                   </Button>
@@ -255,37 +257,45 @@ const Index = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-soil-800 text-wheat-100 py-12 mt-20">
+      <footer className="bg-soil-800 text-wheat-100 py-8 sm:py-12 mt-12 sm:mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <h3 className="text-2xl font-bold mb-4 text-wheat-100">🌾 FarmHub</h3>
-              <p className="text-wheat-200 mb-4">Empowering farmers with modern tools and technology for sustainable agriculture.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            <div className="col-span-1 sm:col-span-2 lg:col-span-2">
+              <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-wheat-100">🌾 FarmHub</h3>
+              <p className="text-wheat-200 mb-3 sm:mb-4 text-sm sm:text-base leading-relaxed">Empowering farmers with modern tools and technology for sustainable agriculture.</p>
               <div className="flex space-x-4">
-                <Button variant="ghost" size="sm" className="text-wheat-200 hover:text-wheat-100 hover:bg-soil-700">
-                  <Instagram className="h-5 w-5" />
+                <Button variant="ghost" size="sm" className="text-wheat-200 hover:text-wheat-100 hover:bg-soil-700 p-2">
+                  <Instagram className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
-                <Button variant="ghost" size="sm" className="text-wheat-200 hover:text-wheat-100 hover:bg-soil-700">
-                  <Youtube className="h-5 w-5" />
+                <Button variant="ghost" size="sm" className="text-wheat-200 hover:text-wheat-100 hover:bg-soil-700 p-2">
+                  <Youtube className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-wheat-100">Quick Links</h4>
+              <h4 className="font-semibold mb-3 sm:mb-4 text-wheat-100 text-sm sm:text-base">Quick Links</h4>
               <ul className="space-y-2">
-                <li><Link to="/" className="text-wheat-200 hover:text-wheat-100 transition-colors">Home</Link></li>
-                <li><Link to="/dashboard" className="text-wheat-200 hover:text-wheat-100 transition-colors">Dashboard</Link></li>
-                <li><Link to="/products" className="text-wheat-200 hover:text-wheat-100 transition-colors">Products</Link></li>
-                <li><Link to="/services" className="text-wheat-200 hover:text-wheat-100 transition-colors">Services</Link></li>
-                <li><Link to="/weather-theme" className="text-wheat-200 hover:text-wheat-100 transition-colors">Themes</Link></li>
-                <li><Link to="/community" className="text-wheat-200 hover:text-wheat-100 transition-colors">Community</Link></li>
-                <li><Link to="/advisor" className="text-wheat-200 hover:text-wheat-100 transition-colors">Advisors</Link></li>
-                <li><Link to="/contact" className="text-wheat-200 hover:text-wheat-100 transition-colors">Contact</Link></li>
+                {[
+                  { to: "/", label: "Home" },
+                  { to: "/dashboard", label: "Dashboard" },
+                  { to: "/products", label: "Products" },
+                  { to: "/services", label: "Services" },
+                  { to: "/weather-theme", label: "Themes" },
+                  { to: "/community", label: "Community" },
+                  { to: "/advisor", label: "Advisors" },
+                  { to: "/contact", label: "Contact" }
+                ].map((link) => (
+                  <li key={link.to}>
+                    <Link to={link.to} className="text-wheat-200 hover:text-wheat-100 transition-colors text-xs sm:text-sm">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-wheat-100">Explore More</h4>
-              <ul className="space-y-2 text-wheat-200">
+              <h4 className="font-semibold mb-3 sm:mb-4 text-wheat-100 text-sm sm:text-base">Explore More</h4>
+              <ul className="space-y-2 text-wheat-200 text-xs sm:text-sm">
                 <li><Link to="/services" className="hover:text-wheat-100 transition-colors">All Services</Link></li>
                 <li><Link to="/plant-diseases" className="hover:text-wheat-100 transition-colors">Plant Diseases</Link></li>
                 <li><Link to="/profile" className="hover:text-wheat-100 transition-colors">Profile</Link></li>
@@ -294,8 +304,8 @@ const Index = () => {
               </ul>
             </div>
           </div>
-          <div className="border-t border-soil-600 mt-8 pt-8 text-center">
-            <p className="text-wheat-300">&copy; 2024 FarmHub. All rights reserved.</p>
+          <div className="border-t border-soil-600 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center">
+            <p className="text-wheat-300 text-xs sm:text-sm">&copy; 2024 FarmHub. All rights reserved.</p>
           </div>
         </div>
       </footer>
