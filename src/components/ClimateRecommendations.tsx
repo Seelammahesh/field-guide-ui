@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useWeatherTheme } from "@/contexts/WeatherThemeContext";
-import { Droplets, Sun, Cloud, Snowflake, Thermometer, Wind, Bug, Sprout } from "lucide-react";
+import { Droplets, Sun, Cloud, Snowflake, Wind, Bug, Sprout } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const ClimateRecommendations = () => {
@@ -26,10 +26,10 @@ const ClimateRecommendations = () => {
             "Monitor for increased pest activity"
           ]
         };
-      case 'hot':
+      case 'sunny':
         return {
-          icon: <Thermometer className="h-6 w-6 text-red-600" />,
-          title: "Hot Weather Recommendations",
+          icon: <Sun className="h-6 w-6 text-yellow-600" />,
+          title: "Sunny Weather Recommendations",
           pesticides: [
             { name: "Neem Oil", purpose: "Natural pest control", price: "₹179" },
             { name: "Spinosad", purpose: "Controls thrips & caterpillars", price: "₹349" },
@@ -41,34 +41,34 @@ const ClimateRecommendations = () => {
             "Watch for heat stress in crops"
           ]
         };
-      case 'cold':
+      case 'windy':
         return {
-          icon: <Wind className="h-6 w-6 text-cyan-600" />,
-          title: "Cold Weather Recommendations",
+          icon: <Wind className="h-6 w-6 text-gray-600" />,
+          title: "Windy Weather Recommendations",
           pesticides: [
             { name: "Paraffin Oil", purpose: "Winter spray for scale insects", price: "₹229" },
             { name: "Sulfur Dust", purpose: "Controls mites & powdery mildew", price: "₹149" },
             { name: "Bacillus thuringiensis", purpose: "Biological control", price: "₹199" }
           ],
           tips: [
-            "Protect plants from frost damage",
-            "Reduce pesticide applications",
+            "Protect plants from wind damage",
+            "Secure pesticide applications",
             "Focus on preventive measures"
           ]
         };
-      case 'sunny':
+      case 'snowy':
         return {
-          icon: <Sun className="h-6 w-6 text-yellow-600" />,
-          title: "Sunny Weather Recommendations",
+          icon: <Snowflake className="h-6 w-6 text-blue-300" />,
+          title: "Snowy Weather Recommendations",
           pesticides: [
-            { name: "Chlorpyrifos", purpose: "Controls soil insects", price: "₹319" },
-            { name: "Deltamethrin", purpose: "Broad spectrum insecticide", price: "₹259" },
-            { name: "2,4-D", purpose: "Selective herbicide", price: "₹189" }
+            { name: "Dormant Oil", purpose: "Winter pest control", price: "₹199" },
+            { name: "Copper Sulfate", purpose: "Disease prevention", price: "₹159" },
+            { name: "Lime Sulfur", purpose: "Fungal control", price: "₹179" }
           ],
           tips: [
-            "Apply early morning or late evening",
-            "Monitor soil moisture levels",
-            "Watch for increased insect activity"
+            "Protect plants from frost damage",
+            "Reduce pesticide applications",
+            "Focus on dormant season treatments"
           ]
         };
       default:

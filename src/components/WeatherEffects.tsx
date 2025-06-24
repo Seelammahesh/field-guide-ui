@@ -25,7 +25,6 @@ const WeatherEffects = () => {
         );
       
       case 'snowy':
-      case 'cold':
         return (
           <div className="fixed inset-0 pointer-events-none z-10">
             {/* Snow flakes */}
@@ -43,15 +42,15 @@ const WeatherEffects = () => {
           </div>
         );
       
-      case 'hot':
+      case 'windy':
         return (
           <div className="fixed inset-0 pointer-events-none z-10">
-            {/* Heat waves */}
-            <div className="absolute inset-0 bg-gradient-to-t from-orange-200/20 to-transparent animate-pulse" />
+            {/* Wind effects */}
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-200/20 to-transparent animate-pulse" />
             {Array.from({ length: 30 }).map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 bg-orange-400 rounded-full opacity-60 animate-[heatwave_2s_ease-in-out_infinite]"
+                className="absolute w-1 h-1 bg-gray-400 rounded-full opacity-60 animate-[windflow_2s_ease-in-out_infinite]"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${60 + Math.random() * 40}%`,

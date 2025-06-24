@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { useWeatherTheme } from "@/contexts/WeatherThemeContext";
-import { Sun, Cloud, CloudRain, Snowflake, Thermometer, Wind, X } from "lucide-react";
+import { Sun, Cloud, CloudRain, Snowflake, Wind, X } from "lucide-react";
 
 const WeatherThemeSelector = () => {
   const { currentTheme, setTheme, autoTheme, toggleAutoTheme } = useWeatherTheme();
@@ -16,8 +16,7 @@ const WeatherThemeSelector = () => {
     { condition: 'rainy' as const, icon: <CloudRain className="h-5 w-5" />, label: 'Rainy', color: 'bg-blue-500' },
     { condition: 'cloudy' as const, icon: <Cloud className="h-5 w-5" />, label: 'Cloudy', color: 'bg-gray-500' },
     { condition: 'snowy' as const, icon: <Snowflake className="h-5 w-5" />, label: 'Snowy', color: 'bg-blue-300' },
-    { condition: 'hot' as const, icon: <Thermometer className="h-5 w-5" />, label: 'Hot', color: 'bg-red-500' },
-    { condition: 'cold' as const, icon: <Wind className="h-5 w-5" />, label: 'Cold', color: 'bg-cyan-500' }
+    { condition: 'windy' as const, icon: <Wind className="h-5 w-5" />, label: 'Windy', color: 'bg-gray-400' }
   ];
 
   if (!isVisible) return null;
