@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -671,8 +670,8 @@ const Products = () => {
               </div>
             </div>
 
-            {/* Products */}
-            <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}>
+            {/* Products - Changed from 3 columns to 2 columns on xl screens */}
+            <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
               {sortedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

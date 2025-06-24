@@ -18,7 +18,6 @@ import TopProducts from '@/components/TopProducts';
 import CropPrices from '@/components/CropPrices';
 import InteractiveMap from '@/components/InteractiveMap';
 import FarmingTip from '@/components/FarmingTip';
-import WeatherThemeSelector from '@/components/WeatherThemeSelector';
 import ClimateRecommendations from '@/components/ClimateRecommendations';
 import { useWeatherTheme } from '@/contexts/WeatherThemeContext';
 import WeatherEffects from '@/components/WeatherEffects';
@@ -96,13 +95,10 @@ const Index = () => {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Weather Theme Selector */}
-      <WeatherThemeSelector />
-
       {/* Weather Widget - Positioned absolutely in top-right */}
       <WeatherWidget />
 
-      {/* Climate Recommendations - Moved below hero */}
+      {/* Climate Recommendations - Below hero */}
       <ClimateRecommendations />
 
       {/* Quick Booking Form Modal */}
@@ -281,6 +277,7 @@ const Index = () => {
                 <li><Link to="/dashboard" className="text-wheat-200 hover:text-wheat-100 transition-colors">Dashboard</Link></li>
                 <li><Link to="/products" className="text-wheat-200 hover:text-wheat-100 transition-colors">Products</Link></li>
                 <li><Link to="/services" className="text-wheat-200 hover:text-wheat-100 transition-colors">Services</Link></li>
+                <li><Link to="/weather-theme" className="text-wheat-200 hover:text-wheat-100 transition-colors">Themes</Link></li>
                 <li><Link to="/community" className="text-wheat-200 hover:text-wheat-100 transition-colors">Community</Link></li>
                 <li><Link to="/advisor" className="text-wheat-200 hover:text-wheat-100 transition-colors">Advisors</Link></li>
                 <li><Link to="/contact" className="text-wheat-200 hover:text-wheat-100 transition-colors">Contact</Link></li>

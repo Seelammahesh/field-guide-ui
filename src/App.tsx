@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -27,6 +28,7 @@ import CropPricesPage from "./pages/CropPricesPage";
 import Settings from "./pages/Settings";
 import Payment from "./pages/Payment";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import WeatherTheme from "./pages/WeatherTheme";
 import { WeatherThemeProvider } from "./contexts/WeatherThemeContext";
 
 const queryClient = new QueryClient();
@@ -46,6 +48,7 @@ const App = () => (
             <Route path="/services/:id" element={<ServiceDetail />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/weather-theme" element={<WeatherTheme />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/community" element={<Community />} />
             <Route path="/plant-diseases" element={<PlantDiseases />} />

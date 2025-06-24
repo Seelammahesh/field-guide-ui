@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Palette } from "lucide-react";
 
 const Navbar = () => {
   const location = useLocation();
@@ -31,13 +32,23 @@ const Navbar = () => {
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex space-x-8 items-center">
-            {["/", "/dashboard", "/products", "/services", "/community", "/advisor", "/contact"].map((path, index) => (
+            {[
+              { path: "/", label: "Home" },
+              { path: "/dashboard", label: "Dashboard" },
+              { path: "/products", label: "Products" },
+              { path: "/services", label: "Services" },
+              { path: "/weather-theme", label: "Themes", icon: <Palette className="w-4 h-4 mr-1" /> },
+              { path: "/community", label: "Community" },
+              { path: "/advisor", label: "Advisors" },
+              { path: "/contact", label: "Contact" }
+            ].map((item) => (
               <Link
-                key={path}
-                to={path}
-                className="text-forest-600 hover:border-b-2 border-forest-600 hover:text-forest-800 font-medium transition-colors"
+                key={item.path}
+                to={item.path}
+                className="text-forest-600 hover:border-b-2 border-forest-600 hover:text-forest-800 font-medium transition-colors flex items-center"
               >
-                {["Home", "Dashboard", "Products", "Services", "Community", "Advisors", "Contact"][index]}
+                {item.icon}
+                {item.label}
               </Link>
             ))}
             <Link to="/login">
@@ -77,17 +88,19 @@ const Navbar = () => {
             { label: "Dashboard", path: "/dashboard" },
             { label: "Products", path: "/products" },
             { label: "Services", path: "/services" },
+            { label: "Themes", path: "/weather-theme", icon: <Palette className="w-4 h-4 mr-1" /> },
             { label: "Community", path: "/community" },
             { label: "Advisors", path: "/advisor" },
             { label: "Contact", path: "/contact" },
-          ].map(({ label, path }) => (
+          ].map((item) => (
             <Link
-              key={path}
-              to={path}
+              key={item.path}
+              to={item.path}
               onClick={toggleMenu}
-              className="text-forest-600 hover:text-forest-800 font-medium transition-colors"
+              className="text-forest-600 hover:text-forest-800 font-medium transition-colors flex items-center"
             >
-              {label}
+              {item.icon}
+              {item.label}
             </Link>
           ))}
           <Link to="/login" onClick={toggleMenu}>
