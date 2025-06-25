@@ -15,73 +15,73 @@ const NewsFeedCarousel = () => {
   const newsItems = [
     {
       id: 1,
-      title: "వరి పంట కోసం సేంద్రీయ ఎరువుల వాడకం | Organic Fertilizers for Rice Farming",
-      description: "వరి పంటలో సేంద్రీయ ఎరువుల ప్రయోజనాలు మరియు వాటి వాడకం గురించి వివరణ",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Sample YouTube embed
+      title: "Organic Fertilizers for Rice Farming",
+      description: "Learn about the benefits of organic fertilizers for rice cultivation and how to apply them effectively",
+      videoUrl: "https://www.youtube.com/embed/oP8_Dx0Xzl4", // Telugu rice farming video
       thumbnail: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&h=300&fit=crop",
-      author: "అగ్రికల్చర్ ఎక్స్‌పర్ట్",
+      author: "Agriculture Expert",
       date: "2 days ago",
-      category: "రైతు పద్ధతులు",
+      category: "Farming Techniques",
       views: "12.5K",
       duration: "15:30"
     },
     {
       id: 2,
-      title: "కత్తిరింపు తర్వాత వరి నిల్వ పద్ధతులు | Post Harvest Rice Storage Techniques",
-      description: "పంట కోతకు తర్వాత వరిని సరైన పద్ధతిలో నిల్వ చేయడం ఎలా",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Sample YouTube embed
+      title: "Post Harvest Rice Storage Techniques",
+      description: "Proper methods for storing rice after harvest to maintain quality and prevent losses",
+      videoUrl: "https://www.youtube.com/embed/RWgQdibP9EM", // Telugu rice storage video
       thumbnail: "https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=300&fit=crop",
-      author: "రైతు సలహాదారు",
+      author: "Farming Advisor",
       date: "1 week ago",
-      category: "నిల్వ పద్ధతులు",
+      category: "Storage Methods",
       views: "8.3K",
       duration: "12:45"
     },
     {
       id: 3,
-      title: "పంట బీమా పథకాలు | Crop Insurance Schemes for Farmers",
-      description: "ప్రధానమంత్రి ఫసల్ బీమా యోజన మరియు ఇతర పంట బీమా పథకాల గురించి",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Sample YouTube embed
+      title: "Crop Insurance Schemes for Farmers",
+      description: "Understanding PM Fasal Bima Yojana and other crop insurance schemes available for farmers",
+      videoUrl: "https://www.youtube.com/embed/VF4kB_oa6fQ", // Telugu crop insurance video
       thumbnail: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop",
-      author: "గవర్నమెంట్ స్కీమ్స్",
+      author: "Government Schemes",
       date: "3 days ago",
-      category: "పథకాలు",
+      category: "Schemes",
       views: "25.2K",
       duration: "18:20"
     },
     {
       id: 4,
-      title: "డ్రిప్ ఇరిగేషన్ వ్యవస్థ | Modern Drip Irrigation Techniques",
-      description: "నీటి ఆదా పద్ధతులు మరియు డ్రిప్ ఇరిగేషన్ సిస్టం ఇన్‌స్టాలేషన్",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Sample YouTube embed
+      title: "Modern Drip Irrigation Techniques",
+      description: "Water conservation methods and drip irrigation system installation for efficient farming",
+      videoUrl: "https://www.youtube.com/embed/2l1BhqE_eYU", // Telugu irrigation video
       thumbnail: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop",
-      author: "వాటర్ మేనేజ్‌మెంట్",
+      author: "Water Management",
       date: "5 days ago",
-      category: "సాంకేతికత",
+      category: "Technology",
       views: "15.7K",
       duration: "22:15"
     },
     {
       id: 5,
-      title: "సేంద్రీయ పురుగుమందుల తయారీ | Organic Pesticide Preparation at Home",
-      description: "ఇంట్లోనే సేంద్రీయ పురుగుమందులను ఎలా తయారు చేయాలి",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Sample YouTube embed
+      title: "Organic Pesticide Preparation at Home",
+      description: "How to prepare effective organic pesticides at home using natural ingredients",
+      videoUrl: "https://www.youtube.com/embed/dZ8KqF4XJDs", // Telugu organic pesticide video
       thumbnail: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
-      author: "సేంద్రీయ వ్యవసాయ నిపుణులు",
+      author: "Organic Farming Experts",
       date: "1 day ago",
-      category: "సేంద్రీయ వ్యవసాయం",
+      category: "Organic Farming",
       views: "9.1K",
       duration: "14:50"
     },
     {
       id: 6,
-      title: "మట్టి పరీక్ష మరియు ఎరువుల వాడకం | Soil Testing and Fertilizer Application",
-      description: "మట్టి పరీక్ష ఎలా చేయాలి మరియు దాని ఆధారంగా ఎరువుల వాడకం",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Sample YouTube embed
+      title: "Soil Testing and Fertilizer Application",
+      description: "How to conduct soil tests and apply fertilizers based on soil analysis results",
+      videoUrl: "https://www.youtube.com/embed/kVBnJ8-4D6s", // Telugu soil testing video
       thumbnail: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop",
-      author: "అగ్రి సైన్స్ లాబ్",
+      author: "Agri Science Lab",
       date: "4 days ago",
-      category: "మట్టి నిర్వహణ",
+      category: "Soil Management",
       views: "18.4K",
       duration: "16:30"
     }
@@ -104,10 +104,10 @@ const NewsFeedCarousel = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
           <div className="w-full sm:w-auto">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-forest-800 mb-2 sm:mb-3">
-              వ్యవసాయ వార్తలు & అప్డేట్స్
+              Agricultural News & Updates
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-forest-600">
-              తాజా వ్యవసాయ వార్తలు మరియు నిపుణుల సలహాలు
+              Latest farming news and expert advice
             </p>
           </div>
           <div className="flex gap-2 self-end sm:self-auto">

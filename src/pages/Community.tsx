@@ -1,12 +1,10 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Video, Play, Calendar, User, ThumbsUp, MessageCircle, Share2 } from 'lucide-react';
+import VideoPostForm from '@/components/VideoPostForm';
 
 interface VideoPost {
   id: number;
@@ -118,101 +116,27 @@ const Community = () => {
     setShowVideoForm(false);
   };
 
-  const VideoPostForm = ({ onClose, onSubmit }: { onClose: () => void, onSubmit: (post: VideoPost) => void }) => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [videoUrl, setVideoUrl] = useState('');
-    const [thumbnail, setThumbnail] = useState('');
-    const [author, setAuthor] = useState('');
-    const [category, setCategory] = useState('');
-
-    const handleSubmit = () => {
-      const newPost = {
-        id: 0,
-        title,
-        description,
-        videoUrl,
-        thumbnail,
-        author,
-        date: new Date().toLocaleDateString(),
-        category,
-        views: "0",
-        likes: 0,
-        comments: 0,
-        shares: 0
-      };
-      onSubmit(newPost);
-    };
-
-    return (
-      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-        <div className="bg-white p-6 rounded-lg max-w-md w-full">
-          <h2 className="text-lg font-semibold text-forest-800 mb-4">Share Your Video</h2>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="title" className="text-sm font-medium block">Title</Label>
-              <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            </div>
-            <div>
-              <Label htmlFor="description" className="text-sm font-medium block">Description</Label>
-              <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
-            </div>
-            <div>
-              <Label htmlFor="videoUrl" className="text-sm font-medium block">Video URL</Label>
-              <Input id="videoUrl" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
-            </div>
-            <div>
-              <Label htmlFor="thumbnail" className="text-sm font-medium block">Thumbnail URL</Label>
-              <Input id="thumbnail" value={thumbnail} onChange={(e) => setThumbnail(e.target.value)} />
-            </div>
-            <div>
-              <Label htmlFor="author" className="text-sm font-medium block">Your Name</Label>
-              <Input id="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
-            </div>
-            <div>
-              <Label htmlFor="category" className="text-sm font-medium block">Category</Label>
-              <Select onValueChange={setCategory}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Technology">Technology</SelectItem>
-                  <SelectItem value="Organic">Organic</SelectItem>
-                  <SelectItem value="Education">Education</SelectItem>
-                  <SelectItem value="Solutions">Solutions</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button variant="ghost" onClick={onClose}>Cancel</Button>
-              <Button className="bg-forest-600 hover:bg-forest-700" onClick={handleSubmit}>Submit</Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const VideoModal = ({ video, onClose }: { video: VideoPost, onClose: () => void }) => {
     return (
-      <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
         <div className="relative max-w-4xl w-full mx-4">
           <button
-            className="absolute top-4 right-4 text-gray-300 hover:text-white z-10"
+            className="absolute top-4 right-4 text-gray-300 hover:text-white z-10 text-2xl"
             onClick={onClose}
           >
             ✕
           </button>
-          <div className="aspect-w-16 aspect-h-9">
+          <div className="aspect-video">
             <iframe
               src={video.videoUrl}
               title="Video Post"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              className="w-full h-full rounded-lg"
             ></iframe>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white p-4 rounded-b-lg">
             <h3 className="font-semibold text-forest-800 mb-2">{video.title}</h3>
             <p className="text-forest-600 text-sm mb-3">{video.description}</p>
             <div className="flex items-center justify-between text-xs text-forest-500">
@@ -281,14 +205,12 @@ const Community = () => {
           {posts.map((post) => (
             <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-all duration-300">
               <div className="relative">
-                <video
+                <img
                   className="w-full h-40 sm:h-48 object-cover cursor-pointer"
-                  poster={post.thumbnail}
+                  src={post.thumbnail}
+                  alt={post.title}
                   onClick={() => setSelectedVideo(post)}
-                  controls={false}
-                >
-                  <source src={post.videoUrl} type="video/mp4" />
-                </video>
+                />
                 <div 
                   className="absolute inset-0 bg-black/20 flex items-center justify-center cursor-pointer hover:bg-black/40 transition-colors"
                   onClick={() => setSelectedVideo(post)}

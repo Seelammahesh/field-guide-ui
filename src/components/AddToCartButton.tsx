@@ -17,27 +17,6 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
   const [isAdded, setIsAdded] = useState(false);
   const { toast } = useToast();
 
-  const updateCartCount = () => {
-    // Dispatch multiple events to ensure all cart counters update
-    const storageEvent = new StorageEvent('storage', {
-      key: 'cartItems',
-      newValue: localStorage.getItem('cartItems'),
-      storageArea: localStorage
-    });
-    window.dispatchEvent(storageEvent);
-    
-    // Also dispatch custom cart update event
-    const cartUpdateEvent = new CustomEvent('cartUpdated', { 
-      detail: { action: 'add', productId, productName }
-    });
-    window.dispatchEvent(cartUpdateEvent);
-    
-    // Force a page refresh of cart-dependent components
-    setTimeout(() => {
-      window.dispatchEvent(new Event('storage'));
-    }, 100);
-  };
-
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -51,35 +30,45 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
       const existingCart = localStorage.getItem('cartItems');
       const cartItems = existingCart ? JSON.parse(existingCart) : [];
       
+      console.log('Current cart before adding:', cartItems);
+      
       // Check if item already exists
       const existingItemIndex = cartItems.findIndex((item: any) => item.id === productId);
       
       if (existingItemIndex > -1) {
         // Update quantity
         cartItems[existingItemIndex].quantity += 1;
+        console.log('Updated existing item quantity:', cartItems[existingItemIndex]);
       } else {
         // Add new item
-        cartItems.push({
+        const newItem = {
           id: productId,
           name: productName,
           price: productPrice,
           quantity: 1,
           addedAt: new Date().toISOString()
-        });
+        };
+        cartItems.push(newItem);
+        console.log('Added new item:', newItem);
       }
       
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      console.log('Cart saved to localStorage:', cartItems);
       
-      console.log('Cart updated successfully:', {
-        productId,
-        productName,
-        totalItems: cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0),
-        cartItems
-      });
-      
-      // Update cart count with multiple methods
-      updateCartCount();
+      // Force multiple storage events to ensure all components update
+      setTimeout(() => {
+        window.dispatchEvent(new Event('storage'));
+        const customEvent = new CustomEvent('cartUpdated', { 
+          detail: { action: 'add', productId, productName, totalItems: cartItems.length }
+        });
+        window.dispatchEvent(customEvent);
+        
+        // Force another storage event after a short delay
+        setTimeout(() => {
+          window.dispatchEvent(new Event('storage'));
+        }, 50);
+      }, 10);
       
       // Show success state
       setIsAdded(true);
@@ -88,6 +77,8 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
         title: "Added to Cart",
         description: `${productName} has been added to your cart.`,
       });
+
+      console.log('Item successfully added to cart. Total items:', cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0));
 
       // Reset button state after 2 seconds
       setTimeout(() => {

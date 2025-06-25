@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { X, Play } from 'lucide-react';
 
 interface VideoModalProps {
-  isOpen: boolean;
-  onClose: () => void;
   video: {
     id: number;
     title: string;
@@ -18,12 +16,11 @@ interface VideoModalProps {
     date: string;
     videoUrl?: string;
   };
+  onClose: () => void;
 }
 
-const VideoModal = ({ isOpen, onClose, video }: VideoModalProps) => {
+const VideoModal = ({ video, onClose }: VideoModalProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
-
-  if (!isOpen) return null;
 
   // Mock video URLs - in a real app, these would come from your video service
   const getVideoUrl = (id: number) => {
@@ -88,7 +85,7 @@ const VideoModal = ({ isOpen, onClose, video }: VideoModalProps) => {
               <p className="text-forest-600 mb-4">{video.description}</p>
               <div className="flex items-center justify-between text-sm text-forest-500">
                 <span>{video.author}</span>
-                <span>{new Date(video.date).toLocaleDateString()}</span>
+                <span>{video.date}</span>
               </div>
             </div>
           </div>
