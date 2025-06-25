@@ -7,11 +7,12 @@ import { useToast } from "@/hooks/use-toast";
 interface AddToCartButtonProps {
   productId: number;
   productName: string;
+  productPrice?: number;
   className?: string;
   size?: "sm" | "default" | "lg";
 }
 
-const AddToCartButton = ({ productId, productName, className, size = "default" }: AddToCartButtonProps) => {
+const AddToCartButton = ({ productId, productName, productPrice = 0, className, size = "default" }: AddToCartButtonProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const { toast } = useToast();
@@ -40,6 +41,7 @@ const AddToCartButton = ({ productId, productName, className, size = "default" }
         cartItems.push({
           id: productId,
           name: productName,
+          price: productPrice,
           quantity: 1,
           addedAt: new Date().toISOString()
         });
@@ -48,9 +50,23 @@ const AddToCartButton = ({ productId, productName, className, size = "default" }
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       
-      // Dispatch cart update event
-      window.dispatchEvent(new CustomEvent('cartUpdated', { 
-        detail: { cartItems } 
+      // Dispatch cart update event with more details
+      const cartUpdateEvent = new CustomEvent('cartUpdated', { 
+        detail: { 
+          cartItems,
+          action: 'add',
+          productId,
+          productName,
+          totalItems: cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0)
+        } 
+      });
+      window.dispatchEvent(cartUpdateEvent);
+      
+      // Also dispatch a storage event for cross-tab sync
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'cartItems',
+        newValue: JSON.stringify(cartItems),
+        storageArea: localStorage
       }));
       
       // Show success state
@@ -60,6 +76,8 @@ const AddToCartButton = ({ productId, productName, className, size = "default" }
         title: "Added to Cart",
         description: `${productName} has been added to your cart.`,
       });
+
+      console.log('Item added to cart:', { productId, productName, cartItems });
 
       // Reset button state after 2 seconds
       setTimeout(() => {

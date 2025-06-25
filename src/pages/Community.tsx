@@ -5,14 +5,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Users, MessageSquare, ThumbsUp, Share, Plus, Search, TrendingUp, Clock, User } from 'lucide-react';
+import { Users, MessageSquare, ThumbsUp, Share, Plus, Search, TrendingUp, Clock, User, Video } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import VideoPostForm from '@/components/VideoPostForm';
 
 const Community = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showingAllDiscussions, setShowingAllDiscussions] = useState(false);
   const [newPost, setNewPost] = useState({ title: '', content: '' });
   const [showNewPostForm, setShowNewPostForm] = useState(false);
+  const [showVideoForm, setShowVideoForm] = useState(false);
+  const [discussions, setDiscussions] = useState([]);
   const isMobile = useIsMobile();
 
   const allDiscussions = [
@@ -174,11 +177,29 @@ const Community = () => {
   const handleNewPost = (e: React.FormEvent) => {
     e.preventDefault();
     if (newPost.title && newPost.content) {
-      console.log('New post:', newPost);
-      alert('Post created successfully!');
+      const newDiscussion = {
+        id: Date.now(),
+        title: newPost.title,
+        author: 'Current User',
+        time: 'Just now',
+        replies: 0,
+        likes: 0,
+        category: 'General',
+        preview: newPost.content,
+        isHot: false
+      };
+      setDiscussions([newDiscussion, ...discussions]);
       setNewPost({ title: '', content: '' });
       setShowNewPostForm(false);
     }
+  };
+
+  const handleVideoPost = (videoData: any) => {
+    const newVideoPost = {
+      ...videoData,
+      isVideo: true
+    };
+    setDiscussions([newVideoPost, ...discussions]);
   };
 
   const loadMoreDiscussions = () => {
@@ -208,13 +229,23 @@ const Community = () => {
                   className="pl-10 text-sm sm:text-base"
                 />
               </div>
-              <Button 
-                className="bg-forest-600 hover:bg-forest-700 w-full sm:w-auto"
-                onClick={() => setShowNewPostForm(!showNewPostForm)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                New Discussion
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button 
+                  className="bg-forest-600 hover:bg-forest-700 flex-1 sm:flex-none"
+                  onClick={() => setShowNewPostForm(!showNewPostForm)}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Discussion
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white flex-1 sm:flex-none"
+                  onClick={() => setShowVideoForm(true)}
+                >
+                  <Video className="h-4 w-4 mr-2" />
+                  Share Video
+                </Button>
+              </div>
             </div>
 
             {/* New Post Form */}
@@ -260,12 +291,16 @@ const Community = () => {
 
             {/* Discussions */}
             <div className="space-y-3 sm:space-y-4">
-              {filteredDiscussions.map((discussion) => (
+              {[...discussions, ...filteredDiscussions].map((discussion) => (
                 <Card key={discussion.id} className="hover:shadow-lg transition-shadow cursor-pointer">
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex items-start gap-3 sm:gap-4">
                       <div className="w-10 h-10 sm:w-12 sm:h-12 bg-forest-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <User className="h-5 w-5 sm:h-6 sm:w-6 text-forest-600" />
+                        {discussion.isVideo ? (
+                          <Video className="h-5 w-5 sm:h-6 sm:w-6 text-forest-600" />
+                        ) : (
+                          <User className="h-5 w-5 sm:h-6 sm:w-6 text-forest-600" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-2 gap-2">
@@ -275,6 +310,11 @@ const Community = () => {
                               {discussion.isHot && (
                                 <Badge variant="destructive" className="text-xs flex-shrink-0">
                                   🔥 Hot
+                                </Badge>
+                              )}
+                              {discussion.isVideo && (
+                                <Badge className="text-xs flex-shrink-0 bg-red-600">
+                                  📹 Video
                                 </Badge>
                               )}
                             </h3>
@@ -415,7 +455,7 @@ const Community = () => {
                   <CardTitle className="text-base sm:text-lg">Quick Links</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
+                  <div className="space-y-2 text-sm">
                     <Link to="/advisor" className="block text-forest-600 hover:text-forest-800 transition-colors text-sm sm:text-base">
                       🧑‍🌾 Find Expert
                     </Link>
@@ -471,6 +511,13 @@ const Community = () => {
           )}
         </div>
       </div>
+
+      {/* Video Post Form */}
+      <VideoPostForm
+        isOpen={showVideoForm}
+        onClose={() => setShowVideoForm(false)}
+        onSubmit={handleVideoPost}
+      />
     </div>
   );
 };

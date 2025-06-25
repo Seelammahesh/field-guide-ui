@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -250,11 +251,11 @@ const Index = () => {
         {/* Top Products */}
         <TopProducts />
 
-        {/* Crop Prices */}
-        <CropPrices />
-
-        {/* News Feed Carousel */}
+        {/* News Feed Carousel - Moved up */}
         <NewsFeedCarousel />
+
+        {/* Crop Prices - Moved down */}
+        <CropPrices />
 
         {/* Interactive Map */}
         <InteractiveMap />
