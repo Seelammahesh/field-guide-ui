@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,7 @@ import FarmingTip from '@/components/FarmingTip';
 import ClimateRecommendations from '@/components/ClimateRecommendations';
 import { useWeatherTheme } from '@/contexts/WeatherThemeContext';
 import WeatherEffects from '@/components/WeatherEffects';
+import NewsFeedCarousel from '@/components/NewsFeedCarousel';
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -93,10 +93,7 @@ const Index = () => {
 
   return (
     <div className={`min-h-screen bg-gradient-to-b ${currentTheme.colors.background} font-montserrat`}>
-      {/* Weather Effects */}
-      <WeatherEffects />
-
-      {/* Hero Section */}
+      {/* Hero Section - contains weather effects */}
       <HeroSection />
 
       {/* Weather Widget - Positioned absolutely in top-right */}
@@ -255,6 +252,9 @@ const Index = () => {
 
         {/* Crop Prices */}
         <CropPrices />
+
+        {/* News Feed Carousel */}
+        <NewsFeedCarousel />
 
         {/* Interactive Map */}
         <InteractiveMap />

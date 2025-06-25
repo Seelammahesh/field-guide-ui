@@ -39,12 +39,19 @@ const AddToCartButton = ({ productId, productName, className, size = "default" }
         // Add new item
         cartItems.push({
           id: productId,
-          quantity: 1
+          name: productName,
+          quantity: 1,
+          addedAt: new Date().toISOString()
         });
       }
       
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      
+      // Dispatch cart update event
+      window.dispatchEvent(new CustomEvent('cartUpdated', { 
+        detail: { cartItems } 
+      }));
       
       // Show success state
       setIsAdded(true);
@@ -60,6 +67,7 @@ const AddToCartButton = ({ productId, productName, className, size = "default" }
       }, 2000);
 
     } catch (error) {
+      console.error('Error adding to cart:', error);
       toast({
         title: "Error",
         description: "Failed to add item to cart. Please try again.",

@@ -102,23 +102,44 @@ const Profile = () => {
           {/* Main Content */}
           <div className="lg:col-span-3">
             <Tabs defaultValue="profile" className="space-y-4 sm:space-y-6">
-              <TabsList className={`grid w-full ${isMobile ? 'grid-cols-2' : 'grid-cols-4'} text-xs sm:text-sm`}>
-                <TabsTrigger value="profile" className="px-2 sm:px-4">Profile Details</TabsTrigger>
-                <TabsTrigger value="orders" className="px-2 sm:px-4">Orders</TabsTrigger>
-                {!isMobile && <TabsTrigger value="bookings" className="px-2 sm:px-4">Bookings</TabsTrigger>}
-                {!isMobile && <TabsTrigger value="notifications" className="px-2 sm:px-4">Notifications</TabsTrigger>}
-              </TabsList>
-
-              {isMobile && (
-                <div className="grid grid-cols-2 gap-2">
-                  <TabsList className="grid w-full grid-cols-1">
-                    <TabsTrigger value="bookings" className="text-xs">Service Bookings</TabsTrigger>
+              {/* Mobile-first tabs layout */}
+              <div className="w-full">
+                {isMobile ? (
+                  <div className="space-y-2">
+                    <TabsList className="grid w-full grid-cols-2 h-auto">
+                      <TabsTrigger value="profile" className="text-xs px-2 py-2 data-[state=active]:bg-forest-100">
+                        Profile Details
+                      </TabsTrigger>
+                      <TabsTrigger value="orders" className="text-xs px-2 py-2 data-[state=active]:bg-forest-100">
+                        Orders
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsList className="grid w-full grid-cols-2 h-auto">
+                      <TabsTrigger value="bookings" className="text-xs px-2 py-2 data-[state=active]:bg-forest-100">
+                        Service Bookings
+                      </TabsTrigger>
+                      <TabsTrigger value="notifications" className="text-xs px-2 py-2 data-[state=active]:bg-forest-100">
+                        Notifications
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                ) : (
+                  <TabsList className="grid w-full grid-cols-4 h-auto">
+                    <TabsTrigger value="profile" className="text-sm px-4 py-2 data-[state=active]:bg-forest-100">
+                      Profile Details
+                    </TabsTrigger>
+                    <TabsTrigger value="orders" className="text-sm px-4 py-2 data-[state=active]:bg-forest-100">
+                      Orders
+                    </TabsTrigger>
+                    <TabsTrigger value="bookings" className="text-sm px-4 py-2 data-[state=active]:bg-forest-100">
+                      Service Bookings
+                    </TabsTrigger>
+                    <TabsTrigger value="notifications" className="text-sm px-4 py-2 data-[state=active]:bg-forest-100">
+                      Notifications
+                    </TabsTrigger>
                   </TabsList>
-                  <TabsList className="grid w-full grid-cols-1">
-                    <TabsTrigger value="notifications" className="text-xs">Notifications</TabsTrigger>
-                  </TabsList>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Profile Details Tab */}
               <TabsContent value="profile">

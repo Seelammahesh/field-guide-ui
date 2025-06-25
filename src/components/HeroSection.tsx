@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import hero from '../../images/heroImage.jpg'
 import { useNavigate } from "react-router-dom";
+import WeatherEffects from './WeatherEffects';
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -24,8 +25,11 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
+      {/* Weather Effects - contained within hero section */}
+      <WeatherEffects />
+
       {/* Content */}
-      <div className="relative z-10 text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-20 text-center max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 animate-fade-in leading-tight">
           Empowering Farmers with Tools for Success
         </h1>
@@ -52,7 +56,7 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-gentle">
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-gentle z-20">
         <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white rounded-full flex justify-center">
           <div className="w-1 h-2 sm:h-3 bg-white rounded-full mt-2"></div>
         </div>
