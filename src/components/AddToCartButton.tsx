@@ -50,7 +50,10 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       
-      // Dispatch cart update event with more details
+      // Force a storage event to update cart count everywhere
+      window.dispatchEvent(new Event('storage'));
+      
+      // Also dispatch custom event for immediate updates
       const cartUpdateEvent = new CustomEvent('cartUpdated', { 
         detail: { 
           cartItems,
@@ -62,12 +65,12 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
       });
       window.dispatchEvent(cartUpdateEvent);
       
-      // Also dispatch a storage event for cross-tab sync
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'cartItems',
-        newValue: JSON.stringify(cartItems),
-        storageArea: localStorage
-      }));
+      console.log('Cart updated successfully:', {
+        productId,
+        productName,
+        totalItems: cartItems.length,
+        cartItems
+      });
       
       // Show success state
       setIsAdded(true);
@@ -76,8 +79,6 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
         title: "Added to Cart",
         description: `${productName} has been added to your cart.`,
       });
-
-      console.log('Item added to cart:', { productId, productName, cartItems });
 
       // Reset button state after 2 seconds
       setTimeout(() => {

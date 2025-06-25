@@ -5,9 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Users, MessageSquare, ThumbsUp, Share, Plus, Search, TrendingUp, Clock, User, Video } from 'lucide-react';
+import { Users, MessageSquare, ThumbsUp, Share, Plus, Search, TrendingUp, Clock, User, Video, Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoPostForm from '@/components/VideoPostForm';
+import VideoModal from '@/components/VideoModal';
 
 const Community = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,9 +17,61 @@ const Community = () => {
   const [showNewPostForm, setShowNewPostForm] = useState(false);
   const [showVideoForm, setShowVideoForm] = useState(false);
   const [discussions, setDiscussions] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState<any>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
   const isMobile = useIsMobile();
 
+  // Sample video posts
+  const sampleVideos = [
+    {
+      id: 1001,
+      title: "PM-KISAN Scheme: Complete Registration Guide",
+      author: "AgriExpert",
+      time: "3 hours ago",
+      replies: 45,
+      likes: 128,
+      category: "Government Schemes",
+      preview: "Step-by-step guide on how to register for PM-KISAN scheme and receive ₹6000 annual financial benefit. This comprehensive tutorial covers documentation, online application process, and common issues farmers face.",
+      isVideo: true,
+      videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=200&fit=crop",
+      duration: "8:45",
+      isHot: true
+    },
+    {
+      id: 1002,
+      title: "Organic Farming Success Story - From Loss to Profit",
+      author: "FarmerRaj",
+      time: "1 day ago",
+      replies: 67,
+      likes: 234,
+      category: "Success Stories",
+      preview: "My journey from traditional farming to organic methods. How I increased my income by 40% in 2 years using sustainable practices. Sharing real numbers, challenges faced, and solutions found.",
+      isVideo: true,
+      videoUrl: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+      thumbnail: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=300&h=200&fit=crop",
+      duration: "12:30",
+      isHot: true
+    },
+    {
+      id: 1003,
+      title: "Drip Irrigation Setup for Small Farmers",
+      author: "WaterWiseAgriculture",
+      time: "2 days ago",
+      replies: 34,
+      likes: 89,
+      category: "Technology",
+      preview: "Complete installation guide for drip irrigation system on a budget. Save up to 60% water and increase crop yield. Includes material list, cost breakdown, and maintenance tips.",
+      isVideo: true,
+      videoUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+      thumbnail: "https://images.unsplash.com/photo-1416664513467-7ad6ac882d5b?w=300&h=200&fit=crop",
+      duration: "15:20",
+      isHot: false
+    }
+  ];
+
   const allDiscussions = [
+    ...sampleVideos,
     {
       id: 1,
       title: "Best organic fertilizer for wheat crops?",
@@ -131,7 +184,7 @@ const Community = () => {
     }
   ];
 
-  const displayedDiscussions = showingAllDiscussions ? allDiscussions : allDiscussions.slice(0, 4);
+  const displayedDiscussions = showingAllDiscussions ? allDiscussions : allDiscussions.slice(0, 6);
   
   const filteredDiscussions = displayedDiscussions.filter(discussion =>
     discussion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -202,6 +255,13 @@ const Community = () => {
     setDiscussions([newVideoPost, ...discussions]);
   };
 
+  const handleVideoClick = (video: any) => {
+    if (video.isVideo) {
+      setSelectedVideo(video);
+      setShowVideoModal(true);
+    }
+  };
+
   const loadMoreDiscussions = () => {
     setShowingAllDiscussions(true);
   };
@@ -250,7 +310,7 @@ const Community = () => {
 
             {/* New Post Form */}
             {showNewPostForm && (
-              <Card>
+              <Card className="border-forest-200 shadow-lg">
                 <CardHeader className="pb-3 sm:pb-4">
                   <CardTitle className="text-base sm:text-lg">Start a New Discussion</CardTitle>
                 </CardHeader>
@@ -292,16 +352,42 @@ const Community = () => {
             {/* Discussions */}
             <div className="space-y-3 sm:space-y-4">
               {[...discussions, ...filteredDiscussions].map((discussion) => (
-                <Card key={discussion.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+                <Card 
+                  key={discussion.id} 
+                  className={`hover:shadow-lg transition-all duration-200 cursor-pointer border-forest-200 ${
+                    discussion.isVideo ? 'bg-gradient-to-r from-red-50 to-orange-50' : 'bg-white'
+                  }`}
+                  onClick={() => discussion.isVideo && handleVideoClick(discussion)}
+                >
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex items-start gap-3 sm:gap-4">
                       <div className="w-10 h-10 sm:w-12 sm:h-12 bg-forest-100 rounded-full flex items-center justify-center flex-shrink-0">
                         {discussion.isVideo ? (
-                          <Video className="h-5 w-5 sm:h-6 sm:w-6 text-forest-600" />
+                          <Video className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
                         ) : (
                           <User className="h-5 w-5 sm:h-6 sm:w-6 text-forest-600" />
                         )}
                       </div>
+                      
+                      {/* Video Thumbnail for video posts */}
+                      {discussion.isVideo && discussion.thumbnail && (
+                        <div className="relative w-24 h-16 sm:w-32 sm:h-20 rounded-lg overflow-hidden flex-shrink-0">
+                          <img 
+                            src={discussion.thumbnail} 
+                            alt={discussion.title}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                            <Play className="h-6 w-6 text-white" />
+                          </div>
+                          {discussion.duration && (
+                            <div className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded">
+                              {discussion.duration}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-2 gap-2">
                           <div className="min-w-0">
@@ -313,7 +399,7 @@ const Community = () => {
                                 </Badge>
                               )}
                               {discussion.isVideo && (
-                                <Badge className="text-xs flex-shrink-0 bg-red-600">
+                                <Badge className="text-xs flex-shrink-0 bg-red-600 hover:bg-red-700">
                                   📹 Video
                                 </Badge>
                               )}
@@ -327,12 +413,14 @@ const Community = () => {
                               </span>
                             </div>
                           </div>
-                          <Badge variant="outline" className="text-xs self-start sm:self-auto flex-shrink-0">
+                          <Badge variant="outline" className="text-xs self-start sm:self-auto flex-shrink-0 border-forest-300">
                             {discussion.category}
                           </Badge>
                         </div>
                         
-                        <p className="text-forest-600 mb-3 sm:mb-4 text-sm sm:text-base leading-relaxed">{discussion.preview}</p>
+                        <p className="text-forest-600 mb-3 sm:mb-4 text-sm sm:text-base leading-relaxed line-clamp-3">
+                          {discussion.preview}
+                        </p>
                         
                         <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
                           <button className="flex items-center gap-2 text-forest-600 hover:text-forest-800 transition-colors text-sm">
@@ -356,7 +444,7 @@ const Community = () => {
             </div>
 
             {/* Load More Button */}
-            {!showingAllDiscussions && filteredDiscussions.length === 4 && (
+            {!showingAllDiscussions && filteredDiscussions.length >= 6 && (
               <div className="text-center">
                 <Button 
                   variant="outline" 
@@ -369,7 +457,7 @@ const Community = () => {
             )}
           </div>
 
-          {/* Sidebar */}
+          {/* Sidebar - keep existing code unchanged */}
           {!isMobile && (
             <div className="lg:col-span-1 space-y-4 sm:space-y-6">
               {/* Community Stats */}
@@ -518,6 +606,25 @@ const Community = () => {
         onClose={() => setShowVideoForm(false)}
         onSubmit={handleVideoPost}
       />
+
+      {/* Video Modal */}
+      {selectedVideo && (
+        <VideoModal
+          isOpen={showVideoModal}
+          onClose={() => setShowVideoModal(false)}
+          video={{
+            id: selectedVideo.id,
+            title: selectedVideo.title,
+            description: selectedVideo.preview,
+            thumbnail: selectedVideo.thumbnail,
+            duration: selectedVideo.duration,
+            category: selectedVideo.category,
+            author: selectedVideo.author,
+            date: selectedVideo.time,
+            videoUrl: selectedVideo.videoUrl
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -40,24 +39,46 @@ const Cart = () => {
     'BULK20': 20
   };
 
-  useEffect(() => {
-    // Load cart items from localStorage
+  const loadCartItems = () => {
     const savedCart = localStorage.getItem('cartItems');
     if (savedCart) {
-      const cartData = JSON.parse(savedCart);
-      const fullCartItems = cartData.map((item: {id: number, quantity: number}) => ({
-        ...item,
-        ...productData[item.id as keyof typeof productData]
-      }));
-      setCartItems(fullCartItems);
+      try {
+        const cartData = JSON.parse(savedCart);
+        const fullCartItems = cartData.map((item: {id: number, quantity: number}) => ({
+          ...item,
+          ...productData[item.id as keyof typeof productData]
+        }));
+        setCartItems(fullCartItems);
+        console.log('Cart loaded:', fullCartItems);
+      } catch (error) {
+        console.error('Error loading cart:', error);
+        setCartItems([]);
+      }
     }
-  }, []);
+  };
 
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
-    const cartData = cartItems.map(item => ({ id: item.id, quantity: item.quantity }));
-    localStorage.setItem('cartItems', JSON.stringify(cartData));
-  }, [cartItems]);
+    loadCartItems();
+    
+    // Listen for cart updates
+    const handleCartUpdate = () => {
+      loadCartItems();
+    };
+    
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'cartItems') {
+        loadCartItems();
+      }
+    };
+
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -71,19 +92,46 @@ const Cart = () => {
       return;
     }
     
-    setCartItems(items =>
-      items.map(item =>
+    // Update localStorage
+    const savedCart = localStorage.getItem('cartItems');
+    if (savedCart) {
+      const cartData = JSON.parse(savedCart);
+      const updatedCart = cartData.map((item: any) => 
         item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+      );
+      localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+      
+      // Update local state
+      setCartItems(items =>
+        items.map(item =>
+          item.id === id ? { ...item, quantity: newQuantity } : item
+        )
+      );
+      
+      // Dispatch update event
+      window.dispatchEvent(new Event('storage'));
+    }
   };
 
   const removeItem = (id: number) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-    toast({
-      title: "Item Removed",
-      description: "Item has been removed from your cart.",
-    });
+    // Update localStorage
+    const savedCart = localStorage.getItem('cartItems');
+    if (savedCart) {
+      const cartData = JSON.parse(savedCart);
+      const updatedCart = cartData.filter((item: any) => item.id !== id);
+      localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+      
+      // Update local state
+      setCartItems(items => items.filter(item => item.id !== id));
+      
+      // Dispatch update event
+      window.dispatchEvent(new Event('storage'));
+      
+      toast({
+        title: "Item Removed",
+        description: "Item has been removed from your cart.",
+      });
+    }
   };
 
   const applyCoupon = () => {
