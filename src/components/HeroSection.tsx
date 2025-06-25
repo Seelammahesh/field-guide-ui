@@ -1,6 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import hero from '../../images/heroImage.jpg'
 import { useNavigate } from "react-router-dom";
 import WeatherEffects from './WeatherEffects';
 
@@ -15,11 +14,11 @@ const HeroSection = () => {
   
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image - High quality paddy field */}
       <div className="absolute inset-0 z-0">
         <img
-          src={hero}
-          alt="Golden wheat fields"
+          src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1920&h=1080&fit=crop&q=80"
+          alt="Lush green paddy fields with farmers working"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40"></div>

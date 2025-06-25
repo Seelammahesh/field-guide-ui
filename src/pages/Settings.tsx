@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -53,11 +52,39 @@ const Settings = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="preferences">Preferences</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto p-1 bg-muted rounded-lg">
+            <TabsTrigger 
+              value="profile" 
+              className="flex items-center gap-1 px-2 py-2 text-xs sm:text-sm rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <User className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Profile</span>
+              <span className="sm:hidden">User</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="notifications"
+              className="flex items-center gap-1 px-2 py-2 text-xs sm:text-sm rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <Bell className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Notifications</span>
+              <span className="sm:hidden">Alerts</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="preferences"
+              className="flex items-center gap-1 px-2 py-2 text-xs sm:text-sm rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Preferences</span>
+              <span className="sm:hidden">Prefs</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="security"
+              className="flex items-center gap-1 px-2 py-2 text-xs sm:text-sm rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm"
+            >
+              <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Security</span>
+              <span className="sm:hidden">Safe</span>
+            </TabsTrigger>
           </TabsList>
 
           {/* Profile Settings */}

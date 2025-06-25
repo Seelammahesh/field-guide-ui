@@ -17,6 +17,27 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
   const [isAdded, setIsAdded] = useState(false);
   const { toast } = useToast();
 
+  const updateCartCount = () => {
+    // Dispatch multiple events to ensure all cart counters update
+    const storageEvent = new StorageEvent('storage', {
+      key: 'cartItems',
+      newValue: localStorage.getItem('cartItems'),
+      storageArea: localStorage
+    });
+    window.dispatchEvent(storageEvent);
+    
+    // Also dispatch custom cart update event
+    const cartUpdateEvent = new CustomEvent('cartUpdated', { 
+      detail: { action: 'add', productId, productName }
+    });
+    window.dispatchEvent(cartUpdateEvent);
+    
+    // Force a page refresh of cart-dependent components
+    setTimeout(() => {
+      window.dispatchEvent(new Event('storage'));
+    }, 100);
+  };
+
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -50,27 +71,15 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       
-      // Force a storage event to update cart count everywhere
-      window.dispatchEvent(new Event('storage'));
-      
-      // Also dispatch custom event for immediate updates
-      const cartUpdateEvent = new CustomEvent('cartUpdated', { 
-        detail: { 
-          cartItems,
-          action: 'add',
-          productId,
-          productName,
-          totalItems: cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0)
-        } 
-      });
-      window.dispatchEvent(cartUpdateEvent);
-      
       console.log('Cart updated successfully:', {
         productId,
         productName,
-        totalItems: cartItems.length,
+        totalItems: cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0),
         cartItems
       });
+      
+      // Update cart count with multiple methods
+      updateCartCount();
       
       // Show success state
       setIsAdded(true);

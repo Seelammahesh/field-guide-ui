@@ -192,7 +192,7 @@ const TopProducts = () => {
               <div key={slideIndex} className={`min-w-full flex gap-4 sm:gap-6 ${isMobile ? 'justify-center' : ''}`}>
                 {products.slice(slideIndex * itemsPerSlide, slideIndex * itemsPerSlide + itemsPerSlide).map((product) => (
                   <div key={product.id} className={`${isMobile ? 'w-full max-w-sm' : 'flex-1'} min-w-0`}>
-                    <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 border-forest-200 bg-white h-full">
+                    <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 border-forest-200 bg-white h-full flex flex-col">
                       <div className="relative">
                         <img
                           src={product.image}
@@ -206,11 +206,11 @@ const TopProducts = () => {
                           {product.category}
                         </Badge>
                       </div>
-                      <CardHeader className="p-4 sm:p-6">
-                        <CardTitle className="text-forest-700 text-base sm:text-lg leading-tight">{product.name}</CardTitle>
-                        <CardDescription className="text-forest-600 text-sm leading-relaxed">{product.description}</CardDescription>
+                      <CardHeader className="p-4 sm:p-6 flex-grow">
+                        <CardTitle className="text-forest-700 text-base sm:text-lg leading-tight line-clamp-2">{product.name}</CardTitle>
+                        <CardDescription className="text-forest-600 text-sm leading-relaxed line-clamp-3">{product.description}</CardDescription>
                       </CardHeader>
-                      <CardContent className="p-4 sm:p-6 pt-0">
+                      <CardContent className="p-4 sm:p-6 pt-0 mt-auto">
                         <div className="flex justify-between items-center mb-4">
                           <div className="flex items-center gap-2">
                             <span className="text-xl sm:text-2xl font-bold text-forest-700">{product.price}</span>
