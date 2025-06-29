@@ -28,7 +28,7 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
     try {
       // Get existing cart items
       const existingCart = localStorage.getItem('cartItems');
-      const cartItems = existingCart ? JSON.parse(existingCart) : [];
+      let cartItems = existingCart ? JSON.parse(existingCart) : [];
       
       console.log('Current cart before adding:', cartItems);
       
@@ -45,7 +45,10 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
           id: productId,
           name: productName,
           price: productPrice,
+          originalPrice: productPrice,
           quantity: 1,
+          image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=200&h=150&fit=crop",
+          inStock: 50,
           addedAt: new Date().toISOString()
         };
         cartItems.push(newItem);
@@ -56,19 +59,26 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       console.log('Cart saved to localStorage:', cartItems);
       
-      // Force multiple storage events to ensure all components update
-      setTimeout(() => {
-        window.dispatchEvent(new Event('storage'));
-        const customEvent = new CustomEvent('cartUpdated', { 
-          detail: { action: 'add', productId, productName, totalItems: cartItems.length }
-        });
-        window.dispatchEvent(customEvent);
-        
-        // Force another storage event after a short delay
-        setTimeout(() => {
-          window.dispatchEvent(new Event('storage'));
-        }, 50);
-      }, 10);
+      // Force storage events to update all components
+      const storageEvent = new StorageEvent('storage', {
+        key: 'cartItems',
+        newValue: JSON.stringify(cartItems),
+        oldValue: existingCart,
+        storageArea: localStorage
+      });
+      window.dispatchEvent(storageEvent);
+
+      // Also dispatch custom event
+      const customEvent = new CustomEvent('cartUpdated', { 
+        detail: { 
+          action: 'add', 
+          productId, 
+          productName, 
+          totalItems: cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0),
+          cartItems 
+        }
+      });
+      window.dispatchEvent(customEvent);
       
       // Show success state
       setIsAdded(true);
