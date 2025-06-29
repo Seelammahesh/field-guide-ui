@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Video, Play, Calendar, User, ThumbsUp, MessageCircle, Share2, TrendingUp, Users, BookOpen, Lightbulb } from 'lucide-react';
+import { Video, Play, Calendar, User, ThumbsUp, MessageCircle, Share2, Users, BookOpen, Lightbulb, Sparkles, Heart, TrendingUp, Award } from 'lucide-react';
 import VideoPostForm from '@/components/VideoPostForm';
 
 interface VideoPost {
@@ -118,15 +118,15 @@ const Community = () => {
 
   const VideoModal = ({ video, onClose }: { video: VideoPost, onClose: () => void }) => {
     return (
-      <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-        <div className="relative max-w-5xl w-full mx-4">
+      <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+        <div className="relative max-w-6xl w-full mx-4">
           <button
-            className="absolute -top-12 right-0 text-white hover:text-gray-300 z-10 text-2xl font-bold bg-black/50 rounded-full w-10 h-10 flex items-center justify-center"
+            className="absolute -top-16 right-0 text-white hover:text-gray-300 z-10 text-3xl font-bold bg-white/10 backdrop-blur-sm rounded-full w-12 h-12 flex items-center justify-center transition-all duration-200 hover:bg-white/20"
             onClick={onClose}
           >
             ✕
           </button>
-          <div className="aspect-video bg-black rounded-lg overflow-hidden">
+          <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
             <iframe
               src={video.videoUrl}
               title="Video Post"
@@ -136,21 +136,24 @@ const Community = () => {
               className="w-full h-full"
             ></iframe>
           </div>
-          <div className="bg-white p-6 rounded-b-lg">
-            <h3 className="font-bold text-xl text-forest-800 mb-2">{video.title}</h3>
-            <p className="text-forest-600 mb-4 leading-relaxed">{video.description}</p>
+          <div className="bg-white p-8 rounded-b-2xl shadow-2xl">
+            <h3 className="font-black text-2xl text-forest-800 mb-3 flex items-center gap-2">
+              {video.title}
+              <Heart className="h-5 w-5 text-red-500" />
+            </h3>
+            <p className="text-forest-600 mb-6 leading-relaxed text-lg">{video.description}</p>
             <div className="flex items-center justify-between text-sm text-forest-500">
-              <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1">
+              <div className="flex items-center gap-6">
+                <span className="flex items-center gap-2 font-semibold">
                   <User className="h-4 w-4" />
                   {video.author}
                 </span>
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-2 font-semibold">
                   <Calendar className="h-4 w-4" />
                   {video.date}
                 </span>
               </div>
-              <span className="font-medium">{video.views} views</span>
+              <span className="font-bold text-lg">{video.views} views</span>
             </div>
           </div>
         </div>
@@ -160,120 +163,136 @@ const Community = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-wheat-50 via-white to-forest-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-        {/* Header */}
-        <div className="text-center mb-8 lg:mb-12">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-forest-800 mb-4">
-            Community Hub
-          </h1>
-          <p className="text-lg sm:text-xl text-forest-600 max-w-3xl mx-auto leading-relaxed mb-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        {/* Enhanced Header */}
+        <div className="text-center mb-12 lg:mb-16">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <Users className="h-12 w-12 text-forest-600" />
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-forest-800">
+              Community Hub
+            </h1>
+            <Sparkles className="h-10 w-10 text-yellow-500 animate-pulse" />
+          </div>
+          <p className="text-xl sm:text-2xl text-forest-600 max-w-4xl mx-auto leading-relaxed mb-8 font-medium">
             Connect with fellow farmers, share experiences, and learn together in our thriving agricultural community
           </p>
           <Button 
             onClick={() => setShowVideoForm(true)}
-            className="bg-gradient-to-r from-forest-600 to-forest-700 hover:from-forest-700 hover:to-forest-800 text-white px-6 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+            className="bg-gradient-to-r from-forest-600 via-forest-700 to-forest-800 hover:from-forest-700 hover:via-forest-800 hover:to-forest-900 text-white px-8 py-4 text-xl font-black shadow-2xl hover:shadow-3xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 rounded-2xl"
           >
-            <Video className="h-5 w-5 mr-2" />
+            <Video className="h-6 w-6 mr-3" />
             Share Your Video
+            <Sparkles className="h-5 w-5 ml-2 animate-spin" />
           </Button>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-12">
-          <Card className="text-center p-4 lg:p-6 bg-gradient-to-br from-white to-forest-50 border-forest-100 shadow-lg hover:shadow-xl transition-all duration-200">
+        {/* Enhanced Stats */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12 lg:mb-16">
+          <Card className="text-center p-6 lg:p-8 bg-gradient-to-br from-white via-forest-50/30 to-white border-2 border-forest-200 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 rounded-2xl">
             <CardContent className="p-0">
               <div className="flex flex-col items-center">
-                <Users className="h-8 w-8 text-forest-600 mb-2" />
-                <div className="text-2xl lg:text-3xl font-bold text-forest-700">1,234</div>
-                <div className="text-sm lg:text-base text-forest-600">Active Members</div>
+                <div className="bg-gradient-to-r from-forest-600 to-forest-700 p-4 rounded-2xl mb-4 shadow-lg">
+                  <Users className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-3xl lg:text-4xl font-black text-forest-700 mb-2">1,234</div>
+                <div className="text-sm lg:text-base text-forest-600 font-bold">Active Members</div>
               </div>
             </CardContent>
           </Card>
-          <Card className="text-center p-4 lg:p-6 bg-gradient-to-br from-white to-wheat-50 border-forest-100 shadow-lg hover:shadow-xl transition-all duration-200">
+          <Card className="text-center p-6 lg:p-8 bg-gradient-to-br from-white via-wheat-50/30 to-white border-2 border-forest-200 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 rounded-2xl">
             <CardContent className="p-0">
               <div className="flex flex-col items-center">
-                <Video className="h-8 w-8 text-forest-600 mb-2" />
-                <div className="text-2xl lg:text-3xl font-bold text-forest-700">{posts.length}</div>
-                <div className="text-sm lg:text-base text-forest-600">Video Posts</div>
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 rounded-2xl mb-4 shadow-lg">
+                  <Video className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-3xl lg:text-4xl font-black text-forest-700 mb-2">{posts.length}</div>
+                <div className="text-sm lg:text-base text-forest-600 font-bold">Video Posts</div>
               </div>
             </CardContent>
           </Card>
-          <Card className="text-center p-4 lg:p-6 bg-gradient-to-br from-white to-forest-50 border-forest-100 shadow-lg hover:shadow-xl transition-all duration-200">
+          <Card className="text-center p-6 lg:p-8 bg-gradient-to-br from-white via-forest-50/30 to-white border-2 border-forest-200 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 rounded-2xl">
             <CardContent className="p-0">
               <div className="flex flex-col items-center">
-                <MessageCircle className="h-8 w-8 text-forest-600 mb-2" />
-                <div className="text-2xl lg:text-3xl font-bold text-forest-700">89</div>
-                <div className="text-sm lg:text-base text-forest-600">Discussions</div>
+                <div className="bg-gradient-to-r from-green-600 to-green-700 p-4 rounded-2xl mb-4 shadow-lg">
+                  <MessageCircle className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-3xl lg:text-4xl font-black text-forest-700 mb-2">89</div>
+                <div className="text-sm lg:text-base text-forest-600 font-bold">Discussions</div>
               </div>
             </CardContent>
           </Card>
-          <Card className="text-center p-4 lg:p-6 bg-gradient-to-br from-white to-wheat-50 border-forest-100 shadow-lg hover:shadow-xl transition-all duration-200">
+          <Card className="text-center p-6 lg:p-8 bg-gradient-to-br from-white via-wheat-50/30 to-white border-2 border-forest-200 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 rounded-2xl">
             <CardContent className="p-0">
               <div className="flex flex-col items-center">
-                <Lightbulb className="h-8 w-8 text-forest-600 mb-2" />
-                <div className="text-2xl lg:text-3xl font-bold text-forest-700">456</div>
-                <div className="text-sm lg:text-base text-forest-600">Tips Shared</div>
+                <div className="bg-gradient-to-r from-yellow-600 to-yellow-700 p-4 rounded-2xl mb-4 shadow-lg">
+                  <Lightbulb className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-3xl lg:text-4xl font-black text-forest-700 mb-2">456</div>
+                <div className="text-sm lg:text-base text-forest-600 font-bold">Tips Shared</div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Video Posts Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Enhanced Video Posts Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {posts.map((post) => (
-            <Card key={post.id} className="overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-white border-forest-100">
-              <div className="relative group">
+            <Card key={post.id} className="overflow-hidden hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 bg-white border-2 border-forest-200 rounded-2xl group">
+              <div className="relative group/image">
                 <img
-                  className="w-full h-48 lg:h-56 object-cover cursor-pointer transition-transform duration-300 group-hover:scale-105"
+                  className="w-full h-56 lg:h-64 object-cover cursor-pointer transition-transform duration-700 group-hover/image:scale-110"
                   src={post.thumbnail}
                   alt={post.title}
                   onClick={() => setSelectedVideo(post)}
                 />
                 <div 
-                  className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300"
+                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center cursor-pointer opacity-0 group-hover/image:opacity-100 transition-all duration-500"
                   onClick={() => setSelectedVideo(post)}
                 >
-                  <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                    <Play className="h-8 w-8 lg:h-12 lg:w-12 text-white" />
+                  <div className="bg-white/20 backdrop-blur-sm rounded-full p-6 transform scale-75 group-hover/image:scale-100 transition-transform duration-500 shadow-2xl">
+                    <Play className="h-12 w-12 lg:h-16 lg:w-16 text-white" />
                   </div>
                 </div>
-                <Badge className="absolute top-3 right-3 bg-forest-600/90 text-white text-xs font-semibold px-2 py-1">
+                <Badge className="absolute top-4 right-4 bg-gradient-to-r from-forest-600 to-forest-700 text-white text-xs font-black px-3 py-1 shadow-lg">
                   {post.category}
                 </Badge>
+                <div className="absolute top-4 left-4">
+                  <TrendingUp className="h-5 w-5 text-white animate-pulse" />
+                </div>
               </div>
-              <CardContent className="p-4 lg:p-6">
-                <h3 className="font-bold text-forest-800 mb-2 text-lg lg:text-xl line-clamp-2 leading-tight">
+              <CardContent className="p-6 lg:p-8">
+                <h3 className="font-black text-forest-800 mb-3 text-xl lg:text-2xl line-clamp-2 leading-tight">
                   {post.title}
                 </h3>
-                <p className="text-forest-600 text-sm lg:text-base mb-4 line-clamp-2 leading-relaxed">
+                <p className="text-forest-600 text-sm lg:text-base mb-6 line-clamp-2 leading-relaxed">
                   {post.description}
                 </p>
-                <div className="flex items-center justify-between text-sm lg:text-base text-forest-500 mb-4">
+                <div className="flex items-center justify-between text-sm lg:text-base text-forest-500 mb-6">
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4" />
-                    <span className="font-medium">{post.author}</span>
+                    <span className="font-bold">{post.author}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    <span>{post.date}</span>
+                    <span className="font-semibold">{post.date}</span>
                   </div>
                 </div>
-                <div className="flex items-center justify-between pt-4 border-t border-forest-100">
-                  <div className="flex items-center gap-4 text-sm lg:text-base">
-                    <button className="flex items-center gap-1 text-forest-600 hover:text-forest-800 hover:bg-forest-50 px-2 py-1 rounded transition-colors">
+                <div className="flex items-center justify-between pt-6 border-t-2 border-forest-100">
+                  <div className="flex items-center gap-6 text-sm lg:text-base">
+                    <button className="flex items-center gap-2 text-forest-600 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-xl transition-all duration-200 font-bold">
                       <ThumbsUp className="h-4 w-4" />
                       <span>{post.likes}</span>
                     </button>
-                    <button className="flex items-center gap-1 text-forest-600 hover:text-forest-800 hover:bg-forest-50 px-2 py-1 rounded transition-colors">
+                    <button className="flex items-center gap-2 text-forest-600 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-xl transition-all duration-200 font-bold">
                       <MessageCircle className="h-4 w-4" />
                       <span>{post.comments}</span>
                     </button>
-                    <button className="flex items-center gap-1 text-forest-600 hover:text-forest-800 hover:bg-forest-50 px-2 py-1 rounded transition-colors">
+                    <button className="flex items-center gap-2 text-forest-600 hover:text-green-600 hover:bg-green-50 px-3 py-2 rounded-xl transition-all duration-200 font-bold">
                       <Share2 className="h-4 w-4" />
                       <span>{post.shares}</span>
                     </button>
                   </div>
-                  <span className="text-sm font-medium text-forest-600 bg-forest-50 px-2 py-1 rounded">
+                  <span className="text-sm font-black text-forest-600 bg-gradient-to-r from-forest-100 to-wheat-100 px-3 py-2 rounded-xl shadow-sm">
                     {post.views} views
                   </span>
                 </div>
