@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Check, Plus } from "lucide-react";
+import { ShoppingCart, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface AddToCartButtonProps {
