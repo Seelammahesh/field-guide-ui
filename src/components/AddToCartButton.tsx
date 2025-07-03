@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Check } from "lucide-react";
+import { ShoppingCart, Check, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface AddToCartButtonProps {
@@ -10,43 +10,30 @@ interface AddToCartButtonProps {
   productPrice?: number;
   className?: string;
   size?: "sm" | "default" | "lg";
+  quantity?: number;
 }
 
-const AddToCartButton = ({ productId, productName, productPrice = 0, className, size = "default" }: AddToCartButtonProps) => {
+const AddToCartButton = ({ 
+  productId, 
+  productName, 
+  productPrice = 0, 
+  className, 
+  size = "default",
+  quantity = 1 
+}: AddToCartButtonProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const { toast } = useToast();
 
-  const updateCartCount = () => {
-    const savedCart = localStorage.getItem('cartItems');
-    const cartItems = savedCart ? JSON.parse(savedCart) : [];
-    const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
-    
-    // Update all cart count elements
-    const cartCountElements = document.querySelectorAll('[data-cart-count], .cart-count, #cart-count');
-    cartCountElements.forEach((element: any) => {
-      if (element) {
-        element.textContent = totalItems.toString();
-        element.style.display = totalItems > 0 ? 'inline-block' : 'none';
-        
-        // Add visual feedback
-        element.classList.add('animate-pulse');
-        setTimeout(() => {
-          element.classList.remove('animate-pulse');
-        }, 1000);
-      }
+  const updateCartDisplay = () => {
+    // Force update cart count display across the app
+    const cartEvent = new CustomEvent('cartUpdated', {
+      detail: { timestamp: Date.now() }
     });
+    window.dispatchEvent(cartEvent);
     
-    // Update cart badge in navigation
-    const cartBadges = document.querySelectorAll('.cart-badge');
-    cartBadges.forEach((badge: any) => {
-      if (badge) {
-        badge.textContent = totalItems.toString();
-        badge.style.display = totalItems > 0 ? 'inline-flex' : 'none';
-      }
-    });
-    
-    return totalItems;
+    // Also dispatch storage event for any components listening
+    window.dispatchEvent(new Event('storage'));
   };
 
   const handleAddToCart = async (e: React.MouseEvent) => {
@@ -62,71 +49,40 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
       const existingCart = localStorage.getItem('cartItems');
       let cartItems = existingCart ? JSON.parse(existingCart) : [];
       
-      console.log('🛒 Adding to cart - Product:', { productId, productName, productPrice });
-      console.log('🛒 Current cart before adding:', cartItems);
+      console.log('🛒 Adding to cart:', { productId, productName, productPrice, quantity });
       
       // Check if item already exists
       const existingItemIndex = cartItems.findIndex((item: any) => item.id === productId);
       
       if (existingItemIndex > -1) {
         // Update quantity
-        cartItems[existingItemIndex].quantity += 1;
-        console.log('📦 Updated existing item quantity:', cartItems[existingItemIndex]);
+        cartItems[existingItemIndex].quantity += quantity;
+        console.log('📦 Updated existing item:', cartItems[existingItemIndex]);
       } else {
-        // Add new item with all required fields
+        // Add new item
         const newItem = {
           id: productId,
           name: productName,
           price: productPrice,
           originalPrice: productPrice,
-          quantity: 1,
+          quantity: quantity,
           image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=200&h=150&fit=crop",
           inStock: 50,
           addedAt: new Date().toISOString()
         };
         cartItems.push(newItem);
-        console.log('✨ Added new item to cart:', newItem);
+        console.log('✨ Added new item:', newItem);
       }
       
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
-      console.log('💾 Cart saved to localStorage:', cartItems);
+      console.log('💾 Cart saved:', cartItems);
       
-      // Update cart count and get total
-      const totalItems = updateCartCount();
-      console.log('📊 Total items in cart after update:', totalItems);
+      // Update cart display
+      updateCartDisplay();
       
-      // Dispatch multiple events to ensure all components are notified
-      const events = [
-        new Event('storage'),
-        new CustomEvent('cartUpdated', { 
-          detail: { 
-            action: 'add', 
-            productId, 
-            productName, 
-            totalItems,
-            cartItems 
-          }
-        }),
-        new CustomEvent('cartChanged', { 
-          detail: { 
-            totalItems, 
-            cartItems,
-            lastAction: 'add',
-            addedItem: { productId, productName, productPrice }
-          }
-        })
-      ];
-
-      events.forEach(event => {
-        window.dispatchEvent(event);
-        console.log('📡 Dispatched event:', event.type);
-      });
-      
-      // Force update after short delay
-      setTimeout(() => {
-        updateCartCount();
-      }, 100);
+      // Calculate total items
+      const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
       
       // Show success state
       setIsAdded(true);
@@ -137,9 +93,9 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
         duration: 3000,
       });
 
-      console.log('✅ Item successfully added to cart. Total items:', totalItems);
+      console.log('✅ Successfully added to cart. Total items:', totalItems);
 
-      // Reset button state after 2 seconds
+      // Reset success state after 2 seconds
       setTimeout(() => {
         setIsAdded(false);
       }, 2000);

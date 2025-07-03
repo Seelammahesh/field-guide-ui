@@ -1,15 +1,18 @@
 
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Star, Truck, Shield, Award, Heart, Zap, Sparkles, CheckCircle, Package, Users, MessageCircle } from 'lucide-react';
 import AddToCartButton from './AddToCartButton';
+import { useToast } from "@/hooks/use-toast";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
@@ -52,6 +55,44 @@ const ProductDetails = () => {
       "Improves plant resistance to diseases",
       "Enhances soil fertility over time"
     ]
+  };
+
+  const handleBuyNow = () => {
+    // Add to cart first
+    const existingCart = localStorage.getItem('cartItems');
+    let cartItems = existingCart ? JSON.parse(existingCart) : [];
+    
+    const existingItemIndex = cartItems.findIndex((item: any) => item.id === product.id);
+    
+    if (existingItemIndex > -1) {
+      cartItems[existingItemIndex].quantity += quantity;
+    } else {
+      const newItem = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        quantity: quantity,
+        image: product.images[0],
+        inStock: product.inStock,
+        addedAt: new Date().toISOString()
+      };
+      cartItems.push(newItem);
+    }
+    
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    
+    // Show success message
+    toast({
+      title: "✅ Added to Cart",
+      description: `${product.name} added! Redirecting to checkout...`,
+      duration: 2000,
+    });
+    
+    // Redirect to cart/payment page
+    setTimeout(() => {
+      navigate('/cart');
+    }, 1000);
   };
 
   const renderStars = (rating: number) => {
@@ -209,13 +250,24 @@ const ProductDetails = () => {
                   </span>
                 </div>
                 
-                <AddToCartButton
-                  productId={product.id}
-                  productName={product.name}
-                  productPrice={product.price}
-                  size="lg"
-                  className="w-full py-4 text-xl font-black rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
-                />
+                <div className="space-y-3">
+                  <AddToCartButton
+                    productId={product.id}
+                    productName={product.name}
+                    productPrice={product.price}
+                    quantity={quantity}
+                    size="lg"
+                    className="w-full py-4 text-xl font-black rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
+                  />
+                  
+                  <Button
+                    onClick={handleBuyNow}
+                    size="lg"
+                    className="w-full py-4 text-xl font-black rounded-xl bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-xl hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
+                  >
+                    🚀 Buy Now
+                  </Button>
+                </div>
               </div>
 
               {/* Enhanced Features */}
