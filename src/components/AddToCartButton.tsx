@@ -17,6 +17,38 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
   const [isAdded, setIsAdded] = useState(false);
   const { toast } = useToast();
 
+  const updateCartCount = () => {
+    const savedCart = localStorage.getItem('cartItems');
+    const cartItems = savedCart ? JSON.parse(savedCart) : [];
+    const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
+    
+    // Update all cart count elements
+    const cartCountElements = document.querySelectorAll('[data-cart-count], .cart-count, #cart-count');
+    cartCountElements.forEach((element: any) => {
+      if (element) {
+        element.textContent = totalItems.toString();
+        element.style.display = totalItems > 0 ? 'inline-block' : 'none';
+        
+        // Add visual feedback
+        element.classList.add('animate-pulse');
+        setTimeout(() => {
+          element.classList.remove('animate-pulse');
+        }, 1000);
+      }
+    });
+    
+    // Update cart badge in navigation
+    const cartBadges = document.querySelectorAll('.cart-badge');
+    cartBadges.forEach((badge: any) => {
+      if (badge) {
+        badge.textContent = totalItems.toString();
+        badge.style.display = totalItems > 0 ? 'inline-flex' : 'none';
+      }
+    });
+    
+    return totalItems;
+  };
+
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -30,6 +62,7 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
       const existingCart = localStorage.getItem('cartItems');
       let cartItems = existingCart ? JSON.parse(existingCart) : [];
       
+      console.log('🛒 Adding to cart - Product:', { productId, productName, productPrice });
       console.log('🛒 Current cart before adding:', cartItems);
       
       // Check if item already exists
@@ -40,7 +73,7 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
         cartItems[existingItemIndex].quantity += 1;
         console.log('📦 Updated existing item quantity:', cartItems[existingItemIndex]);
       } else {
-        // Add new item
+        // Add new item with all required fields
         const newItem = {
           id: productId,
           name: productName,
@@ -52,51 +85,20 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
           addedAt: new Date().toISOString()
         };
         cartItems.push(newItem);
-        console.log('✨ Added new item:', newItem);
+        console.log('✨ Added new item to cart:', newItem);
       }
       
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       console.log('💾 Cart saved to localStorage:', cartItems);
       
-      // Calculate total items
-      const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
-      console.log('📊 Total items in cart:', totalItems);
+      // Update cart count and get total
+      const totalItems = updateCartCount();
+      console.log('📊 Total items in cart after update:', totalItems);
       
-      // Force update cart count in navigation
-      const updateCartCount = () => {
-        const cartCountElements = document.querySelectorAll('[data-cart-count], .cart-count');
-        console.log('🔍 Found cart count elements:', cartCountElements.length);
-        
-        cartCountElements.forEach((element: any) => {
-          if (element) {
-            element.textContent = totalItems.toString();
-            element.style.display = totalItems > 0 ? 'inline-block' : 'none';
-            
-            // Add visual feedback
-            element.classList.add('animate-pulse');
-            setTimeout(() => {
-              element.classList.remove('animate-pulse');
-            }, 1000);
-          }
-        });
-      };
-
-      // Update cart count immediately and with delays
-      updateCartCount();
-      setTimeout(updateCartCount, 100);
-      setTimeout(updateCartCount, 500);
-      setTimeout(updateCartCount, 1000);
-      
-      // Dispatch events to notify other components
+      // Dispatch multiple events to ensure all components are notified
       const events = [
-        new StorageEvent('storage', {
-          key: 'cartItems',
-          newValue: JSON.stringify(cartItems),
-          oldValue: existingCart,
-          storageArea: localStorage,
-          url: window.location.href
-        }),
+        new Event('storage'),
         new CustomEvent('cartUpdated', { 
           detail: { 
             action: 'add', 
@@ -106,13 +108,25 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
             cartItems 
           }
         }),
-        new CustomEvent('cartChanged', { detail: { totalItems, cartItems } })
+        new CustomEvent('cartChanged', { 
+          detail: { 
+            totalItems, 
+            cartItems,
+            lastAction: 'add',
+            addedItem: { productId, productName, productPrice }
+          }
+        })
       ];
 
       events.forEach(event => {
         window.dispatchEvent(event);
         console.log('📡 Dispatched event:', event.type);
       });
+      
+      // Force update after short delay
+      setTimeout(() => {
+        updateCartCount();
+      }, 100);
       
       // Show success state
       setIsAdded(true);

@@ -14,11 +14,11 @@ const HeroSection = () => {
   
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image - Beautiful green ripened paddy field in 4K quality */}
+      {/* Background Image - High quality paddy field image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=1920&h=1080&fit=crop&q=90"
-          alt="Lush green ripened paddy fields with golden grains ready for harvest - Premium 4K quality"
+          src="https://as1.ftcdn.net/v2/jpg/01/14/67/82/1000_F_114678273_vPjrlHNOwS3cknbM577BxhYr9WEhCoay.jpg"
+          alt="Beautiful green ripened paddy fields with golden grains ready for harvest"
           className="w-full h-full object-cover scale-110 animate-[ken-burns_25s_ease-in-out_infinite_alternate]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70"></div>

@@ -24,7 +24,7 @@ const Cart = () => {
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<{code: string, discount: number} | null>(null);
 
-  // Sample product data - in real app this would come from API/context
+  // Sample product data for missing items
   const productData = {
     1: { name: "NPK Fertilizer 10:26:26", price: 450, originalPrice: 450, image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=200&h=150&fit=crop", inStock: 32 },
     2: { name: "Neem Oil Pesticide", price: 299, originalPrice: 349, image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&h=150&fit=crop", inStock: 45 },
@@ -41,47 +41,73 @@ const Cart = () => {
 
   const loadCartItems = () => {
     const savedCart = localStorage.getItem('cartItems');
+    console.log('📦 Loading cart from localStorage:', savedCart);
+    
     if (savedCart) {
       try {
         const cartData = JSON.parse(savedCart);
-        const fullCartItems = cartData.map((item: {id: number, quantity: number}) => ({
-          ...item,
-          ...productData[item.id as keyof typeof productData]
-        }));
+        console.log('📦 Parsed cart data:', cartData);
+        
+        // Ensure all cart items have required properties
+        const fullCartItems = cartData.map((item: any) => {
+          const productInfo = productData[item.id as keyof typeof productData];
+          const fullItem = {
+            id: item.id,
+            name: item.name || productInfo?.name || `Product ${item.id}`,
+            price: item.price || productInfo?.price || 0,
+            originalPrice: item.originalPrice || productInfo?.originalPrice || item.price || productInfo?.price || 0,
+            quantity: item.quantity || 1,
+            image: item.image || productInfo?.image || "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=200&h=150&fit=crop",
+            inStock: item.inStock || productInfo?.inStock || 50
+          };
+          console.log('📦 Processed cart item:', fullItem);
+          return fullItem;
+        });
+        
         setCartItems(fullCartItems);
-        console.log('Cart loaded:', fullCartItems);
+        console.log('📦 Cart items loaded successfully:', fullCartItems);
       } catch (error) {
-        console.error('Error loading cart:', error);
+        console.error('❌ Error parsing cart data:', error);
         setCartItems([]);
       }
+    } else {
+      console.log('📦 No cart data found in localStorage');
+      setCartItems([]);
     }
   };
 
   useEffect(() => {
+    console.log('🔄 Cart component mounted, loading cart items...');
     loadCartItems();
     
     // Listen for cart updates
-    const handleCartUpdate = () => {
+    const handleCartUpdate = (e: any) => {
+      console.log('🔄 Cart update event received:', e.type, e.detail);
       loadCartItems();
     };
     
     const handleStorageChange = (e: StorageEvent) => {
+      console.log('🔄 Storage change event received:', e.key);
       if (e.key === 'cartItems') {
         loadCartItems();
       }
     };
 
+    // Add event listeners
     window.addEventListener('cartUpdated', handleCartUpdate);
+    window.addEventListener('cartChanged', handleCartUpdate);
     window.addEventListener('storage', handleStorageChange);
 
     return () => {
       window.removeEventListener('cartUpdated', handleCartUpdate);
+      window.removeEventListener('cartChanged', handleCartUpdate);
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
+    
     const item = cartItems.find(item => item.id === id);
     if (item && newQuantity > item.inStock) {
       toast({
@@ -100,6 +126,7 @@ const Cart = () => {
         item.id === id ? { ...item, quantity: newQuantity } : item
       );
       localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+      console.log('📦 Updated cart quantity:', { id, newQuantity });
       
       // Update local state
       setCartItems(items =>
@@ -108,24 +135,26 @@ const Cart = () => {
         )
       );
       
-      // Dispatch update event
+      // Dispatch events
       window.dispatchEvent(new Event('storage'));
+      window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { action: 'update' } }));
     }
   };
 
   const removeItem = (id: number) => {
-    // Update localStorage
     const savedCart = localStorage.getItem('cartItems');
     if (savedCart) {
       const cartData = JSON.parse(savedCart);
       const updatedCart = cartData.filter((item: any) => item.id !== id);
       localStorage.setItem('cartItems', JSON.stringify(updatedCart));
+      console.log('📦 Removed item from cart:', id);
       
       // Update local state
       setCartItems(items => items.filter(item => item.id !== id));
       
-      // Dispatch update event
+      // Dispatch events
       window.dispatchEvent(new Event('storage'));
+      window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { action: 'remove' } }));
       
       toast({
         title: "Item Removed",
@@ -179,7 +208,6 @@ const Cart = () => {
       return;
     }
     
-    // Save order details for payment page
     const orderDetails = {
       items: cartItems,
       subtotal,
@@ -190,6 +218,7 @@ const Cart = () => {
       total
     };
     localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+    console.log('🛒 Proceeding to checkout with order:', orderDetails);
     navigate('/payment');
   };
 
