@@ -17,7 +17,7 @@ const HeroSection = () => {
       {/* Background Image - Beautiful green ripened paddy field in 4K quality */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=1920&h=1080&fit=crop&q=90"
+          src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1920&h=1080&fit=crop&q=90"
           alt="Lush green ripened paddy fields with golden grains ready for harvest - Premium 4K quality"
           className="w-full h-full object-cover scale-110 animate-[ken-burns_20s_ease-in-out_infinite_alternate]"
         />
