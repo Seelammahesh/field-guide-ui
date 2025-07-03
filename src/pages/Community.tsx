@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -130,7 +129,12 @@ const Community = () => {
   ]);
 
   const [newDiscussion, setNewDiscussion] = useState({ title: '', content: '' });
-  const [newTip, setNewTip] = useState({ title: '', content: '', category: '', difficulty: 'Beginner' as const });
+  const [newTip, setNewTip] = useState({ 
+    title: '', 
+    content: '', 
+    category: '', 
+    difficulty: 'Beginner' as 'Beginner' | 'Intermediate' | 'Advanced'
+  });
 
   const handleVideoSubmit = (newPost: VideoPost) => {
     setPosts(prevPosts => [...prevPosts, { ...newPost, id: prevPosts.length + 1 }]);
