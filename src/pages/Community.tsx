@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Video, Play, Calendar, User, ThumbsUp, MessageCircle, Share2, Users, BookOpen, Lightbulb, Sparkles, Heart, TrendingUp, Award, Plus, Send } from 'lucide-react';
+import { Video, Play, Calendar, User, ThumbsUp, MessageCircle, Share2, Users, Lightbulb, Sparkles, Heart, Plus, Send, Star, Eye, Clock, Filter, Search, TrendingUp, Award, Zap } from 'lucide-react';
 import VideoPostForm from '@/components/VideoPostForm';
 
 interface VideoPost {
@@ -50,6 +50,7 @@ const Community = () => {
   const [showDiscussionForm, setShowDiscussionForm] = useState(false);
   const [showTipForm, setShowTipForm] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoPost | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [posts, setPosts] = useState<VideoPost[]>([
     {
@@ -199,14 +200,14 @@ const Community = () => {
               className="w-full h-full"
             ></iframe>
           </div>
-          <div className="bg-white p-8 rounded-b-2xl shadow-2xl">
-            <h3 className="font-black text-2xl text-forest-800 mb-3 flex items-center gap-2">
+          <div className="bg-white p-6 sm:p-8 rounded-b-2xl shadow-2xl">
+            <h3 className="font-black text-xl sm:text-2xl text-forest-800 mb-3 flex items-center gap-2">
               {video.title}
               <Heart className="h-5 w-5 text-red-500" />
             </h3>
-            <p className="text-forest-600 mb-6 leading-relaxed text-lg">{video.description}</p>
-            <div className="flex items-center justify-between text-sm text-forest-500">
-              <div className="flex items-center gap-6">
+            <p className="text-forest-600 mb-6 leading-relaxed text-base sm:text-lg">{video.description}</p>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm text-forest-500 gap-4">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6">
                 <span className="flex items-center gap-2 font-semibold">
                   <User className="h-4 w-4" />
                   {video.author}
@@ -216,7 +217,7 @@ const Community = () => {
                   {video.date}
                 </span>
               </div>
-              <span className="font-bold text-lg">{video.views} views</span>
+              <span className="font-bold text-base sm:text-lg">{video.views} views</span>
             </div>
           </div>
         </div>
@@ -224,233 +225,300 @@ const Community = () => {
     );
   };
 
+  const tabConfig = {
+    videos: {
+      title: 'Videos',
+      icon: Video,
+      color: 'from-purple-600 to-indigo-600',
+      hoverColor: 'hover:from-purple-700 hover:to-indigo-700',
+      bgColor: 'bg-gradient-to-br from-purple-50 to-indigo-50',
+      borderColor: 'border-purple-200'
+    },
+    discussions: {
+      title: 'Discussions',
+      icon: MessageCircle,
+      color: 'from-blue-600 to-cyan-600',
+      hoverColor: 'hover:from-blue-700 hover:to-cyan-700',
+      bgColor: 'bg-gradient-to-br from-blue-50 to-cyan-50',
+      borderColor: 'border-blue-200'
+    },
+    tips: {
+      title: 'Tips',
+      icon: Lightbulb,
+      color: 'from-green-600 to-emerald-600',
+      hoverColor: 'hover:from-green-700 hover:to-emerald-700',
+      bgColor: 'bg-gradient-to-br from-green-50 to-emerald-50',
+      borderColor: 'border-green-200'
+    }
+  };
+
+  const currentTabConfig = tabConfig[activeTab];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-wheat-50 via-white to-forest-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        {/* Enhanced Header */}
-        <div className="text-center mb-12 lg:mb-16">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Users className="h-12 w-12 text-forest-600" />
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-forest-800">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        {/* Modern Header */}
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6">
+            <div className="p-3 bg-gradient-to-r from-forest-600 to-emerald-600 rounded-2xl shadow-lg">
+              <Users className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-white" />
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-gray-800 text-center sm:text-left">
               Community Hub
             </h1>
-            <Sparkles className="h-10 w-10 text-yellow-500 animate-pulse" />
+            <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-yellow-500 animate-pulse" />
           </div>
-          <p className="text-xl sm:text-2xl text-forest-600 max-w-4xl mx-auto leading-relaxed mb-8 font-medium">
-            Connect with fellow farmers, share experiences, and learn together in our thriving agricultural community
+          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-6 sm:mb-8 font-medium">
+            Connect, share, and grow together in our vibrant farming community
           </p>
+          
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                placeholder={`Search ${activeTab}...`}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-12 pr-4 py-3 text-lg rounded-2xl border-2 border-gray-200 focus:border-forest-500 shadow-lg"
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <Button
-            onClick={() => setActiveTab('videos')}
-            className={`px-8 py-4 text-lg font-bold rounded-2xl transition-all duration-300 ${
-              activeTab === 'videos'
-                ? 'bg-gradient-to-r from-forest-600 to-forest-700 text-white shadow-2xl'
-                : 'bg-white text-forest-600 border-2 border-forest-200 hover:bg-forest-50'
-            }`}
-          >
-            <Video className="h-5 w-5 mr-2" />
-            Videos ({posts.length})
-          </Button>
-          <Button
-            onClick={() => setActiveTab('discussions')}
-            className={`px-8 py-4 text-lg font-bold rounded-2xl transition-all duration-300 ${
-              activeTab === 'discussions'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-2xl'
-                : 'bg-white text-forest-600 border-2 border-forest-200 hover:bg-forest-50'
-            }`}
-          >
-            <MessageCircle className="h-5 w-5 mr-2" />
-            Discussions ({discussions.length})
-          </Button>
-          <Button
-            onClick={() => setActiveTab('tips')}
-            className={`px-8 py-4 text-lg font-bold rounded-2xl transition-all duration-300 ${
-              activeTab === 'tips'
-                ? 'bg-gradient-to-r from-green-600 to-green-700 text-white shadow-2xl'
-                : 'bg-white text-forest-600 border-2 border-forest-200 hover:bg-forest-50'
-            }`}
-          >
-            <Lightbulb className="h-5 w-5 mr-2" />
-            Tips ({tips.length})
-          </Button>
+        {/* Modern Tab Navigation */}
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
+          {(Object.keys(tabConfig) as Array<keyof typeof tabConfig>).map((tab) => {
+            const config = tabConfig[tab];
+            const Icon = config.icon;
+            const isActive = activeTab === tab;
+            
+            return (
+              <Button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`relative px-6 sm:px-8 py-4 sm:py-5 text-base sm:text-lg font-bold rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl w-full sm:w-auto ${
+                  isActive
+                    ? `bg-gradient-to-r ${config.color} text-white shadow-2xl scale-105`
+                    : `bg-white text-gray-700 border-2 ${config.borderColor} hover:bg-gray-50 ${config.hoverColor} hover:text-white`
+                }`}
+              >
+                <Icon className="h-5 w-5 sm:h-6 sm:w-6 mr-2 sm:mr-3" />
+                {config.title}
+                <Badge className={`ml-2 sm:ml-3 ${isActive ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                  {tab === 'videos' ? posts.length : tab === 'discussions' ? discussions.length : tips.length}
+                </Badge>
+                {isActive && (
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-white rounded-full"></div>
+                )}
+              </Button>
+            );
+          })}
         </div>
 
         {/* Action Button */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 sm:mb-12">
           {activeTab === 'videos' && (
             <Button 
               onClick={() => setShowVideoForm(true)}
-              className="bg-gradient-to-r from-forest-600 via-forest-700 to-forest-800 hover:from-forest-700 hover:via-forest-800 hover:to-forest-900 text-white px-8 py-4 text-xl font-black shadow-2xl hover:shadow-3xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 rounded-2xl"
+              className={`bg-gradient-to-r ${currentTabConfig.color} ${currentTabConfig.hoverColor} text-white px-8 sm:px-10 py-4 sm:py-5 text-lg sm:text-xl font-black shadow-2xl hover:shadow-3xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 rounded-2xl`}
             >
               <Plus className="h-6 w-6 mr-3" />
               Share Your Video
+              <Zap className="h-5 w-5 ml-2 animate-pulse" />
             </Button>
           )}
           {activeTab === 'discussions' && (
             <Button 
               onClick={() => setShowDiscussionForm(true)}
-              className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 text-white px-8 py-4 text-xl font-black shadow-2xl hover:shadow-3xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 rounded-2xl"
+              className={`bg-gradient-to-r ${currentTabConfig.color} ${currentTabConfig.hoverColor} text-white px-8 sm:px-10 py-4 sm:py-5 text-lg sm:text-xl font-black shadow-2xl hover:shadow-3xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 rounded-2xl`}
             >
               <Plus className="h-6 w-6 mr-3" />
               Start Discussion
+              <TrendingUp className="h-5 w-5 ml-2 animate-pulse" />
             </Button>
           )}
           {activeTab === 'tips' && (
             <Button 
               onClick={() => setShowTipForm(true)}
-              className="bg-gradient-to-r from-green-600 via-green-700 to-green-800 hover:from-green-700 hover:via-green-800 hover:to-green-900 text-white px-8 py-4 text-xl font-black shadow-2xl hover:shadow-3xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 rounded-2xl"
+              className={`bg-gradient-to-r ${currentTabConfig.color} ${currentTabConfig.hoverColor} text-white px-8 sm:px-10 py-4 sm:py-5 text-lg sm:text-xl font-black shadow-2xl hover:shadow-3xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-300 rounded-2xl`}
             >
               <Plus className="h-6 w-6 mr-3" />
               Share a Tip
+              <Award className="h-5 w-5 ml-2 animate-pulse" />
             </Button>
           )}
         </div>
 
         {/* Content based on active tab */}
-        {activeTab === 'videos' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {posts.map((post) => (
-              <Card key={post.id} className="overflow-hidden hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 bg-white border-2 border-forest-200 rounded-2xl group">
-                <div className="relative group/image">
-                  <img
-                    className="w-full h-56 lg:h-64 object-cover cursor-pointer transition-transform duration-700 group-hover/image:scale-110"
-                    src={post.thumbnail}
-                    alt={post.title}
-                    onClick={() => setSelectedVideo(post)}
-                  />
-                  <div 
-                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center cursor-pointer opacity-0 group-hover/image:opacity-100 transition-all duration-500"
-                    onClick={() => setSelectedVideo(post)}
-                  >
-                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-6 transform scale-75 group-hover/image:scale-100 transition-transform duration-500 shadow-2xl">
-                      <Play className="h-12 w-12 lg:h-16 lg:w-16 text-white" />
+        <div className={`${currentTabConfig.bgColor} rounded-3xl p-4 sm:p-6 lg:p-8 border-2 ${currentTabConfig.borderColor} shadow-xl`}>
+          {activeTab === 'videos' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {posts.map((post) => (
+                <Card key={post.id} className="overflow-hidden hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 bg-white border-2 border-purple-200 rounded-2xl group">
+                  <div className="relative group/image">
+                    <img
+                      className="w-full h-48 sm:h-56 lg:h-64 object-cover cursor-pointer transition-transform duration-700 group-hover/image:scale-110"
+                      src={post.thumbnail}
+                      alt={post.title}
+                      onClick={() => setSelectedVideo(post)}
+                    />
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center cursor-pointer opacity-0 group-hover/image:opacity-100 transition-all duration-500"
+                      onClick={() => setSelectedVideo(post)}
+                    >
+                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 sm:p-6 transform scale-75 group-hover/image:scale-100 transition-transform duration-500 shadow-2xl">
+                        <Play className="h-10 w-10 sm:h-12 sm:w-12 lg:h-16 lg:w-16 text-white" />
+                      </div>
+                    </div>
+                    <Badge className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-black px-2 sm:px-3 py-1 shadow-lg rounded-full">
+                      {post.category}
+                    </Badge>
+                    <div className="absolute top-3 sm:top-4 left-3 sm:left-4 flex items-center gap-1 bg-black/50 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1">
+                      <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
+                      <span className="text-white text-xs font-bold">{post.views}</span>
                     </div>
                   </div>
-                  <Badge className="absolute top-4 right-4 bg-gradient-to-r from-forest-600 to-forest-700 text-white text-xs font-black px-3 py-1 shadow-lg">
-                    {post.category}
-                  </Badge>
-                </div>
-                <CardContent className="p-6 lg:p-8">
-                  <h3 className="font-black text-forest-800 mb-3 text-xl lg:text-2xl line-clamp-2 leading-tight">
-                    {post.title}
-                  </h3>
-                  <p className="text-forest-600 text-sm lg:text-base mb-6 line-clamp-2 leading-relaxed">
-                    {post.description}
-                  </p>
-                  <div className="flex items-center justify-between text-sm lg:text-base text-forest-500 mb-6">
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4" />
-                      <span className="font-bold">{post.author}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <span className="font-semibold">{post.date}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between pt-6 border-t-2 border-forest-100">
-                    <div className="flex items-center gap-6 text-sm lg:text-base">
-                      <button className="flex items-center gap-2 text-forest-600 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-xl transition-all duration-200 font-bold">
-                        <ThumbsUp className="h-4 w-4" />
-                        <span>{post.likes}</span>
-                      </button>
-                      <button className="flex items-center gap-2 text-forest-600 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-xl transition-all duration-200 font-bold">
-                        <MessageCircle className="h-4 w-4" />
-                        <span>{post.comments}</span>
-                      </button>
-                    </div>
-                    <span className="text-sm font-black text-forest-600 bg-gradient-to-r from-forest-100 to-wheat-100 px-3 py-2 rounded-xl shadow-sm">
-                      {post.views} views
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'discussions' && (
-          <div className="space-y-6">
-            {discussions.map((discussion) => (
-              <Card key={discussion.id} className="p-6 hover:shadow-2xl transition-all duration-300 bg-white border-2 border-blue-200 rounded-2xl">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-forest-800 mb-2">{discussion.title}</h3>
-                    <p className="text-forest-600 mb-4 leading-relaxed">{discussion.content}</p>
-                    <div className="flex items-center gap-4 text-sm text-forest-500">
+                  <CardContent className="p-4 sm:p-6 lg:p-8">
+                    <h3 className="font-black text-gray-800 mb-3 text-lg sm:text-xl lg:text-2xl line-clamp-2 leading-tight">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm sm:text-base mb-4 sm:mb-6 line-clamp-2 leading-relaxed">
+                      {post.description}
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm text-gray-500 mb-4 sm:mb-6 gap-2">
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4" />
-                        <span className="font-semibold">{discussion.author}</span>
+                        <span className="font-bold">{post.author}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span>{discussion.date}</span>
+                        <Clock className="h-4 w-4" />
+                        <span className="font-semibold">{post.date}</span>
                       </div>
-                      <Badge className="bg-blue-100 text-blue-800">{discussion.category}</Badge>
                     </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-6 pt-4 border-t border-forest-100">
-                  <button className="flex items-center gap-2 text-forest-600 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-xl transition-all duration-200 font-semibold">
-                    <MessageCircle className="h-4 w-4" />
-                    <span>{discussion.replies} replies</span>
-                  </button>
-                  <button className="flex items-center gap-2 text-forest-600 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-xl transition-all duration-200 font-semibold">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span>{discussion.likes} likes</span>
-                  </button>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
+                    <div className="flex items-center justify-between pt-4 sm:pt-6 border-t-2 border-purple-100">
+                      <div className="flex items-center gap-4 sm:gap-6 text-sm">
+                        <button className="flex items-center gap-2 text-gray-600 hover:text-red-600 hover:bg-red-50 px-2 sm:px-3 py-1 sm:py-2 rounded-xl transition-all duration-200 font-bold">
+                          <ThumbsUp className="h-4 w-4" />
+                          <span>{post.likes}</span>
+                        </button>
+                        <button className="flex items-center gap-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-2 sm:px-3 py-1 sm:py-2 rounded-xl transition-all duration-200 font-bold">
+                          <MessageCircle className="h-4 w-4" />
+                          <span>{post.comments}</span>
+                        </button>
+                      </div>
+                      <button className="flex items-center gap-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 px-2 sm:px-3 py-1 sm:py-2 rounded-xl transition-all duration-200 font-bold">
+                        <Share2 className="h-4 w-4" />
+                        Share
+                      </button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
-        {activeTab === 'tips' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {tips.map((tip) => (
-              <Card key={tip.id} className="p-6 hover:shadow-2xl transition-all duration-300 bg-white border-2 border-green-200 rounded-2xl">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-bold text-forest-800">{tip.title}</h3>
-                      <Badge className={`text-xs ${
-                        tip.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
-                        tip.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {tip.difficulty}
-                      </Badge>
-                    </div>
-                    <p className="text-forest-600 mb-4 leading-relaxed">{tip.content}</p>
-                    <div className="flex items-center gap-4 text-sm text-forest-500">
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        <span className="font-semibold">{tip.author}</span>
+          {activeTab === 'discussions' && (
+            <div className="space-y-6">
+              {discussions.map((discussion) => (
+                <Card key={discussion.id} className="p-4 sm:p-6 lg:p-8 hover:shadow-2xl transition-all duration-300 bg-white border-2 border-blue-200 rounded-2xl group hover:border-blue-300">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-3 group-hover:text-blue-700 transition-colors duration-200">
+                        {discussion.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                        {discussion.content}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-gray-500">
+                        <div className="flex items-center gap-2">
+                          <User className="h-4 w-4" />
+                          <span className="font-semibold">{discussion.author}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          <span>{discussion.date}</span>
+                        </div>
+                        <Badge className="bg-blue-100 text-blue-800 rounded-full px-3 py-1">
+                          {discussion.category}
+                        </Badge>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span>{tip.date}</span>
-                      </div>
-                      <Badge className="bg-green-100 text-green-800">{tip.category}</Badge>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-6 pt-4 border-t border-forest-100">
-                  <button className="flex items-center gap-2 text-forest-600 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-xl transition-all duration-200 font-semibold">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span>{tip.likes} likes</span>
-                  </button>
-                  <button className="flex items-center gap-2 text-forest-600 hover:text-green-600 hover:bg-green-50 px-3 py-2 rounded-xl transition-all duration-200 font-semibold">
-                    <Share2 className="h-4 w-4" />
-                    Share
-                  </button>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-blue-100">
+                    <button className="flex items-center gap-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 font-semibold">
+                      <MessageCircle className="h-4 w-4" />
+                      <span>{discussion.replies} replies</span>
+                    </button>
+                    <button className="flex items-center gap-2 text-gray-600 hover:text-red-600 hover:bg-red-50 px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 font-semibold">
+                      <ThumbsUp className="h-4 w-4" />
+                      <span>{discussion.likes} likes</span>
+                    </button>
+                    <button className="flex items-center gap-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 font-semibold">
+                      <Share2 className="h-4 w-4" />
+                      Share
+                    </button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+
+          {activeTab === 'tips' && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              {tips.map((tip) => (
+                <Card key={tip.id} className="p-4 sm:p-6 lg:p-8 hover:shadow-2xl transition-all duration-300 bg-white border-2 border-green-200 rounded-2xl group hover:border-green-300">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
+                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 group-hover:text-green-700 transition-colors duration-200">
+                          {tip.title}
+                        </h3>
+                        <Badge className={`text-xs rounded-full px-2 sm:px-3 py-1 ${
+                          tip.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
+                          tip.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>
+                          {tip.difficulty}
+                        </Badge>
+                      </div>
+                      <p className="text-gray-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                        {tip.content}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-gray-500">
+                        <div className="flex items-center gap-2">
+                          <User className="h-4 w-4" />
+                          <span className="font-semibold">{tip.author}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          <span>{tip.date}</span>
+                        </div>
+                        <Badge className="bg-green-100 text-green-800 rounded-full px-3 py-1">
+                          {tip.category}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-green-100">
+                    <button className="flex items-center gap-2 text-gray-600 hover:text-red-600 hover:bg-red-50 px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 font-semibold">
+                      <ThumbsUp className="h-4 w-4" />
+                      <span>{tip.likes} likes</span>
+                    </button>
+                    <button className="flex items-center gap-2 text-gray-600 hover:text-green-600 hover:bg-green-50 px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 font-semibold">
+                      <Share2 className="h-4 w-4" />
+                      Share
+                    </button>
+                    <button className="flex items-center gap-2 text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 font-semibold">
+                      <Star className="h-4 w-4" />
+                      Save
+                    </button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Video Post Form Modal */}
         {showVideoForm && (
@@ -464,31 +532,31 @@ const Community = () => {
         {showDiscussionForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-              <CardContent className="p-8">
+              <CardContent className="p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-forest-800 flex items-center gap-2">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center gap-2">
                     <MessageCircle className="h-6 w-6" />
                     Start New Discussion
                   </h2>
-                  <Button variant="ghost" onClick={() => setShowDiscussionForm(false)}>
+                  <Button variant="ghost" onClick={() => setShowDiscussionForm(false)} className="text-2xl">
                     ✕
                   </Button>
                 </div>
                 <form onSubmit={handleDiscussionSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-forest-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Discussion Title
                     </label>
                     <Input
                       value={newDiscussion.title}
                       onChange={(e) => setNewDiscussion({...newDiscussion, title: e.target.value})}
                       placeholder="What would you like to discuss?"
-                      className="w-full"
+                      className="w-full rounded-xl border-2"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-forest-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Description
                     </label>
                     <Textarea
@@ -496,16 +564,16 @@ const Community = () => {
                       onChange={(e) => setNewDiscussion({...newDiscussion, content: e.target.value})}
                       placeholder="Describe your question or topic in detail..."
                       rows={5}
-                      className="w-full"
+                      className="w-full rounded-xl border-2 resize-none"
                       required
                     />
                   </div>
-                  <div className="flex gap-4">
-                    <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700">
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 rounded-xl py-3">
                       <Send className="h-4 w-4 mr-2" />
                       Post Discussion
                     </Button>
-                    <Button type="button" variant="outline" onClick={() => setShowDiscussionForm(false)}>
+                    <Button type="button" variant="outline" onClick={() => setShowDiscussionForm(false)} className="rounded-xl py-3">
                       Cancel
                     </Button>
                   </div>
@@ -519,31 +587,31 @@ const Community = () => {
         {showTipForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-              <CardContent className="p-8">
+              <CardContent className="p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-forest-800 flex items-center gap-2">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center gap-2">
                     <Lightbulb className="h-6 w-6" />
                     Share a Farming Tip
                   </h2>
-                  <Button variant="ghost" onClick={() => setShowTipForm(false)}>
+                  <Button variant="ghost" onClick={() => setShowTipForm(false)} className="text-2xl">
                     ✕
                   </Button>
                 </div>
                 <form onSubmit={handleTipSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-forest-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Tip Title
                     </label>
                     <Input
                       value={newTip.title}
                       onChange={(e) => setNewTip({...newTip, title: e.target.value})}
                       placeholder="Give your tip a catchy title"
-                      className="w-full"
+                      className="w-full rounded-xl border-2"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-forest-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Tip Content
                     </label>
                     <Textarea
@@ -551,30 +619,30 @@ const Community = () => {
                       onChange={(e) => setNewTip({...newTip, content: e.target.value})}
                       placeholder="Share your farming tip in detail..."
                       rows={4}
-                      className="w-full"
+                      className="w-full rounded-xl border-2 resize-none"
                       required
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-forest-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
                         Category
                       </label>
                       <Input
                         value={newTip.category}
                         onChange={(e) => setNewTip({...newTip, category: e.target.value})}
                         placeholder="e.g., Pest Control, Irrigation"
-                        className="w-full"
+                        className="w-full rounded-xl border-2"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-forest-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
                         Difficulty Level
                       </label>
                       <select
                         value={newTip.difficulty}
                         onChange={(e) => setNewTip({...newTip, difficulty: e.target.value as 'Beginner' | 'Intermediate' | 'Advanced'})}
-                        className="w-full p-2 border border-gray-300 rounded-md"
+                        className="w-full p-2 border-2 border-gray-300 rounded-xl"
                       >
                         <option value="Beginner">Beginner</option>
                         <option value="Intermediate">Intermediate</option>
@@ -582,12 +650,12 @@ const Community = () => {
                       </select>
                     </div>
                   </div>
-                  <div className="flex gap-4">
-                    <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700">
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700 rounded-xl py-3">
                       <Send className="h-4 w-4 mr-2" />
                       Share Tip
                     </Button>
-                    <Button type="button" variant="outline" onClick={() => setShowTipForm(false)}>
+                    <Button type="button" variant="outline" onClick={() => setShowTipForm(false)} className="rounded-xl py-3">
                       Cancel
                     </Button>
                   </div>

@@ -63,7 +63,32 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
       const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
       console.log('📊 Total items in cart:', totalItems);
       
-      // Dispatch multiple events to ensure cart updates everywhere
+      // Force update cart count in navigation
+      const updateCartCount = () => {
+        const cartCountElements = document.querySelectorAll('[data-cart-count], .cart-count');
+        console.log('🔍 Found cart count elements:', cartCountElements.length);
+        
+        cartCountElements.forEach((element: any) => {
+          if (element) {
+            element.textContent = totalItems.toString();
+            element.style.display = totalItems > 0 ? 'inline-block' : 'none';
+            
+            // Add visual feedback
+            element.classList.add('animate-pulse');
+            setTimeout(() => {
+              element.classList.remove('animate-pulse');
+            }, 1000);
+          }
+        });
+      };
+
+      // Update cart count immediately and with delays
+      updateCartCount();
+      setTimeout(updateCartCount, 100);
+      setTimeout(updateCartCount, 500);
+      setTimeout(updateCartCount, 1000);
+      
+      // Dispatch events to notify other components
       const events = [
         new StorageEvent('storage', {
           key: 'cartItems',
@@ -81,53 +106,20 @@ const AddToCartButton = ({ productId, productName, productPrice = 0, className, 
             cartItems 
           }
         }),
-        new CustomEvent('cartChanged', { detail: { totalItems, cartItems } }),
-        new CustomEvent('updateCart', { detail: { totalItems, cartItems } }),
-        new Event('storage')
+        new CustomEvent('cartChanged', { detail: { totalItems, cartItems } })
       ];
 
-      // Dispatch all events
       events.forEach(event => {
         window.dispatchEvent(event);
         console.log('📡 Dispatched event:', event.type);
       });
-
-      // Update cart count elements manually
-      const updateCartElements = () => {
-        const cartCountElements = document.querySelectorAll('[data-cart-count]');
-        console.log('🔍 Found cart count elements:', cartCountElements.length);
-        
-        cartCountElements.forEach((element: any) => {
-          console.log('🔄 Updating cart count element:', element);
-          element.textContent = totalItems.toString();
-          element.style.display = totalItems > 0 ? 'inline' : 'none';
-          
-          // Add visual feedback
-          element.classList.add('animate-bounce');
-          setTimeout(() => {
-            element.classList.remove('animate-bounce');
-          }, 1000);
-        });
-
-        // Also update any elements with cart-count class
-        const cartCountByClass = document.querySelectorAll('.cart-count');
-        cartCountByClass.forEach((element: any) => {
-          element.textContent = totalItems.toString();
-          element.style.display = totalItems > 0 ? 'inline' : 'none';
-        });
-      };
-
-      // Update immediately and after a delay
-      updateCartElements();
-      setTimeout(updateCartElements, 100);
-      setTimeout(updateCartElements, 500);
       
       // Show success state
       setIsAdded(true);
       
       toast({
         title: "✅ Added to Cart",
-        description: `${productName} has been successfully added to your cart. Total items: ${totalItems}`,
+        description: `${productName} has been added to your cart! Total items: ${totalItems}`,
         duration: 3000,
       });
 
