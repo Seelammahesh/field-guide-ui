@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Heart, 
@@ -24,17 +23,19 @@ import {
   Video,
   BookOpen,
   Award,
-  Filter,
   ThumbsUp,
   Eye,
   Clock,
   Send,
   Bookmark,
-  MoreHorizontal
+  MoreHorizontal,
+  Zap,
+  Globe,
+  Shield,
+  Target
 } from "lucide-react";
 
 const Community = () => {
-  const [activeTab, setActiveTab] = useState('posts');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [newPostTitle, setNewPostTitle] = useState('');
@@ -44,11 +45,11 @@ const Community = () => {
   const { toast } = useToast();
 
   const categories = [
-    { id: 'all', name: 'All Posts', icon: Users, color: 'bg-blue-500' },
-    { id: 'tips', name: 'Farming Tips', icon: BookOpen, color: 'bg-green-500' },
-    { id: 'equipment', name: 'Equipment', icon: Award, color: 'bg-purple-500' },
-    { id: 'crops', name: 'Crop Advice', icon: TrendingUp, color: 'bg-orange-500' },
-    { id: 'weather', name: 'Weather Updates', icon: Calendar, color: 'bg-cyan-500' }
+    { id: 'all', name: 'All', icon: Globe, gradient: 'from-blue-500 to-purple-500' },
+    { id: 'tips', name: 'Tips', icon: Zap, gradient: 'from-green-500 to-teal-500' },
+    { id: 'equipment', name: 'Equipment', icon: Target, gradient: 'from-orange-500 to-red-500' },
+    { id: 'crops', name: 'Crops', icon: BookOpen, gradient: 'from-emerald-500 to-cyan-500' },
+    { id: 'weather', name: 'Weather', icon: Shield, gradient: 'from-indigo-500 to-pink-500' }
   ];
 
   const communityPosts = [
@@ -59,30 +60,32 @@ const Community = () => {
       location: "Punjab, India",
       time: "2 hours ago",
       category: "tips",
-      title: "Best practices for wheat cultivation in winter season",
-      content: "Just harvested my wheat crop and got excellent results! Here are some key tips that worked for me this season. Proper soil preparation is crucial - make sure to plow the field at least 15-20 days before sowing. Use certified seeds and maintain proper spacing.",
+      title: "Revolutionary wheat cultivation method increases yield by 40%",
+      content: "After 3 seasons of testing, I've developed a technique that combines traditional wisdom with modern science. The results speak for themselves - 40% increase in yield with 25% less water usage. Here's exactly how I did it...",
       image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&h=400&fit=crop",
-      likes: 45,
-      comments: 12,
-      shares: 8,
+      likes: 1247,
+      comments: 89,
+      shares: 156,
       verified: true,
-      tags: ['wheat', 'winter', 'cultivation']
+      tags: ['wheat', 'innovation', 'yield-boost'],
+      trending: true
     },
     {
       id: 2,
-      author: "Priya Sharma",
+      author: "Dr. Priya Sharma",
       avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=100&h=100&fit=crop&crop=face",
       location: "Maharashtra, India",
       time: "5 hours ago",
       category: "equipment",
-      title: "New drip irrigation system installation completed",
-      content: "Finally installed the new drip irrigation system across 10 acres. Water consumption reduced by 40%! The investment was worth it. Installation took 3 days with professional help. Happy to share my experience and answer questions.",
+      title: "Smart drip irrigation: My ROI analysis after 1 year",
+      content: "Invested ₹2.5L in smart drip irrigation system. Here's the complete breakdown of costs, savings, and unexpected benefits that convinced my entire village to adopt this technology.",
       image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=600&h=400&fit=crop",
-      likes: 67,
-      comments: 23,
-      shares: 15,
-      verified: false,
-      tags: ['irrigation', 'water-saving', 'technology']
+      likes: 892,
+      comments: 67,
+      shares: 134,
+      verified: true,
+      tags: ['technology', 'ROI', 'smart-farming'],
+      trending: false
     },
     {
       id: 3,
@@ -91,58 +94,47 @@ const Community = () => {
       location: "Gujarat, India",
       time: "1 day ago",
       category: "crops",
-      title: "Organic pest control methods that actually work",
-      content: "Sharing my experience with natural pest control methods. These techniques have been game-changers for my organic farm. Neem oil spray works wonders for aphids, and companion planting has significantly reduced pest issues.",
+      title: "Zero-pesticide farming: 5 natural methods that actually work",
+      content: "Completely eliminated chemical pesticides from my 50-acre farm. Revenue increased by 30% due to premium organic pricing. Here are the 5 game-changing methods I use...",
       image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=400&fit=crop",
-      likes: 89,
-      comments: 31,
-      shares: 22,
+      likes: 2156,
+      comments: 234,
+      shares: 445,
       verified: true,
-      tags: ['organic', 'pest-control', 'sustainable']
+      tags: ['organic', 'sustainable', 'premium'],
+      trending: true
     }
   ];
 
-  const events = [
-    {
-      id: 1,
-      title: "Annual Farmers Meet 2024",
-      date: "March 15, 2024",
-      location: "Delhi",
-      attendees: 250,
-      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop",
-      description: "Connect with fellow farmers and learn about latest agricultural innovations"
-    },
-    {
-      id: 2,
-      title: "Organic Farming Workshop",
-      date: "March 22, 2024",
-      location: "Bangalore",
-      attendees: 120,
-      image: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&h=300&fit=crop",
-      description: "Learn sustainable farming practices from industry experts"
-    }
+  const trendingTopics = [
+    { name: 'Smart Farming', posts: 1247, growth: '+23%' },
+    { name: 'Organic Methods', posts: 892, growth: '+18%' },
+    { name: 'Water Conservation', posts: 654, growth: '+31%' },
+    { name: 'Crop Insurance', posts: 432, growth: '+12%' }
   ];
 
   const experts = [
     {
       id: 1,
       name: "Dr. Amit Singh",
-      specialization: "Crop Science",
+      specialization: "Precision Agriculture",
       rating: 4.9,
-      consultations: 500,
+      consultations: 2500,
       avatar: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=100&h=100&fit=crop&crop=face",
       experience: "15+ years",
-      badge: "Top Expert"
+      badge: "Top Expert",
+      status: "online"
     },
     {
       id: 2,
       name: "Dr. Sunita Rao",
-      specialization: "Soil Health",
+      specialization: "Sustainable Farming",
       rating: 4.8,
-      consultations: 350,
+      consultations: 1800,
       avatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&h=100&fit=crop&crop=face",
       experience: "12+ years",
-      badge: "Verified Expert"
+      badge: "Verified Expert",
+      status: "busy"
     }
   ];
 
@@ -160,8 +152,8 @@ const Community = () => {
         : [...prev, postId]
     );
     toast({
-      title: likedPosts.includes(postId) ? "👎 Unliked" : "👍 Liked",
-      description: likedPosts.includes(postId) ? "Post removed from your likes" : "Post added to your likes",
+      title: likedPosts.includes(postId) ? "👎 Unliked" : "❤️ Liked",
+      description: likedPosts.includes(postId) ? "Removed from likes" : "Added to likes",
       duration: 2000,
     });
   };
@@ -173,8 +165,8 @@ const Community = () => {
         : [...prev, postId]
     );
     toast({
-      title: bookmarkedPosts.includes(postId) ? "🔖 Unbookmarked" : "📌 Bookmarked",
-      description: bookmarkedPosts.includes(postId) ? "Post removed from bookmarks" : "Post saved to bookmarks",
+      title: bookmarkedPosts.includes(postId) ? "🔖 Removed" : "📌 Bookmarked",
+      description: bookmarkedPosts.includes(postId) ? "Removed from bookmarks" : "Saved to bookmarks",
       duration: 2000,
     });
   };
@@ -199,8 +191,8 @@ const Community = () => {
   const handleCreatePost = () => {
     if (!newPostTitle.trim() || !newPostContent.trim()) {
       toast({
-        title: "❌ Error",
-        description: "Please fill in both title and content",
+        title: "❌ Missing Information",
+        description: "Please add both title and content",
         variant: "destructive",
         duration: 3000,
       });
@@ -208,8 +200,8 @@ const Community = () => {
     }
 
     toast({
-      title: "✅ Post Created",
-      description: "Your post has been shared with the community!",
+      title: "🎉 Post Published",
+      description: "Your post is now live in the community!",
       duration: 3000,
     });
     
@@ -217,66 +209,58 @@ const Community = () => {
     setNewPostContent('');
   };
 
-  const handleJoinEvent = (eventId: number) => {
-    toast({
-      title: "🎉 Event Joined",
-      description: "You've successfully registered for the event!",
-      duration: 3000,
-    });
-  };
-
-  const handleConsultExpert = (expertId: number) => {
-    toast({
-      title: "👨‍🌾 Consultation Booked",
-      description: "Expert consultation request sent successfully!",
-      duration: 3000,
-    });
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {/* Modern Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center gap-3 bg-white/60 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg mb-6">
-            <Users className="h-6 w-6 text-blue-600" />
-            <span className="text-sm font-semibold text-gray-700">Join 50k+ Farmers</span>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full shadow-xl mb-6">
+              <Users className="h-5 w-5 text-white" />
+              <span className="text-sm font-semibold text-white">50,000+ Active Farmers</span>
+            </div>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white mb-6 tracking-tight">
+              Farming
+              <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
+                Community
+              </span>
+            </h1>
+            <p className="text-xl sm:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed font-medium">
+              Where innovation meets tradition. Share knowledge, grow together.
+            </p>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            Farming Community
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Connect, learn, and grow with fellow farmers from across the country
-          </p>
         </div>
+      </div>
 
-        {/* Enhanced Search and Filter */}
-        <Card className="bg-white/80 backdrop-blur-sm shadow-2xl border-0 rounded-3xl mb-8 overflow-hidden">
-          <CardContent className="p-6">
-            <div className="flex flex-col lg:flex-row gap-6 items-center">
-              <div className="relative flex-grow w-full lg:w-auto">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Search & Filter Section */}
+        <Card className="bg-white/80 backdrop-blur-xl shadow-2xl border-0 rounded-3xl mb-8 overflow-hidden">
+          <CardContent className="p-8">
+            <div className="flex flex-col xl:flex-row gap-6 items-center">
+              <div className="relative flex-grow w-full">
+                <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <Input
-                  placeholder="Search posts, discussions, tips..."
+                  placeholder="Search discussions, tips, innovations..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 pr-4 py-4 rounded-2xl border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base bg-white/90"
+                  className="pl-14 pr-6 py-4 rounded-2xl border-gray-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-200 text-lg bg-white/90 shadow-lg"
                 />
               </div>
               
-              <div className="flex flex-wrap gap-3 w-full lg:w-auto justify-center lg:justify-start">
+              <div className="flex flex-wrap gap-3 justify-center xl:justify-start">
                 {categories.map((category) => {
                   const IconComponent = category.icon;
                   return (
                     <Button
                       key={category.id}
                       variant={selectedCategory === category.id ? "default" : "outline"}
-                      size="sm"
+                      size="lg"
                       onClick={() => setSelectedCategory(category.id)}
-                      className={`rounded-full px-4 py-2 font-medium transition-all duration-300 ${
+                      className={`rounded-2xl px-6 py-3 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 ${
                         selectedCategory === category.id
-                          ? `${category.color} text-white shadow-lg hover:shadow-xl scale-105`
-                          : "hover:bg-gray-50 hover:border-gray-300 hover:scale-105"
+                          ? `bg-gradient-to-r ${category.gradient} text-white border-0`
+                          : "hover:bg-gray-50 hover:border-gray-300 bg-white"
                       }`}
                     >
                       <IconComponent className="h-4 w-4 mr-2" />
@@ -289,99 +273,88 @@ const Community = () => {
           </CardContent>
         </Card>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Left Sidebar - Quick Actions & Trending */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Quick Actions */}
-            <Card className="bg-white/90 backdrop-blur-sm shadow-xl border-0 rounded-3xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-white">
-                <CardTitle className="text-lg font-bold flex items-center">
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-8">
+          {/* Left Sidebar */}
+          <div className="xl:col-span-1 space-y-6">
+            {/* Create Post */}
+            <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200 shadow-xl rounded-3xl overflow-hidden">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-bold text-emerald-800 flex items-center">
                   <Plus className="h-5 w-5 mr-2" />
-                  Quick Actions
+                  Share Your Story
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-4">
+              <CardContent className="space-y-4">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-2xl font-semibold py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                    <Button className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 rounded-2xl font-bold py-4 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Post
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-lg rounded-3xl">
+                  <DialogContent className="sm:max-w-2xl rounded-3xl">
                     <DialogHeader>
-                      <DialogTitle className="text-2xl font-bold">Share Your Experience</DialogTitle>
-                      <DialogDescription>Connect with the farming community</DialogDescription>
+                      <DialogTitle className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                        Share Your Experience
+                      </DialogTitle>
+                      <DialogDescription className="text-lg text-gray-600">
+                        Help fellow farmers with your insights
+                      </DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-6 pt-4">
+                    <div className="space-y-6 pt-6">
                       <Input 
-                        placeholder="What's your post about?" 
+                        placeholder="What's your story about?" 
                         value={newPostTitle}
                         onChange={(e) => setNewPostTitle(e.target.value)}
-                        className="rounded-2xl py-3 text-lg"
+                        className="rounded-2xl py-4 text-lg font-medium"
                       />
                       <Textarea 
-                        placeholder="Share your farming insights, tips, or questions..." 
+                        placeholder="Share your farming insights, breakthrough moments, or challenges overcome..." 
                         value={newPostContent}
                         onChange={(e) => setNewPostContent(e.target.value)}
-                        className="rounded-2xl min-h-[120px] text-base leading-relaxed"
+                        className="rounded-2xl min-h-[150px] text-base leading-relaxed resize-none"
                       />
-                      <div className="flex gap-3">
-                        <Button variant="outline" size="sm" className="rounded-full flex-1">
+                      <div className="flex gap-4">
+                        <Button variant="outline" size="lg" className="rounded-2xl flex-1 font-semibold">
                           <Camera className="h-4 w-4 mr-2" />
-                          Photo
+                          Add Photo
                         </Button>
-                        <Button variant="outline" size="sm" className="rounded-full flex-1">
+                        <Button variant="outline" size="lg" className="rounded-2xl flex-1 font-semibold">
                           <Video className="h-4 w-4 mr-2" />
-                          Video
+                          Add Video
                         </Button>
                       </div>
                       <Button 
                         onClick={handleCreatePost}
-                        className="w-full bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl py-3 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                        className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl py-4 font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                       >
-                        <Send className="h-4 w-4 mr-2" />
-                        Share Post
+                        <Send className="h-5 w-5 mr-2" />
+                        Publish Post
                       </Button>
                     </div>
                   </DialogContent>
                 </Dialog>
-
-                <Button 
-                  variant="outline" 
-                  className="w-full rounded-2xl font-semibold py-3 hover:bg-blue-50 hover:border-blue-300 transform hover:scale-105 transition-all duration-300"
-                  onClick={() => toast({ title: "🌐 Groups", description: "Joining farmer groups feature!", duration: 2000 })}
-                >
-                  <Users className="h-4 w-4 mr-2" />
-                  Join Groups
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="w-full rounded-2xl font-semibold py-3 hover:bg-green-50 hover:border-green-300 transform hover:scale-105 transition-all duration-300"
-                  onClick={() => toast({ title: "📅 Events", description: "Exploring farming events!", duration: 2000 })}
-                >
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Events
-                </Button>
               </CardContent>
             </Card>
 
             {/* Trending Topics */}
-            <Card className="bg-white/90 backdrop-blur-sm shadow-xl border-0 rounded-3xl">
-              <CardHeader>
-                <CardTitle className="text-lg font-bold text-gray-800 flex items-center">
-                  <TrendingUp className="h-5 w-5 mr-2 text-orange-500" />
-                  Trending Topics
+            <Card className="bg-white shadow-xl border-0 rounded-3xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
+                <CardTitle className="text-lg font-bold flex items-center">
+                  <TrendingUp className="h-5 w-5 mr-2" />
+                  Trending Now
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                {['Organic Farming', 'Drip Irrigation', 'Crop Insurance', 'Weather Updates'].map((topic, index) => (
-                  <div key={topic} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl hover:from-blue-50 hover:to-purple-50 cursor-pointer transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md">
-                    <span className="font-medium text-gray-700">{topic}</span>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-700 rounded-full px-3 py-1">
-                      {Math.floor(Math.random() * 50) + 10}
+              <CardContent className="p-6 space-y-4">
+                {trendingTopics.map((topic, index) => (
+                  <div key={topic.name} className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl hover:shadow-lg cursor-pointer transition-all duration-300 transform hover:scale-105">
+                    <div>
+                      <p className="font-semibold text-gray-800">{topic.name}</p>
+                      <p className="text-sm text-gray-600">{topic.posts} posts</p>
+                    </div>
+                    <Badge className="bg-green-100 text-green-700 font-bold rounded-full px-3 py-1">
+                      {topic.growth}
                     </Badge>
                   </div>
                 ))}
@@ -390,127 +363,130 @@ const Community = () => {
           </div>
 
           {/* Main Feed */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="xl:col-span-3 space-y-8">
             {filteredPosts.map((post) => (
-              <Card key={post.id} className="bg-white/95 backdrop-blur-sm shadow-2xl border-0 rounded-3xl overflow-hidden hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-1">
-                <CardHeader className="p-6 pb-4">
+              <Card key={post.id} className="bg-white shadow-2xl border-0 rounded-3xl overflow-hidden hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2">
+                {post.trending && (
+                  <div className="bg-gradient-to-r from-yellow-400 to-orange-500 px-6 py-2">
+                    <div className="flex items-center gap-2 text-white font-bold text-sm">
+                      <TrendingUp className="h-4 w-4" />
+                      TRENDING POST
+                    </div>
+                  </div>
+                )}
+                
+                <CardHeader className="p-8 pb-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
-                        <Avatar className="h-14 w-14 ring-3 ring-blue-200 shadow-lg">
+                        <Avatar className="h-16 w-16 ring-4 ring-emerald-200 shadow-xl">
                           <AvatarImage src={post.avatar} alt={post.author} />
-                          <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold text-lg">
+                          <AvatarFallback className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-xl">
                             {post.author.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
                         {post.verified && (
-                          <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1.5 shadow-lg">
-                            <Award className="h-3 w-3 text-white" />
+                          <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-2 shadow-lg">
+                            <Award className="h-4 w-4 text-white" />
                           </div>
                         )}
                       </div>
                       <div className="flex-grow">
-                        <div className="flex items-center gap-3">
-                          <h3 className="font-bold text-gray-900 text-lg">{post.author}</h3>
-                          {post.verified && <Badge className="bg-green-100 text-green-700 text-xs rounded-full">Verified</Badge>}
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="font-bold text-gray-900 text-xl">{post.author}</h3>
+                          {post.verified && <Badge className="bg-blue-100 text-blue-800 text-xs rounded-full font-bold">Verified Farmer</Badge>}
                         </div>
-                        <div className="flex items-center text-sm text-gray-500 gap-4 mt-1">
+                        <div className="flex items-center text-sm text-gray-500 gap-4">
                           <div className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
+                            <MapPin className="h-4 w-4" />
                             {post.location}
                           </div>
                           <div className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
+                            <Clock className="h-4 w-4" />
                             {post.time}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge className={`${categories.find(c => c.id === post.category)?.color || 'bg-gray-500'} text-white capitalize rounded-full px-3 py-1`}>
-                        {categories.find(c => c.id === post.category)?.name}
-                      </Badge>
-                      <Button variant="ghost" size="sm" className="rounded-full p-2">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </div>
+                    <Button variant="ghost" size="sm" className="rounded-full p-3">
+                      <MoreHorizontal className="h-5 w-5" />
+                    </Button>
                   </div>
                 </CardHeader>
 
-                <CardContent className="px-6 pb-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-4 leading-tight">{post.title}</h2>
-                  <p className="text-gray-700 mb-4 leading-relaxed text-base">{post.content}</p>
+                <CardContent className="px-8 pb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4 leading-tight">{post.title}</h2>
+                  <p className="text-gray-700 mb-6 leading-relaxed text-lg">{post.content}</p>
                   
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-6">
                     {post.tags.map((tag) => (
-                      <Badge key={tag} variant="outline" className="rounded-full px-3 py-1 text-xs bg-blue-50 text-blue-700 border-blue-200">
+                      <Badge key={tag} variant="outline" className="rounded-full px-4 py-2 text-sm bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 cursor-pointer font-medium">
                         #{tag}
                       </Badge>
                     ))}
                   </div>
                   
                   {post.image && (
-                    <div className="rounded-2xl overflow-hidden mb-6 shadow-lg">
+                    <div className="rounded-3xl overflow-hidden mb-8 shadow-2xl">
                       <img 
                         src={post.image} 
                         alt="Post content" 
-                        className="w-full h-72 object-cover hover:scale-105 transition-transform duration-500"
+                        className="w-full h-80 object-cover hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   )}
 
                   <div className="flex items-center justify-between pt-6 border-t border-gray-100">
-                    <div className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-8">
                       <Button 
                         variant="ghost" 
-                        size="sm" 
+                        size="lg" 
                         onClick={() => handleLike(post.id)}
-                        className={`rounded-2xl px-4 py-2 font-medium transition-all duration-300 ${
+                        className={`rounded-2xl px-6 py-3 font-semibold transition-all duration-300 ${
                           likedPosts.includes(post.id) 
                             ? 'text-red-500 bg-red-50 hover:bg-red-100' 
                             : 'text-gray-600 hover:text-red-500 hover:bg-red-50'
                         }`}
                       >
-                        <Heart className={`h-4 w-4 mr-2 ${likedPosts.includes(post.id) ? 'fill-current' : ''}`} />
+                        <Heart className={`h-5 w-5 mr-2 ${likedPosts.includes(post.id) ? 'fill-current' : ''}`} />
                         {post.likes + (likedPosts.includes(post.id) ? 1 : 0)}
                       </Button>
                       <Button 
                         variant="ghost" 
-                        size="sm" 
-                        className="text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-2xl px-4 py-2 font-medium transition-all duration-300"
-                        onClick={() => toast({ title: "💬 Comments", description: "Opening comments section!", duration: 2000 })}
+                        size="lg" 
+                        className="text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-2xl px-6 py-3 font-semibold transition-all duration-300"
+                        onClick={() => toast({ title: "💬 Comments", description: "Opening comments!", duration: 2000 })}
                       >
-                        <MessageCircle className="h-4 w-4 mr-2" />
+                        <MessageCircle className="h-5 w-5 mr-2" />
                         {post.comments}
                       </Button>
                       <Button 
                         variant="ghost" 
-                        size="sm" 
+                        size="lg" 
                         onClick={() => handleShare(post)}
-                        className="text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-2xl px-4 py-2 font-medium transition-all duration-300"
+                        className="text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-2xl px-6 py-3 font-semibold transition-all duration-300"
                       >
-                        <Share2 className="h-4 w-4 mr-2" />
+                        <Share2 className="h-5 w-5 mr-2" />
                         {post.shares}
                       </Button>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4">
                       <Button 
                         variant="ghost" 
-                        size="sm" 
+                        size="lg" 
                         onClick={() => handleBookmark(post.id)}
-                        className={`rounded-full p-2 transition-all duration-300 ${
+                        className={`rounded-full p-3 transition-all duration-300 ${
                           bookmarkedPosts.includes(post.id) 
                             ? 'text-yellow-500 bg-yellow-50' 
                             : 'text-gray-500 hover:text-yellow-500 hover:bg-yellow-50'
                         }`}
                       >
-                        <Bookmark className={`h-4 w-4 ${bookmarkedPosts.includes(post.id) ? 'fill-current' : ''}`} />
+                        <Bookmark className={`h-5 w-5 ${bookmarkedPosts.includes(post.id) ? 'fill-current' : ''}`} />
                       </Button>
-                      <Button variant="ghost" size="sm" className="text-gray-500 rounded-full p-2">
+                      <div className="flex items-center text-gray-500 text-sm font-medium">
                         <Eye className="h-4 w-4 mr-1" />
-                        {Math.floor(Math.random() * 500) + 100}
-                      </Button>
+                        {Math.floor(Math.random() * 10000) + 1000}
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -519,89 +495,54 @@ const Community = () => {
           </div>
 
           {/* Right Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Upcoming Events */}
-            <Card className="bg-white/90 backdrop-blur-sm shadow-xl border-0 rounded-3xl">
-              <CardHeader>
-                <CardTitle className="text-lg font-bold text-gray-800 flex items-center">
-                  <Calendar className="h-5 w-5 mr-2 text-purple-500" />
-                  Upcoming Events
+          <div className="xl:col-span-1 space-y-6">
+            {/* Expert Consultants */}
+            <Card className="bg-white shadow-xl border-0 rounded-3xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white">
+                <CardTitle className="text-lg font-bold flex items-center">
+                  <Award className="h-5 w-5 mr-2" />
+                  Top Experts
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {events.map((event) => (
-                  <div key={event.id} className="p-4 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 rounded-2xl hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105 border border-purple-100">
-                    <img src={event.image} alt={event.title} className="w-full h-24 object-cover rounded-xl mb-3 shadow-md" />
-                    <h4 className="font-bold text-gray-900 mb-2 text-sm leading-tight">{event.title}</h4>
-                    <p className="text-xs text-gray-600 mb-3 leading-relaxed">{event.description}</p>
-                    <div className="text-xs text-gray-600 space-y-2 mb-3">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-3 w-3 text-purple-500" />
-                        {event.date}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-3 w-3 text-purple-500" />
-                        {event.location}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Users className="h-3 w-3 text-purple-500" />
-                        {event.attendees} attending
-                      </div>
-                    </div>
-                    <Button 
-                      onClick={() => handleJoinEvent(event.id)}
-                      size="sm" 
-                      className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 rounded-xl font-semibold text-xs py-2 shadow-md hover:shadow-lg transition-all duration-300"
-                    >
-                      Join Event
-                    </Button>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Top Experts */}
-            <Card className="bg-white/90 backdrop-blur-sm shadow-xl border-0 rounded-3xl">
-              <CardHeader>
-                <CardTitle className="text-lg font-bold text-gray-800 flex items-center">
-                  <Award className="h-5 w-5 mr-2 text-yellow-500" />
-                  Expert Consultants
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="p-6 space-y-6">
                 {experts.map((expert) => (
-                  <div key={expert.id} className="p-4 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 rounded-2xl hover:shadow-lg cursor-pointer transition-all duration-300 transform hover:scale-105 border border-yellow-100">
-                    <div className="flex items-start space-x-3 mb-3">
-                      <Avatar className="h-12 w-12 shadow-lg ring-2 ring-yellow-200">
-                        <AvatarImage src={expert.avatar} alt={expert.name} />
-                        <AvatarFallback className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold">
-                          {expert.name.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
+                  <div key={expert.id} className="p-5 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl hover:shadow-lg cursor-pointer transition-all duration-300 transform hover:scale-105 border border-purple-100">
+                    <div className="flex items-start space-x-4 mb-4">
+                      <div className="relative">
+                        <Avatar className="h-14 w-14 shadow-lg ring-2 ring-purple-200">
+                          <AvatarImage src={expert.avatar} alt={expert.name} />
+                          <AvatarFallback className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold">
+                            {expert.name.split(' ').map(n => n[0]).join('')}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${
+                          expert.status === 'online' ? 'bg-green-500' : 'bg-yellow-500'
+                        }`}></div>
+                      </div>
                       <div className="flex-grow">
                         <div className="flex items-center gap-2 mb-1">
                           <h4 className="font-bold text-gray-900 text-sm">{expert.name}</h4>
-                          <Badge className="bg-yellow-100 text-yellow-700 text-xs rounded-full px-2 py-0.5">
+                          <Badge className="bg-purple-100 text-purple-700 text-xs rounded-full px-2 py-0.5 font-bold">
                             {expert.badge}
                           </Badge>
                         </div>
-                        <p className="text-xs text-gray-600 font-medium">{expert.specialization}</p>
-                        <p className="text-xs text-gray-500">{expert.experience} experience</p>
+                        <p className="text-xs text-gray-600 font-semibold">{expert.specialization}</p>
+                        <p className="text-xs text-gray-500">{expert.experience}</p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between text-xs text-gray-600 mb-3">
+                    <div className="flex items-center justify-between text-xs text-gray-600 mb-4">
                       <div className="flex items-center gap-1">
                         <Star className="h-3 w-3 text-yellow-500 fill-current" />
-                        <span className="font-semibold">{expert.rating}</span>
+                        <span className="font-bold">{expert.rating}</span>
                       </div>
-                      <span>{expert.consultations} consultations</span>
+                      <span className="font-medium">{expert.consultations} helped</span>
                     </div>
                     <Button 
-                      onClick={() => handleConsultExpert(expert.id)}
+                      onClick={() => toast({ title: "🎯 Consultation", description: "Booking expert consultation!", duration: 2000 })}
                       size="sm" 
-                      className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 rounded-xl font-semibold text-xs py-2 shadow-md hover:shadow-lg transition-all duration-300"
+                      className="w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 rounded-xl font-bold text-xs py-3 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                     >
-                      Book Consultation
+                      Book Now
                     </Button>
                   </div>
                 ))}

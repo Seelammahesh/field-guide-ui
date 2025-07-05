@@ -6,11 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile';
-import Fertilizer from '../../images/PremiumOrganicFertilizerCoverage.jpg'
-import soilConditioner from '../../images/soil-conditioner-1-1.jpg'
-import Organicpesticides from '../../images/tractor-field-applies-fertilizer-soil.avif'
-import MutliHerbicides from '../../images/john-deere-sprayer.jpg'
-import GrowthHormone from '../../images/Spray_tractor.jpg'
 import AddToCartButton from './AddToCartButton';
 
 const TopProducts = () => {
@@ -18,13 +13,12 @@ const TopProducts = () => {
   const isMobile = useIsMobile();
 
   const products = [
-    // Fertilizers
     {
       id: 1,
       name: 'Premium Fertilizer NPK 20-20-20',
       price: '₹1,299',
       originalPrice: '₹1,499',
-      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=250&fit=crop',
       description: 'High-quality balanced fertilizer for optimal crop growth',
       badge: 'Best Seller',
       category: 'Fertilizers'
@@ -34,7 +28,7 @@ const TopProducts = () => {
       name: 'Soil Conditioner Plus',
       price: '₹899',
       originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&h=250&fit=crop',
       description: 'Improves soil structure and nutrient retention',
       badge: 'New',
       category: 'Fertilizers'
@@ -44,18 +38,17 @@ const TopProducts = () => {
       name: 'Growth Hormone Booster',
       price: '₹2,299',
       originalPrice: '₹2,599',
-      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=250&fit=crop',
       description: 'Accelerates plant growth and yield production',
       badge: 'Premium',
       category: 'Fertilizers'
     },
-    // Pesticides
     {
       id: 2,
       name: 'Organic Pesticide Solution',
       price: '₹849',
       originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=250&fit=crop',
       description: 'Eco-friendly pest control for sustainable farming',
       badge: 'Organic',
       category: 'Pesticides'
@@ -65,18 +58,17 @@ const TopProducts = () => {
       name: 'Multi-Purpose Herbicide',
       price: '₹1,899',
       originalPrice: '₹2,199',
-      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=250&fit=crop',
       description: 'Effective weed control for all crop types',
       badge: 'Popular',
       category: 'Pesticides'
     },
-    // Tractors & Equipment
     {
       id: 7,
       name: 'Heavy Duty Cultivator',
       price: '₹45,000',
       originalPrice: '₹52,000',
-      image: 'https://images.unsplash.com/photo-1595475038665-86a7ecad1924?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1595475038665-86a7ecad1924?w=400&h=250&fit=crop',
       description: 'Professional grade cultivator for field preparation',
       badge: 'Heavy Duty',
       category: 'Tractors & Equipment'
@@ -86,7 +78,7 @@ const TopProducts = () => {
       name: 'Rotavator Attachment',
       price: '₹28,500',
       originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1574691250077-03a929faece5?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1574691250077-03a929faece5?w=400&h=250&fit=crop',
       description: 'Efficient soil tillage and preparation tool',
       badge: 'Essential',
       category: 'Tractors & Equipment'
@@ -96,18 +88,17 @@ const TopProducts = () => {
       name: 'Agricultural Sprayer',
       price: '₹15,999',
       originalPrice: '₹18,999',
-      image: 'https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1566281796817-93bc94d7dbd2?w=400&h=250&fit=crop',
       description: 'High-capacity sprayer for pesticide application',
       badge: 'Efficient',
       category: 'Tractors & Equipment'
     },
-    // Drip System Products
     {
       id: 10,
       name: 'Drip Irrigation Kit',
       price: '₹3,499',
       originalPrice: '₹4,199',
-      image: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=250&fit=crop',
       description: 'Complete drip irrigation system for water efficiency',
       badge: 'Water Saver',
       category: 'Drip System'
@@ -117,7 +108,7 @@ const TopProducts = () => {
       name: 'Mulching Paper Roll',
       price: '₹899',
       originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=250&fit=crop',
       description: 'Premium mulching paper for weed control',
       badge: 'Eco-Friendly',
       category: 'Drip System'
@@ -127,7 +118,7 @@ const TopProducts = () => {
       name: 'Drip Pipes & Connectors',
       price: '₹1,299',
       originalPrice: '₹1,499',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=250&fit=crop',
       description: 'High-quality drip pipes with connectors',
       badge: 'Durable',
       category: 'Drip System'
@@ -141,7 +132,7 @@ const TopProducts = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % totalSlides);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [totalSlides]);
@@ -195,8 +186,8 @@ const TopProducts = () => {
               <div key={slideIndex} className={`min-w-full flex gap-6 ${isMobile ? 'justify-center' : ''}`}>
                 {products.slice(slideIndex * itemsPerSlide, slideIndex * itemsPerSlide + itemsPerSlide).map((product) => (
                   <div key={product.id} className={`${isMobile ? 'w-full max-w-sm' : 'flex-1'} min-w-0`}>
-                    <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white rounded-2xl overflow-hidden h-[500px] flex flex-col">
-                      <div className="relative overflow-hidden h-56">
+                    <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white rounded-2xl overflow-hidden h-[520px] flex flex-col">
+                      <div className="relative overflow-hidden h-[200px]">
                         <img
                           src={product.image}
                           alt={product.name}
@@ -213,16 +204,16 @@ const TopProducts = () => {
                       
                       <div className="flex flex-col flex-grow p-6">
                         <div className="flex-grow">
-                          <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2 leading-tight h-14">
+                          <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2 leading-tight h-[56px] flex items-start">
                             {product.name}
                           </h3>
-                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4 h-10">
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4 h-[60px] flex items-start">
                             {product.description}
                           </p>
                         </div>
                         
                         <div className="mt-auto">
-                          <div className="flex justify-between items-center mb-4 h-8">
+                          <div className="flex justify-between items-center mb-4 h-[32px]">
                             <div className="flex items-center gap-2">
                               <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                                 {product.price}
@@ -239,7 +230,7 @@ const TopProducts = () => {
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="w-full border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-xl font-semibold transition-all duration-300 h-10"
+                              className="w-full border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-xl font-semibold transition-all duration-300 h-[40px]"
                               asChild
                             >
                               <Link to={`/products/${product.id}`}>
@@ -251,7 +242,7 @@ const TopProducts = () => {
                               productName={product.name}
                               productPrice={parseInt(product.price.replace('₹', '').replace(',', ''))}
                               size="sm"
-                              className="w-full rounded-xl font-semibold h-10"
+                              className="w-full rounded-xl font-semibold h-[40px]"
                             />
                           </div>
                         </div>
