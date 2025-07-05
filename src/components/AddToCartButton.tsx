@@ -42,6 +42,9 @@ const AddToCartButton = ({
       
       try {
         cartItems = existingCartString ? JSON.parse(existingCartString) : [];
+        if (!Array.isArray(cartItems)) {
+          cartItems = [];
+        }
       } catch (parseError) {
         console.warn('Cart parsing error, starting fresh:', parseError);
         cartItems = [];
@@ -74,31 +77,41 @@ const AddToCartButton = ({
       
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
-      console.log('💾 Cart saved:', cartItems);
+      console.log('💾 Cart saved successfully:', cartItems);
       
       // Calculate total items for display
       const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
       
-      // Dispatch multiple events to ensure all components update
-      const events = [
-        new CustomEvent('cartUpdated', {
-          detail: { 
-            action: 'add',
-            productId,
-            quantity,
-            totalItems,
-            timestamp: Date.now() 
-          }
-        }),
-        new Event('storage'),
-        new CustomEvent('cartItemsChanged', {
-          detail: { cartItems, totalItems }
-        })
-      ];
+      // Dispatch comprehensive cart update events
+      const cartUpdateEvent = new CustomEvent('cartUpdated', {
+        detail: { 
+          action: 'add',
+          productId,
+          productName,
+          quantity,
+          totalItems,
+          cartItems,
+          timestamp: Date.now() 
+        }
+      });
       
-      events.forEach(event => window.dispatchEvent(event));
+      const storageEvent = new Event('storage');
       
-      console.log('📡 All cart events dispatched, total items:', totalItems);
+      const cartItemsChangedEvent = new CustomEvent('cartItemsChanged', {
+        detail: { cartItems, totalItems, action: 'add' }
+      });
+
+      // Dispatch all events
+      window.dispatchEvent(cartUpdateEvent);
+      window.dispatchEvent(storageEvent);
+      window.dispatchEvent(cartItemsChangedEvent);
+      
+      // Additional event for navbar cart count update
+      window.dispatchEvent(new CustomEvent('updateCartCount', {
+        detail: { count: totalItems }
+      }));
+      
+      console.log('📡 All cart events dispatched successfully, total items:', totalItems);
       
       // Show success state
       setIsAdded(true);
@@ -106,7 +119,7 @@ const AddToCartButton = ({
       // Show success toast
       toast({
         title: "✅ Added to Cart!",
-        description: `${productName} added successfully. Total items in cart: ${totalItems}`,
+        description: `${productName} (${quantity}x) added successfully. Total items: ${totalItems}`,
         duration: 3000,
       });
 
@@ -135,10 +148,10 @@ const AddToCartButton = ({
       onClick={handleAddToCart}
       disabled={isAdding}
       size={size}
-      className={`transition-all duration-300 transform hover:scale-105 font-semibold ${
+      className={`transition-all duration-300 transform hover:scale-105 font-semibold shadow-lg hover:shadow-xl ${
         isAdded 
-          ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg' 
-          : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
+          ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600' 
+          : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
       } ${className}`}
     >
       {isAdding ? (

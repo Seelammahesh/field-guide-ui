@@ -24,7 +24,7 @@ const TopProducts = () => {
       name: 'Premium Fertilizer NPK 20-20-20',
       price: '₹1,299',
       originalPrice: '₹1,499',
-      image: Fertilizer,
+      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop',
       description: 'High-quality balanced fertilizer for optimal crop growth',
       badge: 'Best Seller',
       category: 'Fertilizers'
@@ -34,7 +34,7 @@ const TopProducts = () => {
       name: 'Soil Conditioner Plus',
       price: '₹899',
       originalPrice: null,
-      image: soilConditioner,
+      image: 'https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop',
       description: 'Improves soil structure and nutrient retention',
       badge: 'New',
       category: 'Fertilizers'
@@ -44,7 +44,7 @@ const TopProducts = () => {
       name: 'Growth Hormone Booster',
       price: '₹2,299',
       originalPrice: '₹2,599',
-      image: GrowthHormone,
+      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&h=300&fit=crop',
       description: 'Accelerates plant growth and yield production',
       badge: 'Premium',
       category: 'Fertilizers'
@@ -55,7 +55,7 @@ const TopProducts = () => {
       name: 'Organic Pesticide Solution',
       price: '₹849',
       originalPrice: null,
-      image: Organicpesticides,
+      image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop',
       description: 'Eco-friendly pest control for sustainable farming',
       badge: 'Organic',
       category: 'Pesticides'
@@ -65,7 +65,7 @@ const TopProducts = () => {
       name: 'Multi-Purpose Herbicide',
       price: '₹1,899',
       originalPrice: '₹2,199',
-      image: MutliHerbicides,
+      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop',
       description: 'Effective weed control for all crop types',
       badge: 'Popular',
       category: 'Pesticides'
@@ -107,7 +107,7 @@ const TopProducts = () => {
       name: 'Drip Irrigation Kit',
       price: '₹3,499',
       originalPrice: '₹4,199',
-      image: 'https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop',
       description: 'Complete drip irrigation system for water efficiency',
       badge: 'Water Saver',
       category: 'Drip System'
@@ -117,7 +117,7 @@ const TopProducts = () => {
       name: 'Mulching Paper Roll',
       price: '₹899',
       originalPrice: null,
-      image: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop',
       description: 'Premium mulching paper for weed control',
       badge: 'Eco-Friendly',
       category: 'Drip System'
@@ -127,7 +127,7 @@ const TopProducts = () => {
       name: 'Drip Pipes & Connectors',
       price: '₹1,299',
       originalPrice: '₹1,499',
-      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=300&fit=crop',
       description: 'High-quality drip pipes with connectors',
       badge: 'Durable',
       category: 'Drip System'
@@ -195,8 +195,8 @@ const TopProducts = () => {
               <div key={slideIndex} className={`min-w-full flex gap-6 ${isMobile ? 'justify-center' : ''}`}>
                 {products.slice(slideIndex * itemsPerSlide, slideIndex * itemsPerSlide + itemsPerSlide).map((product) => (
                   <div key={product.id} className={`${isMobile ? 'w-full max-w-sm' : 'flex-1'} min-w-0`}>
-                    <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white rounded-2xl overflow-hidden h-[520px] flex flex-col">
-                      <div className="relative overflow-hidden h-64">
+                    <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white rounded-2xl overflow-hidden h-[500px] flex flex-col">
+                      <div className="relative overflow-hidden h-56">
                         <img
                           src={product.image}
                           alt={product.name}
@@ -212,17 +212,17 @@ const TopProducts = () => {
                       </div>
                       
                       <div className="flex flex-col flex-grow p-6">
-                        <div className="flex-grow min-h-[120px]">
-                          <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2 leading-tight min-h-[56px]">
+                        <div className="flex-grow">
+                          <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2 leading-tight h-14">
                             {product.name}
                           </h3>
-                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4 min-h-[40px]">
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4 h-10">
                             {product.description}
                           </p>
                         </div>
                         
                         <div className="mt-auto">
-                          <div className="flex justify-between items-center mb-4 min-h-[32px]">
+                          <div className="flex justify-between items-center mb-4 h-8">
                             <div className="flex items-center gap-2">
                               <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                                 {product.price}
