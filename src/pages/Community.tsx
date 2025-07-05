@@ -1,490 +1,416 @@
 
 import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  Video, 
-  Play, 
-  User, 
-  ThumbsUp, 
+  Heart, 
   MessageCircle, 
   Share2, 
-  Users, 
-  Lightbulb, 
   Plus, 
   Search, 
-  Eye, 
-  Clock,
+  TrendingUp,
+  Users,
+  Calendar,
+  MapPin,
   Star,
-  ChevronRight
-} from 'lucide-react';
-
-interface VideoPost {
-  id: number;
-  title: string;
-  description: string;
-  videoUrl: string;
-  thumbnail: string;
-  author: string;
-  date: string;
-  category: string;
-  views: string;
-  likes: number;
-  comments: number;
-  shares: number;
-}
-
-interface Discussion {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  date: string;
-  replies: number;
-  likes: number;
-  category: string;
-}
-
-interface Tip {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  date: string;
-  likes: number;
-  category: string;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-}
+  Camera,
+  Video,
+  BookOpen,
+  Award,
+  Filter,
+  ThumbsUp,
+  Eye,
+  Clock
+} from "lucide-react";
 
 const Community = () => {
-  const [activeTab, setActiveTab] = useState<'videos' | 'discussions' | 'tips'>('tips');
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('posts');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const [posts] = useState<VideoPost[]>([
+  const categories = [
+    { id: 'all', name: 'All Posts', icon: Users },
+    { id: 'tips', name: 'Farming Tips', icon: BookOpen },
+    { id: 'equipment', name: 'Equipment', icon: Award },
+    { id: 'crops', name: 'Crop Advice', icon: TrendingUp },
+    { id: 'weather', name: 'Weather Updates', icon: Calendar }
+  ];
+
+  const communityPosts = [
     {
       id: 1,
-      title: "Smart Irrigation System Setup",
-      description: "Learn how to set up an automated irrigation system for maximum water efficiency.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      thumbnail: "https://images.unsplash.com/photo-1516298773066-c48f8e9bd92b?w=400&h=250&fit=crop&q=80",
-      author: "John Farmer",
-      date: "2 days ago",
-      category: "Technology",
-      views: "12.5K",
-      likes: 120,
-      comments: 30,
-      shares: 15
+      author: "Ravi Kumar",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+      location: "Punjab, India",
+      time: "2 hours ago",
+      category: "tips",
+      title: "Best practices for wheat cultivation in winter season",
+      content: "Just harvested my wheat crop and got excellent results! Here are some key tips that worked for me this season...",
+      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&h=400&fit=crop",
+      likes: 45,
+      comments: 12,
+      shares: 8,
+      verified: true
     },
     {
       id: 2,
-      title: "Organic Pest Control Methods",
-      description: "Natural ways to protect your crops without harmful chemicals.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      thumbnail: "https://images.unsplash.com/photo-1523381210434-6a59a2c65c2a?w=400&h=250&fit=crop&q=80",
-      author: "Sarah Green",
-      date: "1 week ago",
-      category: "Organic",
-      views: "8.3K",
-      likes: 95,
-      comments: 22,
-      shares: 10
+      author: "Priya Sharma",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=100&h=100&fit=crop&crop=face",
+      location: "Maharashtra, India",
+      time: "5 hours ago",
+      category: "equipment",
+      title: "New drip irrigation system installation completed",
+      content: "Finally installed the new drip irrigation system across 10 acres. Water consumption reduced by 40%! Happy to share my experience.",
+      image: "https://images.unsplash.com/photo-1416664806563-bb6be3be8b6f?w=600&h=400&fit=crop",
+      likes: 67,
+      comments: 23,
+      shares: 15,
+      verified: false
     },
     {
       id: 3,
-      title: "Maximizing Crop Yield",
-      description: "Proven techniques to increase your harvest by 30%.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      thumbnail: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=250&fit=crop&q=80",
-      author: "Mike Chen",
-      date: "3 days ago",
-      category: "Techniques",
-      views: "15.2K",
-      likes: 240,
-      comments: 45,
-      shares: 28
+      author: "Suresh Patel",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+      location: "Gujarat, India",
+      time: "1 day ago",
+      category: "crops",
+      title: "Organic pest control methods that actually work",
+      content: "Sharing my experience with natural pest control methods. These techniques have been game-changers for my organic farm.",
+      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&h=400&fit=crop",
+      likes: 89,
+      comments: 31,
+      shares: 22,
+      verified: true
     }
-  ]);
+  ];
 
-  const [discussions] = useState<Discussion[]>([
+  const events = [
     {
       id: 1,
-      title: "Best practices for crop rotation in small farms?",
-      content: "I have a 5-acre farm and want to implement effective crop rotation. What are your recommendations?",
-      author: "FarmHelper",
-      date: "3 hours ago",
-      replies: 12,
-      likes: 8,
-      category: "General"
+      title: "Annual Farmers Meet 2024",
+      date: "March 15, 2024",
+      location: "Delhi",
+      attendees: 250,
+      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop"
     },
     {
       id: 2,
-      title: "Dealing with pest issues organically",
-      content: "Looking for eco-friendly solutions to handle pest problems without chemicals.",
-      author: "GreenFarmer",
-      date: "1 day ago",
-      replies: 24,
-      likes: 15,
-      category: "Organic"
+      title: "Organic Farming Workshop",
+      date: "March 22, 2024",
+      location: "Bangalore",
+      attendees: 120,
+      image: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&h=300&fit=crop"
     }
-  ]);
+  ];
 
-  const [tips] = useState<Tip[]>([
+  const experts = [
     {
       id: 1,
-      title: "Water Conservation with Drip Irrigation",
-      content: "Install drip irrigation to save up to 50% water while maintaining optimal crop growth. Use timers for automation.",
-      author: "WaterWise",
-      date: "2 days ago",
-      likes: 32,
-      category: "Water Management",
-      difficulty: "Beginner"
+      name: "Dr. Amit Singh",
+      specialization: "Crop Science",
+      rating: 4.9,
+      consultations: 500,
+      avatar: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=100&h=100&fit=crop&crop=face"
     },
     {
       id: 2,
-      title: "Natural Pest Deterrent Recipe",
-      content: "Mix neem oil with water (1:10 ratio) and spray during early morning. Effective against most pests.",
-      author: "NaturalFarm",
-      date: "5 days ago",
-      likes: 28,
-      category: "Pest Control",
-      difficulty: "Intermediate"
+      name: "Dr. Sunita Rao",
+      specialization: "Soil Health",
+      rating: 4.8,
+      consultations: 350,
+      avatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&h=100&fit=crop&crop=face"
     }
-  ]);
+  ];
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Beginner': return 'bg-green-100 text-green-800';
-      case 'Intermediate': return 'bg-yellow-100 text-yellow-800';
-      case 'Advanced': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const handleVideoPlay = (id: number) => {
-    console.log(`Playing video ${id}`);
-    // Add video play functionality
-  };
-
-  const handleLike = (type: string, id: number) => {
-    console.log(`Liked ${type} ${id}`);
-    // Add like functionality
-  };
-
-  const handleShare = (type: string, id: number) => {
-    console.log(`Shared ${type} ${id}`);
-    // Add share functionality
-  };
-
-  const handleComment = (type: string, id: number) => {
-    console.log(`Commenting on ${type} ${id}`);
-    // Add comment functionality
-  };
-
-  const CreateContentModal = () => (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-800">Share Knowledge</h2>
-            <Button variant="ghost" onClick={() => setShowCreateForm(false)} className="text-gray-500 hover:text-gray-700 p-1">
-              ✕
-            </Button>
-          </div>
-          
-          <div className="space-y-3">
-            <Button className="w-full justify-start h-12 text-left bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200">
-              <Video className="h-5 w-5 mr-3 flex-shrink-0" />
-              <div className="text-sm">
-                <div className="font-medium">Share Video</div>
-                <div className="opacity-75">Upload educational content</div>
-              </div>
-            </Button>
-            
-            <Button className="w-full justify-start h-12 text-left bg-green-50 hover:bg-green-100 text-green-700 border border-green-200">
-              <MessageCircle className="h-5 w-5 mr-3 flex-shrink-0" />
-              <div className="text-sm">
-                <div className="font-medium">Start Discussion</div>
-                <div className="opacity-75">Ask questions or share insights</div>
-              </div>
-            </Button>
-            
-            <Button className="w-full justify-start h-12 text-left bg-yellow-50 hover:bg-yellow-100 text-yellow-700 border border-yellow-200">
-              <Lightbulb className="h-5 w-5 mr-3 flex-shrink-0" />
-              <div className="text-sm">
-                <div className="font-medium">Share Tip</div>
-                <div className="opacity-75">Quick farming tips</div>
-              </div>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  const filteredPosts = communityPosts.filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         post.content.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 py-6">
-          {/* Title Section */}
-          <div className="text-center mb-6">
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <div className="p-2 bg-green-600 rounded-xl">
-                <Users className="h-6 w-6 text-white" />
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Community Hub</h1>
-            </div>
-            <p className="text-gray-600 text-sm sm:text-base">Connect, learn, and grow with fellow farmers</p>
-          </div>
-          
-          {/* Search and Create */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <div className="relative flex-1 max-w-md mx-auto sm:mx-0">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Header Section */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            Farming Community
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+            Connect with fellow farmers, share experiences, and grow together
+          </p>
+        </div>
+
+        {/* Search and Filter Bar */}
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 mb-8 border border-gray-100">
+          <div className="flex flex-col lg:flex-row gap-4 items-center">
+            <div className="relative flex-grow w-full lg:w-auto">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
-                placeholder="Search tips..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 rounded-full border-gray-200"
+                placeholder="Search posts, tips, discussions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 pr-4 py-3 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base"
               />
             </div>
             
-            <Button 
-              onClick={() => setShowCreateForm(true)}
-              className="bg-green-600 hover:bg-green-700 rounded-full px-6 w-full sm:w-auto"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Create
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white rounded-full p-1 shadow-sm border inline-flex">
-            {(['videos', 'discussions', 'tips'] as const).map((tab) => (
-              <Button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                variant="ghost"
-                className={`capitalize rounded-full px-4 sm:px-6 py-2 text-sm font-medium transition-all ${
-                  activeTab === tab 
-                    ? 'bg-green-600 text-white shadow-sm' 
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                {tab === 'videos' && <Video className="h-4 w-4 mr-2" />}
-                {tab === 'discussions' && <MessageCircle className="h-4 w-4 mr-2" />}
-                {tab === 'tips' && <Lightbulb className="h-4 w-4 mr-2" />}
-                <span className="hidden sm:inline">{tab}</span>
-                <Badge className="ml-2 text-xs bg-gray-100 text-gray-700">
-                  {tab === 'videos' ? posts.length : tab === 'discussions' ? discussions.length : tips.length}
-                </Badge>
-              </Button>
-            ))}
+            <div className="flex flex-wrap gap-2 w-full lg:w-auto justify-center lg:justify-start">
+              {categories.map((category) => {
+                const IconComponent = category.icon;
+                return (
+                  <Button
+                    key={category.id}
+                    variant={selectedCategory === category.id ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`rounded-full px-4 py-2 font-medium transition-all duration-300 ${
+                      selectedCategory === category.id
+                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                        : "hover:bg-blue-50 hover:border-blue-300"
+                    }`}
+                  >
+                    <IconComponent className="h-4 w-4 mr-2" />
+                    {category.name}
+                  </Button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Content */}
-        {activeTab === 'videos' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {posts.map((post) => (
-              <Card key={post.id} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-sm">
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <img
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    src={post.thumbnail}
-                    alt={post.title}
-                  />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Button 
-                      onClick={() => handleVideoPlay(post.id)}
-                      className="bg-white/90 rounded-full p-3 hover:bg-white"
-                    >
-                      <Play className="h-6 w-6 text-green-600" />
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+          {/* Left Sidebar - Quick Actions */}
+          <div className="lg:col-span-1 space-y-6">
+            <Card className="bg-white shadow-xl border-0 rounded-2xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-green-500 to-blue-500 text-white">
+                <CardTitle className="text-lg font-bold">Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-4">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-xl font-semibold">
+                      <Plus className="h-4 w-4 mr-2" />
+                      New Post
                     </Button>
-                  </div>
-                  <Badge className="absolute top-3 right-3 bg-green-600 text-white text-xs">
-                    {post.category}
-                  </Badge>
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1 text-white text-sm">
-                    <Eye className="h-3 w-3" />
-                    <span>{post.views}</span>
-                  </div>
-                </div>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-lg">
+                    <DialogHeader>
+                      <DialogTitle>Create New Post</DialogTitle>
+                      <DialogDescription>Share your farming experience with the community</DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <Input placeholder="Post title" className="rounded-xl" />
+                      <Textarea placeholder="Share your thoughts..." className="rounded-xl min-h-[120px]" />
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" className="rounded-xl">
+                          <Camera className="h-4 w-4 mr-2" />
+                          Photo
+                        </Button>
+                        <Button variant="outline" size="sm" className="rounded-xl">
+                          <Video className="h-4 w-4 mr-2" />
+                          Video
+                        </Button>
+                      </div>
+                      <Button className="w-full bg-gradient-to-r from-green-500 to-blue-500 rounded-xl">
+                        Share Post
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+
+                <Button variant="outline" className="w-full rounded-xl font-semibold hover:bg-blue-50">
+                  <Users className="h-4 w-4 mr-2" />
+                  Join Groups
+                </Button>
                 
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-lg mb-2 line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                    {post.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between mb-4 pb-4 border-b">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                        <User className="h-3 w-3 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">{post.author}</p>
-                        <p className="text-xs text-gray-500">{post.date}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <div className="flex items-center gap-4">
-                      <button 
-                        onClick={() => handleLike('video', post.id)}
-                        className="flex items-center gap-1 hover:text-red-500 transition-colors"
-                      >
-                        <ThumbsUp className="h-4 w-4" />
-                        {post.likes}
-                      </button>
-                      <button 
-                        onClick={() => handleComment('video', post.id)}
-                        className="flex items-center gap-1 hover:text-blue-500 transition-colors"
-                      >
-                        <MessageCircle className="h-4 w-4" />
-                        {post.comments}
-                      </button>
-                    </div>
-                    <button 
-                      onClick={() => handleShare('video', post.id)}
-                      className="flex items-center gap-1 hover:text-green-600 transition-colors"
-                    >
-                      <Share2 className="h-4 w-4" />
-                      Share
-                    </button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                <Button variant="outline" className="w-full rounded-xl font-semibold hover:bg-green-50">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Events
+                </Button>
+              </CardContent>
+            </Card>
 
-        {activeTab === 'discussions' && (
-          <div className="space-y-4">
-            {discussions.map((discussion) => (
-              <Card key={discussion.id} className="hover:shadow-lg transition-shadow border-0 shadow-sm">
-                <CardContent className="p-6">
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
-                    <div className="flex-1">
-                      <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <Badge className="bg-blue-100 text-blue-700 text-xs">
-                          {discussion.category}
-                        </Badge>
-                        <div className="flex items-center gap-1 text-sm text-gray-500">
-                          <Clock className="h-3 w-3" />
-                          <span>{discussion.date}</span>
-                        </div>
-                      </div>
-                      
-                      <h3 className="text-lg font-semibold mb-3 hover:text-green-600 transition-colors cursor-pointer">
-                        {discussion.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4">
-                        {discussion.content}
-                      </p>
-                      
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                            <User className="h-3 w-3 text-white" />
+            {/* Trending Topics */}
+            <Card className="bg-white shadow-xl border-0 rounded-2xl">
+              <CardHeader>
+                <CardTitle className="text-lg font-bold text-gray-800 flex items-center">
+                  <TrendingUp className="h-5 w-5 mr-2 text-orange-500" />
+                  Trending Topics
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {['Organic Farming', 'Drip Irrigation', 'Crop Insurance', 'Weather Updates'].map((topic) => (
+                  <div key={topic} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 cursor-pointer transition-colors">
+                    <span className="font-medium text-gray-700">{topic}</span>
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                      {Math.floor(Math.random() * 50) + 10}
+                    </Badge>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content Area */}
+          <div className="lg:col-span-2 space-y-6">
+            {filteredPosts.map((post) => (
+              <Card key={post.id} className="bg-white shadow-xl border-0 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300">
+                <CardHeader className="p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <Avatar className="h-12 w-12 ring-2 ring-blue-200">
+                          <AvatarImage src={post.avatar} alt={post.author} />
+                          <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold">
+                            {post.author.split(' ').map(n => n[0]).join('')}
+                          </AvatarFallback>
+                        </Avatar>
+                        {post.verified && (
+                          <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1">
+                            <Award className="h-3 w-3 text-white" />
                           </div>
-                          <span className="font-medium text-sm">{discussion.author}</span>
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-bold text-gray-900">{post.author}</h3>
+                          {post.verified && <Badge className="bg-green-100 text-green-700 text-xs">Verified</Badge>}
+                        </div>
+                        <div className="flex items-center text-sm text-gray-500 gap-4">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            {post.location}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {post.time}
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <Badge className="bg-blue-100 text-blue-700 capitalize">
+                      {categories.find(c => c.id === post.category)?.name}
+                    </Badge>
                   </div>
-                  
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t gap-4">
-                    <div className="flex items-center gap-4 text-sm">
-                      <span className="flex items-center gap-1 text-blue-600 font-medium">
-                        <MessageCircle className="h-4 w-4" />
-                        {discussion.replies} replies
-                      </span>
-                      <button 
-                        onClick={() => handleLike('discussion', discussion.id)}
-                        className="flex items-center gap-1 text-red-500 hover:text-red-600 transition-colors"
-                      >
-                        <ThumbsUp className="h-4 w-4" />
-                        {discussion.likes}
-                      </button>
-                    </div>
-                    <Button variant="outline" size="sm" className="rounded-full hover:bg-green-50 hover:text-green-600">
-                      Join Discussion
-                      <ChevronRight className="h-3 w-3 ml-1" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                </CardHeader>
 
-        {activeTab === 'tips' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {tips.map((tip) => (
-              <Card key={tip.id} className="hover:shadow-lg transition-shadow border-0 shadow-sm">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <h3 className="text-lg font-semibold flex-1 pr-4">
-                      {tip.title}
-                    </h3>
-                    <Badge className={`${getDifficultyColor(tip.difficulty)} text-xs flex-shrink-0`}>
-                      {tip.difficulty}
-                    </Badge>
-                  </div>
+                <CardContent className="px-6 pb-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-3">{post.title}</h2>
+                  <p className="text-gray-700 mb-4 leading-relaxed">{post.content}</p>
                   
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {tip.content}
-                  </p>
-                  
-                  <div className="flex items-center justify-between mb-4 pb-4 border-b">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center">
-                        <Lightbulb className="h-3 w-3 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">{tip.author}</p>
-                        <p className="text-xs text-gray-500">{tip.date}</p>
-                      </div>
+                  {post.image && (
+                    <div className="rounded-xl overflow-hidden mb-4">
+                      <img 
+                        src={post.image} 
+                        alt="Post content" 
+                        className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
-                    <Badge className="bg-yellow-100 text-yellow-700 text-xs">
-                      {tip.category}
-                    </Badge>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <button 
-                      onClick={() => handleLike('tip', tip.id)}
-                      className="flex items-center gap-1 text-red-500 hover:text-red-600 transition-colors font-medium"
-                    >
-                      <ThumbsUp className="h-4 w-4" />
-                      {tip.likes}
-                    </button>
-                    <Button variant="outline" size="sm" className="rounded-full hover:bg-yellow-50 hover:text-yellow-600">
-                      Save Tip
-                      <Star className="h-3 w-3 ml-1" />
+                  )}
+
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div className="flex items-center space-x-6">
+                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-xl">
+                        <Heart className="h-4 w-4 mr-2" />
+                        {post.likes}
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-xl">
+                        <MessageCircle className="h-4 w-4 mr-2" />
+                        {post.comments}
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-gray-600 hover:text-green-500 hover:bg-green-50 rounded-xl">
+                        <Share2 className="h-4 w-4 mr-2" />
+                        {post.shares}
+                      </Button>
+                    </div>
+                    <Button variant="ghost" size="sm" className="text-gray-500">
+                      <Eye className="h-4 w-4 mr-1" />
+                      {Math.floor(Math.random() * 500) + 100}
                     </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
-        )}
+
+          {/* Right Sidebar */}
+          <div className="lg:col-span-1 space-y-6">
+            {/* Upcoming Events */}
+            <Card className="bg-white shadow-xl border-0 rounded-2xl">
+              <CardHeader>
+                <CardTitle className="text-lg font-bold text-gray-800 flex items-center">
+                  <Calendar className="h-5 w-5 mr-2 text-purple-500" />
+                  Upcoming Events
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {events.map((event) => (
+                  <div key={event.id} className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl hover:shadow-md transition-shadow cursor-pointer">
+                    <img src={event.image} alt={event.title} className="w-full h-24 object-cover rounded-lg mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">{event.title}</h4>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-3 w-3" />
+                        {event.date}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-3 w-3" />
+                        {event.location}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Users className="h-3 w-3" />
+                        {event.attendees} attending
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Top Experts */}
+            <Card className="bg-white shadow-xl border-0 rounded-2xl">
+              <CardHeader>
+                <CardTitle className="text-lg font-bold text-gray-800 flex items-center">
+                  <Award className="h-5 w-5 mr-2 text-yellow-500" />
+                  Top Experts
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {experts.map((expert) => (
+                  <div key={expert.id} className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-xl hover:bg-yellow-100 cursor-pointer transition-colors">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={expert.avatar} alt={expert.name} />
+                      <AvatarFallback className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
+                        {expert.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-grow">
+                      <h4 className="font-semibold text-gray-900">{expert.name}</h4>
+                      <p className="text-sm text-gray-600">{expert.specialization}</p>
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                          {expert.rating}
+                        </div>
+                        <span>•</span>
+                        <span>{expert.consultations} consultations</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
-
-      {/* Create Content Modal */}
-      {showCreateForm && <CreateContentModal />}
     </div>
   );
 };

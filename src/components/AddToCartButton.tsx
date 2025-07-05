@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Check } from "lucide-react";
+import { ShoppingCart, Check, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface AddToCartButtonProps {
@@ -17,24 +17,13 @@ const AddToCartButton = ({
   productId, 
   productName, 
   productPrice = 0, 
-  className, 
+  className = "", 
   size = "default",
   quantity = 1 
 }: AddToCartButtonProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const { toast } = useToast();
-
-  const updateCartDisplay = () => {
-    // Force update cart count display across the app
-    const cartEvent = new CustomEvent('cartUpdated', {
-      detail: { timestamp: Date.now() }
-    });
-    window.dispatchEvent(cartEvent);
-    
-    // Also dispatch storage event for any components listening
-    window.dispatchEvent(new Event('storage'));
-  };
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -45,11 +34,13 @@ const AddToCartButton = ({
     setIsAdding(true);
 
     try {
+      console.log('🛒 Starting add to cart process:', { productId, productName, productPrice, quantity });
+      
       // Get existing cart items
       const existingCart = localStorage.getItem('cartItems');
       let cartItems = existingCart ? JSON.parse(existingCart) : [];
       
-      console.log('🛒 Adding to cart:', { productId, productName, productPrice, quantity });
+      console.log('📦 Existing cart items:', cartItems);
       
       // Check if item already exists
       const existingItemIndex = cartItems.findIndex((item: any) => item.id === productId);
@@ -57,7 +48,7 @@ const AddToCartButton = ({
       if (existingItemIndex > -1) {
         // Update quantity
         cartItems[existingItemIndex].quantity += quantity;
-        console.log('📦 Updated existing item:', cartItems[existingItemIndex]);
+        console.log('📈 Updated existing item quantity:', cartItems[existingItemIndex]);
       } else {
         // Add new item
         const newItem = {
@@ -71,15 +62,28 @@ const AddToCartButton = ({
           addedAt: new Date().toISOString()
         };
         cartItems.push(newItem);
-        console.log('✨ Added new item:', newItem);
+        console.log('✨ Added new item to cart:', newItem);
       }
       
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
-      console.log('💾 Cart saved:', cartItems);
+      console.log('💾 Cart saved to localStorage:', cartItems);
       
-      // Update cart display
-      updateCartDisplay();
+      // Force update cart display across the app
+      const cartEvent = new CustomEvent('cartUpdated', {
+        detail: { 
+          action: 'add',
+          productId,
+          quantity,
+          timestamp: Date.now() 
+        }
+      });
+      window.dispatchEvent(cartEvent);
+      
+      // Also dispatch storage event for any components listening
+      window.dispatchEvent(new Event('storage'));
+      
+      console.log('📡 Cart events dispatched');
       
       // Calculate total items
       const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
@@ -118,10 +122,10 @@ const AddToCartButton = ({
       onClick={handleAddToCart}
       disabled={isAdding}
       size={size}
-      className={`transition-all duration-300 transform hover:scale-105 ${
+      className={`transition-all duration-300 transform hover:scale-105 font-semibold ${
         isAdded 
-          ? 'bg-green-600 hover:bg-green-700 shadow-lg' 
-          : 'bg-forest-600 hover:bg-forest-700 shadow-md hover:shadow-lg'
+          ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg' 
+          : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg'
       } ${className}`}
     >
       {isAdding ? (
@@ -136,7 +140,7 @@ const AddToCartButton = ({
         </>
       ) : (
         <>
-          <ShoppingCart className="h-4 w-4 mr-2" />
+          <Plus className="h-4 w-4 mr-2" />
           Add to Cart
         </>
       )}

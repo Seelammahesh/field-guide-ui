@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -154,90 +155,107 @@ const TopProducts = () => {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-wheat-50">
+    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 sm:mb-12 lg:mb-16 gap-4">
           <div className="w-full sm:w-auto">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-forest-800 mb-2 sm:mb-4">Top Products</h2>
-            <p className="text-base sm:text-lg lg:text-xl text-forest-600">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
+              Top Products
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 font-medium">
               Best-selling farming essentials across all categories
             </p>
           </div>
-          <div className="flex gap-2 self-end sm:self-auto">
+          <div className="flex gap-3 self-end sm:self-auto">
             <Button 
               variant="outline" 
               size="sm" 
               onClick={prevSlide}
-              className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white p-2"
+              className="border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-5 w-5" />
             </Button>
             <Button 
               variant="outline" 
               size="sm" 
               onClick={nextSlide}
-              className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white p-2"
+              className="border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-5 w-5" />
             </Button>
           </div>
         </div>
 
         <div className="relative overflow-hidden">
           <div 
-            className="flex transition-transform duration-500 ease-in-out gap-4 sm:gap-6"
+            className="flex transition-transform duration-500 ease-in-out gap-6"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
             {Array.from({ length: totalSlides }, (_, slideIndex) => (
-              <div key={slideIndex} className={`min-w-full flex gap-4 sm:gap-6 ${isMobile ? 'justify-center' : ''}`}>
+              <div key={slideIndex} className={`min-w-full flex gap-6 ${isMobile ? 'justify-center' : ''}`}>
                 {products.slice(slideIndex * itemsPerSlide, slideIndex * itemsPerSlide + itemsPerSlide).map((product) => (
                   <div key={product.id} className={`${isMobile ? 'w-full max-w-sm' : 'flex-1'} min-w-0`}>
-                    <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 border-forest-200 bg-white h-full flex flex-col">
-                      <div className="relative">
+                    <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white rounded-2xl overflow-hidden h-[480px] flex flex-col">
+                      <div className="relative overflow-hidden">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-40 sm:h-48 object-cover rounded-t-lg"
+                          className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-700"
                         />
-                        <Badge className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-wheat-500 text-soil-800 text-xs">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <Badge className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 text-xs font-bold shadow-lg">
                           {product.badge}
                         </Badge>
-                        <Badge variant="outline" className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-white/90 text-xs">
+                        <Badge variant="outline" className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-gray-700 text-xs font-semibold border-0 shadow-lg">
                           {product.category}
                         </Badge>
                       </div>
-                      <CardHeader className="p-4 sm:p-6 flex-grow">
-                        <CardTitle className="text-forest-700 text-base sm:text-lg leading-tight line-clamp-2">{product.name}</CardTitle>
-                        <CardDescription className="text-forest-600 text-sm leading-relaxed line-clamp-3">{product.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="p-4 sm:p-6 pt-0 mt-auto">
-                        <div className="flex justify-between items-center mb-4">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xl sm:text-2xl font-bold text-forest-700">{product.price}</span>
-                            {product.originalPrice && (
-                              <span className="text-xs sm:text-sm text-gray-500 line-through">{product.originalPrice}</span>
-                            )}
+                      
+                      <div className="flex flex-col flex-grow p-6">
+                        <div className="flex-grow">
+                          <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2 leading-tight">
+                            {product.name}
+                          </h3>
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4">
+                            {product.description}
+                          </p>
+                        </div>
+                        
+                        <div className="mt-auto">
+                          <div className="flex justify-between items-center mb-4">
+                            <div className="flex items-center gap-2">
+                              <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                                {product.price}
+                              </span>
+                              {product.originalPrice && (
+                                <span className="text-sm text-gray-500 line-through">
+                                  {product.originalPrice}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-col gap-3">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="w-full border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-xl font-semibold transition-all duration-300"
+                              asChild
+                            >
+                              <Link to={`/products/${product.id}`}>
+                                View Details
+                              </Link>
+                            </Button>
+                            <AddToCartButton 
+                              productId={product.id}
+                              productName={product.name}
+                              productPrice={parseInt(product.price.replace('₹', '').replace(',', ''))}
+                              size="sm"
+                              className="w-full rounded-xl font-semibold"
+                            />
                           </div>
                         </div>
-                        <div className="flex flex-col sm:flex-row gap-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className="flex-1 border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white text-sm"
-                            asChild
-                          >
-                            <Link to={`/products/${product.id}`}>
-                              View Details
-                            </Link>
-                          </Button>
-                          <AddToCartButton 
-                            productId={product.id}
-                            productName={product.name}
-                            size="sm"
-                            className="flex-1 text-sm"
-                          />
-                        </div>
-                      </CardContent>
+                      </div>
                     </Card>
                   </div>
                 ))}
@@ -247,13 +265,15 @@ const TopProducts = () => {
         </div>
 
         {/* Carousel Indicators */}
-        <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
+        <div className="flex justify-center mt-8 space-x-2">
           {Array.from({ length: totalSlides }, (_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
-                currentIndex === index ? 'bg-forest-600' : 'bg-forest-300'
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                currentIndex === index 
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 scale-125' 
+                  : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />
           ))}

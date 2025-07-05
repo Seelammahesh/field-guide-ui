@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Star, Truck, Shield, Award, Heart, Zap, Sparkles, CheckCircle, Package, Users, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Star, Truck, Shield, Award, Heart, Zap, Sparkles, CheckCircle, Package, Users, ShoppingBag, CreditCard } from 'lucide-react';
 import AddToCartButton from './AddToCartButton';
 import { useToast } from "@/hooks/use-toast";
 
@@ -57,8 +57,10 @@ const ProductDetails = () => {
     ]
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     try {
+      console.log('🚀 Starting Buy Now process:', { productId: product.id, quantity });
+      
       // Add to cart first
       const existingCart = localStorage.getItem('cartItems');
       let cartItems = existingCart ? JSON.parse(existingCart) : [];
@@ -82,10 +84,13 @@ const ProductDetails = () => {
       }
       
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      console.log('💾 Item added to cart for Buy Now:', cartItems);
       
       // Dispatch events to update cart display
       window.dispatchEvent(new Event('storage'));
-      window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { action: 'add' } }));
+      window.dispatchEvent(new CustomEvent('cartUpdated', { 
+        detail: { action: 'add', productId: product.id, quantity } 
+      }));
       
       // Show success message
       toast({
@@ -93,6 +98,8 @@ const ProductDetails = () => {
         description: `${product.name} added! Redirecting to checkout...`,
         duration: 2000,
       });
+      
+      console.log('🎉 Buy Now successful, redirecting to cart');
       
       // Redirect to cart/payment page
       setTimeout(() => {
@@ -121,11 +128,11 @@ const ProductDetails = () => {
   const savings = product.originalPrice - product.price;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-wheat-50 via-white to-forest-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Enhanced Breadcrumb */}
         <div className="flex items-center gap-2 mb-6 sm:mb-8">
-          <Button variant="ghost" asChild className="text-forest-600 hover:text-forest-800 hover:bg-forest-100 transition-all duration-200">
+          <Button variant="ghost" asChild className="text-blue-600 hover:text-blue-800 hover:bg-blue-100 transition-all duration-200 rounded-xl">
             <Link to="/products">
               <ArrowLeft className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Back to Products</span>
@@ -137,41 +144,41 @@ const ProductDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 mb-8 sm:mb-12">
           {/* Enhanced Product Images */}
           <div className="space-y-4 sm:space-y-6">
-            <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl group">
+            <div className="relative overflow-hidden rounded-3xl shadow-2xl group bg-white p-4">
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
-                className="w-full h-64 sm:h-96 lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-110"
+                className="w-full h-64 sm:h-96 lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-110 rounded-2xl"
               />
-              <div className="absolute top-4 sm:top-6 right-4 sm:right-6 flex flex-col gap-2 sm:gap-3">
-                <Badge className="bg-red-600 text-white px-2 sm:px-4 py-1 sm:py-2 font-bold shadow-lg text-xs sm:text-sm">
+              <div className="absolute top-6 right-6 flex flex-col gap-3">
+                <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 font-bold shadow-lg">
                   Save ₹{savings}
                 </Badge>
-                <Badge className="bg-green-600 text-white px-2 sm:px-4 py-1 sm:py-2 font-bold shadow-lg text-xs sm:text-sm">
+                <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 font-bold shadow-lg">
                   In Stock ✓
                 </Badge>
               </div>
-              <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6">
-                <Badge className="bg-blue-600 text-white px-2 sm:px-4 py-1 sm:py-2 font-bold shadow-lg text-xs sm:text-sm">
+              <div className="absolute bottom-6 left-6">
+                <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 font-bold shadow-lg">
                   Premium Quality ⭐
                 </Badge>
               </div>
             </div>
             
             {/* Thumbnail Images */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-4">
+            <div className="grid grid-cols-4 gap-4">
               {product.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`relative overflow-hidden rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
-                    selectedImage === index ? 'ring-2 sm:ring-4 ring-forest-600 scale-105' : ''
+                  className={`relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
+                    selectedImage === index ? 'ring-4 ring-blue-500 scale-105' : ''
                   }`}
                 >
                   <img
                     src={image}
                     alt={`${product.name} ${index + 1}`}
-                    className="w-full h-16 sm:h-20 lg:h-24 object-cover hover:scale-110 transition-transform duration-300"
+                    className="w-full h-20 lg:h-24 object-cover hover:scale-110 transition-transform duration-300"
                   />
                 </button>
               ))}
@@ -181,123 +188,124 @@ const ProductDetails = () => {
           {/* Enhanced Product Info */}
           <div className="space-y-6 sm:space-y-8">
             <div>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                <Badge className="bg-forest-100 text-forest-800 px-2 sm:px-3 py-1 font-semibold text-xs sm:text-sm">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <Badge className="bg-blue-100 text-blue-800 px-4 py-2 font-semibold text-sm rounded-full">
                   {product.category}
                 </Badge>
-                <Badge className="bg-blue-100 text-blue-800 px-2 sm:px-3 py-1 font-semibold text-xs sm:text-sm">
+                <Badge className="bg-green-100 text-green-800 px-4 py-2 font-semibold text-sm rounded-full">
                   {product.brand}
                 </Badge>
               </div>
               
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-forest-800 mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4 flex items-center gap-3">
                 {product.name}
-                <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-red-500" />
+                <Heart className="h-6 w-6 text-red-500" />
               </h1>
               
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-6">
                 <div className="flex items-center gap-2">
                   <div className="flex">{renderStars(product.rating)}</div>
-                  <span className="text-sm font-bold text-gray-700">
+                  <span className="text-base font-bold text-gray-700">
                     {product.rating} ({product.reviews} reviews)
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-forest-600" />
-                  <span className="text-sm font-semibold text-forest-600">
+                  <Users className="h-5 w-5 text-blue-600" />
+                  <span className="text-base font-semibold text-blue-600">
                     {product.reviews}+ customers
                   </span>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-forest-100 via-white to-forest-100 p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-inner mb-4 sm:mb-6">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-3">
-                  <span className="text-3xl sm:text-4xl font-black text-forest-700">₹{product.price}</span>
-                  <span className="text-xl sm:text-2xl text-gray-500 line-through">₹{product.originalPrice}</span>
-                  <Badge className="bg-green-600 text-white px-2 sm:px-3 py-1 font-bold text-xs sm:text-sm">
+              <div className="bg-gradient-to-r from-blue-50 via-white to-purple-50 p-6 rounded-3xl shadow-inner mb-6 border border-blue-100">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+                  <span className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">₹{product.price}</span>
+                  <span className="text-2xl text-gray-500 line-through">₹{product.originalPrice}</span>
+                  <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 font-bold text-sm">
                     {Math.round((savings / product.originalPrice) * 100)}% OFF
                   </Badge>
                 </div>
-                <p className="text-sm text-gray-600 font-semibold">
+                <p className="text-base text-gray-600 font-semibold">
                   💰 You save ₹{savings} on this purchase!
                 </p>
               </div>
 
-              <p className="text-forest-600 text-base sm:text-lg leading-relaxed mb-6 sm:mb-8 font-medium">
+              <p className="text-gray-700 text-lg leading-relaxed mb-8 font-medium">
                 {product.description}
               </p>
 
               {/* Enhanced Stock Status */}
-              <div className="bg-gradient-to-r from-green-50 to-forest-50 p-4 sm:p-6 rounded-xl sm:rounded-2xl mb-6 sm:mb-8 shadow-sm">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl mb-8 shadow-sm border border-green-200">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <Package className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
-                    <span className="font-bold text-green-700 text-sm sm:text-base">
+                  <div className="flex items-center gap-3">
+                    <Package className="h-6 w-6 text-green-600" />
+                    <span className="font-bold text-green-700 text-lg">
                       {product.inStock > 10 ? 'In Stock' : 'Limited Stock'}
                     </span>
                   </div>
-                  <span className="text-sm font-semibold text-green-600">
+                  <span className="text-base font-semibold text-green-600">
                     {product.inStock} units available
                   </span>
                 </div>
               </div>
 
               {/* Enhanced Add to Cart Section */}
-              <div className="bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-lg border-2 border-forest-200 mb-6 sm:mb-8">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4 sm:mb-6">
-                  <div className="flex items-center border-2 border-forest-300 rounded-xl">
+              <div className="bg-white p-6 rounded-3xl shadow-2xl border border-gray-200 mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+                  <div className="flex items-center border-2 border-blue-300 rounded-2xl bg-blue-50">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-3 sm:px-4 py-2 text-forest-600 hover:bg-forest-50 rounded-l-xl transition-colors font-bold"
+                      className="px-6 py-3 text-blue-600 hover:bg-blue-100 rounded-l-2xl transition-colors font-bold text-lg"
                     >
                       -
                     </button>
-                    <span className="px-4 sm:px-6 py-2 font-bold text-base sm:text-lg">{quantity}</span>
+                    <span className="px-8 py-3 font-bold text-xl">{quantity}</span>
                     <button
                       onClick={() => setQuantity(Math.min(product.inStock, quantity + 1))}
-                      className="px-3 sm:px-4 py-2 text-forest-600 hover:bg-forest-50 rounded-r-xl transition-colors font-bold"
+                      className="px-6 py-3 text-blue-600 hover:bg-blue-100 rounded-r-2xl transition-colors font-bold text-lg"
                     >
                       +
                     </button>
                   </div>
-                  <span className="text-xl sm:text-2xl font-black text-forest-700">
+                  <span className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     ₹{product.price * quantity}
                   </span>
                 </div>
                 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <AddToCartButton
                     productId={product.id}
                     productName={product.name}
                     productPrice={product.price}
                     quantity={quantity}
                     size="lg"
-                    className="w-full py-3 sm:py-4 text-lg sm:text-xl font-black rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
+                    className="w-full py-4 text-xl font-black rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
                   />
                   
                   <Button
                     onClick={handleBuyNow}
                     size="lg"
-                    className="w-full py-3 sm:py-4 text-lg sm:text-xl font-black rounded-xl bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-xl hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
+                    className="w-full py-4 text-xl font-black rounded-2xl bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 shadow-xl hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300"
                   >
-                    🚀 Buy Now
+                    <CreditCard className="h-6 w-6 mr-3" />
+                    Buy Now
                   </Button>
                 </div>
               </div>
 
               {/* Enhanced Features */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl shadow-sm">
-                  <Truck className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
-                  <span className="text-xs sm:text-sm font-bold text-blue-700">Free Shipping</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl shadow-sm border border-blue-200">
+                  <Truck className="h-6 w-6 text-blue-600" />
+                  <span className="text-sm font-bold text-blue-700">Free Shipping</span>
                 </div>
-                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl shadow-sm">
-                  <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
-                  <span className="text-xs sm:text-sm font-bold text-green-700">Quality Guaranteed</span>
+                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-2xl shadow-sm border border-green-200">
+                  <Shield className="h-6 w-6 text-green-600" />
+                  <span className="text-sm font-bold text-green-700">Quality Guaranteed</span>
                 </div>
-                <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-xl shadow-sm">
-                  <Award className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
-                  <span className="text-xs sm:text-sm font-bold text-yellow-700">Premium Brand</span>
+                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-2xl shadow-sm border border-yellow-200">
+                  <Award className="h-6 w-6 text-yellow-600" />
+                  <span className="text-sm font-bold text-yellow-700">Premium Brand</span>
                 </div>
               </div>
             </div>

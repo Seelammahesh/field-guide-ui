@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeft, ChevronRight, Play, Calendar, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Calendar, User, Eye } from "lucide-react";
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoModal from './VideoModal';
 
@@ -99,96 +99,108 @@ const NewsFeedCarousel = () => {
   };
 
   return (
-    <section className="py-8 sm:py-12 lg:py-16 px-3 sm:px-4 lg:px-8 bg-white">
+    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 sm:mb-12 gap-4">
           <div className="w-full sm:w-auto">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-forest-800 mb-2 sm:mb-3">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
               Agricultural News & Updates
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-forest-600">
+            <p className="text-lg sm:text-xl text-gray-600 font-medium">
               Latest farming news and expert advice
             </p>
           </div>
-          <div className="flex gap-2 self-end sm:self-auto">
+          <div className="flex gap-3 self-end sm:self-auto">
             <Button 
               variant="outline" 
               size="sm" 
               onClick={prevSlide}
-              className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white p-2"
+              className="border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-5 w-5" />
             </Button>
             <Button 
               variant="outline" 
               size="sm" 
               onClick={nextSlide}
-              className="border-forest-600 text-forest-600 hover:bg-forest-600 hover:text-white p-2"
+              className="border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-5 w-5" />
             </Button>
           </div>
         </div>
 
         <div className="relative overflow-hidden">
           <div 
-            className="flex transition-transform duration-500 ease-in-out gap-4 sm:gap-6"
+            className="flex transition-transform duration-500 ease-in-out gap-6"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
             {Array.from({ length: totalSlides }, (_, slideIndex) => (
-              <div key={slideIndex} className={`min-w-full flex gap-4 sm:gap-6 ${isMobile ? 'justify-center' : ''}`}>
+              <div key={slideIndex} className={`min-w-full flex gap-6 ${isMobile ? 'justify-center' : ''}`}>
                 {newsItems.slice(slideIndex * itemsPerSlide, slideIndex * itemsPerSlide + itemsPerSlide).map((item) => (
                   <div key={item.id} className={`${isMobile ? 'w-full max-w-sm' : 'flex-1'} min-w-0`}>
-                    <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-forest-200 bg-white">
-                      <div className="relative">
+                    <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white rounded-2xl overflow-hidden h-[480px] flex flex-col">
+                      <div className="relative overflow-hidden">
                         <img
                           src={item.thumbnail}
                           alt={item.title}
-                          className="w-full h-40 sm:h-48 object-cover rounded-t-lg cursor-pointer"
+                          className="w-full h-56 object-cover cursor-pointer group-hover:scale-110 transition-transform duration-700"
                           onClick={() => setSelectedVideo(item)}
                         />
                         <div 
-                          className="absolute inset-0 bg-black/20 flex items-center justify-center cursor-pointer hover:bg-black/40 transition-colors rounded-t-lg"
+                          className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors"
                           onClick={() => setSelectedVideo(item)}
                         >
-                          <Play className="h-8 w-8 sm:h-12 sm:w-12 text-white" />
+                          <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 hover:scale-110 transition-transform duration-300">
+                            <Play className="h-8 w-8 text-white drop-shadow-lg" />
+                          </div>
                         </div>
-                        <Badge className="absolute top-2 right-2 bg-forest-600 text-white text-xs">
+                        <Badge className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 shadow-lg">
                           {item.category}
                         </Badge>
-                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                        <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full font-semibold">
                           {item.duration}
                         </div>
                       </div>
-                      <CardContent className="p-4 sm:p-6">
-                        <h3 className="font-semibold text-forest-800 mb-2 text-sm sm:text-base line-clamp-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-forest-600 text-xs sm:text-sm mb-3 line-clamp-2">
-                          {item.description}
-                        </p>
-                        <div className="flex items-center justify-between text-xs sm:text-sm text-forest-500 mb-3">
-                          <div className="flex items-center gap-1 sm:gap-2">
-                            <User className="h-3 w-3 sm:h-4 sm:w-4" />
-                            <span className="truncate">{item.author}</span>
+                      
+                      <div className="flex flex-col flex-grow p-6">
+                        <div className="flex-grow">
+                          <h3 className="font-bold text-gray-800 mb-3 text-lg line-clamp-2 leading-tight">
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                        
+                        <div className="mt-auto">
+                          <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <div className="flex items-center gap-2">
+                              <User className="h-4 w-4" />
+                              <span className="truncate font-medium">{item.author}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4" />
+                              <span className="font-medium">{item.date}</span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1 sm:gap-2">
-                            <Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
-                            <span>{item.date}</span>
+                          
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                              <Eye className="h-4 w-4" />
+                              <span className="font-semibold">{item.views} views</span>
+                            </div>
+                            <Button 
+                              size="sm" 
+                              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold px-4 transition-all duration-300"
+                              onClick={() => setSelectedVideo(item)}
+                            >
+                              <Play className="h-4 w-4 mr-2" />
+                              Watch
+                            </Button>
                           </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-forest-500">{item.views} views</span>
-                          <Button 
-                            size="sm" 
-                            className="bg-forest-600 hover:bg-forest-700 text-xs sm:text-sm"
-                            onClick={() => setSelectedVideo(item)}
-                          >
-                            <Play className="h-3 w-3 mr-1" />
-                            Watch
-                          </Button>
-                        </div>
-                      </CardContent>
+                      </div>
                     </Card>
                   </div>
                 ))}
@@ -198,13 +210,15 @@ const NewsFeedCarousel = () => {
         </div>
 
         {/* Carousel Indicators */}
-        <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
+        <div className="flex justify-center mt-8 space-x-2">
           {Array.from({ length: totalSlides }, (_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
-                currentIndex === index ? 'bg-forest-600' : 'bg-forest-300'
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                currentIndex === index 
+                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 scale-125' 
+                  : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />
           ))}
