@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Check, Plus } from "lucide-react";
+import { ShoppingCart, Check, Plus, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface AddToCartButtonProps {
@@ -34,13 +34,20 @@ const AddToCartButton = ({
     setIsAdding(true);
 
     try {
-      console.log('🛒 Starting add to cart process:', { productId, productName, productPrice, quantity });
+      console.log('🛒 Adding to cart:', { productId, productName, productPrice, quantity });
       
       // Get existing cart items
-      const existingCart = localStorage.getItem('cartItems');
-      let cartItems = existingCart ? JSON.parse(existingCart) : [];
+      const existingCartString = localStorage.getItem('cartItems');
+      let cartItems = [];
       
-      console.log('📦 Existing cart items:', cartItems);
+      try {
+        cartItems = existingCartString ? JSON.parse(existingCartString) : [];
+      } catch (parseError) {
+        console.warn('Cart parsing error, starting fresh:', parseError);
+        cartItems = [];
+      }
+      
+      console.log('📦 Current cart:', cartItems);
       
       // Check if item already exists
       const existingItemIndex = cartItems.findIndex((item: any) => item.id === productId);
@@ -48,7 +55,7 @@ const AddToCartButton = ({
       if (existingItemIndex > -1) {
         // Update quantity
         cartItems[existingItemIndex].quantity += quantity;
-        console.log('📈 Updated existing item quantity:', cartItems[existingItemIndex]);
+        console.log('📈 Updated existing item:', cartItems[existingItemIndex]);
       } else {
         // Add new item
         const newItem = {
@@ -62,42 +69,48 @@ const AddToCartButton = ({
           addedAt: new Date().toISOString()
         };
         cartItems.push(newItem);
-        console.log('✨ Added new item to cart:', newItem);
+        console.log('✨ Added new item:', newItem);
       }
       
       // Save to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
-      console.log('💾 Cart saved to localStorage:', cartItems);
+      console.log('💾 Cart saved:', cartItems);
       
-      // Force update cart display across the app
-      const cartEvent = new CustomEvent('cartUpdated', {
-        detail: { 
-          action: 'add',
-          productId,
-          quantity,
-          timestamp: Date.now() 
-        }
-      });
-      window.dispatchEvent(cartEvent);
-      
-      // Also dispatch storage event for any components listening
-      window.dispatchEvent(new Event('storage'));
-      
-      console.log('📡 Cart events dispatched');
-      
-      // Calculate total items
+      // Calculate total items for display
       const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
+      
+      // Dispatch multiple events to ensure all components update
+      const events = [
+        new CustomEvent('cartUpdated', {
+          detail: { 
+            action: 'add',
+            productId,
+            quantity,
+            totalItems,
+            timestamp: Date.now() 
+          }
+        }),
+        new Event('storage'),
+        new CustomEvent('cartItemsChanged', {
+          detail: { cartItems, totalItems }
+        })
+      ];
+      
+      events.forEach(event => window.dispatchEvent(event));
+      
+      console.log('📡 All cart events dispatched, total items:', totalItems);
       
       // Show success state
       setIsAdded(true);
       
+      // Show success toast
       toast({
-        title: "✅ Added to Cart",
-        description: `${productName} has been added to your cart! Total items: ${totalItems}`,
+        title: "✅ Added to Cart!",
+        description: `${productName} added successfully. Total items in cart: ${totalItems}`,
         duration: 3000,
       });
 
-      console.log('✅ Successfully added to cart. Total items:', totalItems);
+      console.log('✅ Add to cart completed successfully');
 
       // Reset success state after 2 seconds
       setTimeout(() => {
@@ -105,7 +118,7 @@ const AddToCartButton = ({
       }, 2000);
 
     } catch (error) {
-      console.error('❌ Error adding to cart:', error);
+      console.error('❌ Add to cart error:', error);
       toast({
         title: "❌ Error",
         description: "Failed to add item to cart. Please try again.",
@@ -130,7 +143,7 @@ const AddToCartButton = ({
     >
       {isAdding ? (
         <>
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
           Adding...
         </>
       ) : isAdded ? (

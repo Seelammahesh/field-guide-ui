@@ -195,12 +195,12 @@ const TopProducts = () => {
               <div key={slideIndex} className={`min-w-full flex gap-6 ${isMobile ? 'justify-center' : ''}`}>
                 {products.slice(slideIndex * itemsPerSlide, slideIndex * itemsPerSlide + itemsPerSlide).map((product) => (
                   <div key={product.id} className={`${isMobile ? 'w-full max-w-sm' : 'flex-1'} min-w-0`}>
-                    <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white rounded-2xl overflow-hidden h-[480px] flex flex-col">
-                      <div className="relative overflow-hidden">
+                    <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white rounded-2xl overflow-hidden h-[520px] flex flex-col">
+                      <div className="relative overflow-hidden h-64">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-700"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <Badge className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 text-xs font-bold shadow-lg">
@@ -212,17 +212,17 @@ const TopProducts = () => {
                       </div>
                       
                       <div className="flex flex-col flex-grow p-6">
-                        <div className="flex-grow">
-                          <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2 leading-tight">
+                        <div className="flex-grow min-h-[120px]">
+                          <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2 leading-tight min-h-[56px]">
                             {product.name}
                           </h3>
-                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4">
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4 min-h-[40px]">
                             {product.description}
                           </p>
                         </div>
                         
                         <div className="mt-auto">
-                          <div className="flex justify-between items-center mb-4">
+                          <div className="flex justify-between items-center mb-4 min-h-[32px]">
                             <div className="flex items-center gap-2">
                               <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                                 {product.price}
@@ -239,7 +239,7 @@ const TopProducts = () => {
                             <Button 
                               variant="outline" 
                               size="sm" 
-                              className="w-full border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-xl font-semibold transition-all duration-300"
+                              className="w-full border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white rounded-xl font-semibold transition-all duration-300 h-10"
                               asChild
                             >
                               <Link to={`/products/${product.id}`}>
@@ -251,7 +251,7 @@ const TopProducts = () => {
                               productName={product.name}
                               productPrice={parseInt(product.price.replace('₹', '').replace(',', ''))}
                               size="sm"
-                              className="w-full rounded-xl font-semibold"
+                              className="w-full rounded-xl font-semibold h-10"
                             />
                           </div>
                         </div>
